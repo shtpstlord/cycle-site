@@ -1,0 +1,71 @@
+export const SEED_PRODUCTS = [
+  {
+    id: 1,
+    name: 'Софтшелл C.P. Company',
+    category: 'outerwear',
+    size: 'XL',
+    price: 25900,
+    oldPrice: null,
+    images: [
+      'https://images.unsplash.com/photo-1620799139834-6b8f844fbe61?auto=format&fit=crop&q=80&w=400',
+      'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&q=80&w=400',
+    ],
+    subtitle: 'Легкий софтшелл, водоотталкивающая ткань',
+    quote:
+      'Софтшелл защищает от ветра и легкого дождя, при этом остается дышащим и удобным для города.',
+    postViews: 417,
+    postTime: '14:11',
+    createdAt: '2026-04-14T11:11:00.000Z',
+  },
+  {
+    id: 2,
+    name: 'Брюки-чинос винтаж',
+    category: 'pants',
+    size: '54(XL)',
+    price: 2900,
+    oldPrice: 3900,
+    images: [
+      'https://images.unsplash.com/photo-1542272454315-4c01d711efa4?auto=format&fit=crop&q=80&w=400',
+    ],
+    subtitle: 'Плотный хлопок, мягкая посадка',
+    quote:
+      'Чиносы держат форму и легко собираются в повседневный образ под кеды, ботинки и рубашку.',
+    postViews: 509,
+    postTime: '13:58',
+    createdAt: '2026-04-14T10:58:00.000Z',
+  },
+  {
+    id: 3,
+    name: 'Свитер Ralph Lauren',
+    category: 'tops',
+    size: 'M',
+    price: 5500,
+    oldPrice: null,
+    images: [
+      'https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&q=80&w=400',
+    ],
+    subtitle: 'Теплая вязка, приятная фактура',
+    quote:
+      'Классический свитер Ralph Lauren: аккуратный силуэт, универсальный цвет и комфорт на каждый день.',
+    postViews: 362,
+    postTime: '12:40',
+    createdAt: '2026-04-14T09:40:00.000Z',
+  },
+  {
+    id: 4,
+    name: 'Футболка Stussy',
+    category: 'tops',
+    size: 'L',
+    price: 3200,
+    oldPrice: null,
+    images: [
+      'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&q=80&w=400',
+    ],
+    subtitle: 'Мягкий хлопок, классический стрит-фит',
+    quote:
+      'Stussy из категории базовых вещей, которые легко комбинировать в многослойные комплекты.',
+    postViews: 444,
+    postTime: '13:22',
+    createdAt: '2026-04-14T10:22:00.000Z',
+  },
+]

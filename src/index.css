@@ -1,0 +1,324 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=PT+Mono&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-paper: #f4f0eb;
+  --bg-concrete: #e0e0e0;
+  --soviet-red: #d52b1e;
+  --border-heavy: 3px solid #000;
+  --shadow-hard: 4px 4px 0px #000;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'PT Mono', monospace;
+  background-color: #1a0505;
+  color: #000;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.heading-font {
+  font-family: 'Anton', sans-serif;
+  letter-spacing: 0.05em;
+}
+
+.bg-carpet {
+  background-color: #5f0b0b;
+  background-image:
+    radial-gradient(circle at 50% 100%, rgba(155, 32, 32, 0.92) 0 18px, transparent 19px),
+    radial-gradient(circle at 50% 100%, rgba(236, 193, 115, 0.2) 0 8px, transparent 9px),
+    radial-gradient(circle at 0 100%, rgba(96, 14, 14, 0.96) 0 18px, transparent 19px),
+    radial-gradient(circle at 100% 100%, rgba(96, 14, 14, 0.96) 0 18px, transparent 19px),
+    repeating-linear-gradient(45deg, rgba(255, 214, 138, 0.06) 0 2px, transparent 2px 24px),
+    linear-gradient(180deg, #711111 0%, #4a0707 100%);
+  background-size:
+    56px 28px,
+    56px 28px,
+    56px 28px,
+    56px 28px,
+    56px 56px,
+    100% 100%;
+  background-position:
+    0 0,
+    0 0,
+    28px 0,
+    -28px 0,
+    0 0,
+    0 0;
+}
+
+.carpet-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.scanlines {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0) 50%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(0, 0, 0, 0.1)
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.3;
+}
+
+.brutal-box {
+  background-color: var(--bg-paper);
+  border: var(--border-heavy);
+  box-shadow: var(--shadow-hard);
+  position: relative;
+  z-index: 10;
+}
+
+.brutal-btn {
+  background-color: #000;
+  color: #fff;
+  border: var(--border-heavy);
+  box-shadow: var(--shadow-hard);
+  transition: all 0.1s;
+  text-transform: uppercase;
+}
+
+.brutal-btn-hot {
+  background: var(--soviet-red);
+  color: #fff;
+}
+
+.brutal-btn-muted {
+  background: #8a8a8a;
+  color: #ececec;
+  border-color: #555;
+  box-shadow: 4px 4px 0 #555;
+}
+
+.brutal-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0 0 0 #000;
+}
+
+.brutal-input:active {
+  animation: glitch-anim 0.28s forwards;
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 #000;
+}
+
+.screen-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-top: 12px;
+  padding-bottom: 120px;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.screen-panel {
+  z-index: 20;
+  background-color: var(--bg-paper);
+  border-left: var(--border-heavy);
+  box-shadow: -10px 0 20px rgba(0, 0, 0, 0.5);
+}
+
+#screen-home {
+  z-index: 10;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes bounce-arrow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(15px);
+  }
+}
+
+.animate-bounce-arrow {
+  animation: bounce-arrow 1.5s infinite;
+}
+
+@keyframes story-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.animate-story-progress {
+  animation: story-progress 5.8s linear forwards;
+}
+
+.vhs-noise {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  background: url("data:image/svg+xml;utf8,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.4'/%3E%3C/svg%3E");
+}
+
+.splash-gradient-bottom {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 40%,
+    rgba(0, 0, 0, 0.15) 62%,
+    rgba(0, 0, 0, 0.68) 100%
+  );
+}
+
+.splash-video-fullscreen {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  object-fit: cover;
+}
+
+@keyframes glitch-anim {
+  0% {
+    transform: translate(0);
+    filter: invert(0) hue-rotate(0deg);
+  }
+  20% {
+    transform: translate(-4px, 2px);
+    filter: invert(1) hue-rotate(90deg);
+  }
+  40% {
+    transform: translate(4px, -2px);
+    filter: invert(0) hue-rotate(180deg);
+  }
+  60% {
+    transform: translate(-2px, 4px);
+    filter: invert(1) hue-rotate(270deg);
+  }
+  80% {
+    transform: translate(2px, -4px);
+    filter: invert(0) hue-rotate(360deg);
+  }
+  100% {
+    transform: translate(0);
+    filter: invert(0) hue-rotate(0deg);
+  }
+}
+
+.glitch-active {
+  animation: glitch-anim 0.3s forwards;
+}
+
+button:active,
+a:active,
+.story-card:active {
+  animation: glitch-anim 0.3s forwards;
+}
+
+.product-gallery {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  border-bottom: var(--border-heavy);
+}
+
+.product-gallery img {
+  width: 100%;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  object-fit: cover;
+  aspect-ratio: 4 / 5;
+}
+
+.price-crossed {
+  position: relative;
+  color: #555;
+}
+
+.price-crossed::after {
+  content: '';
+  position: absolute;
+  left: -5%;
+  top: 50%;
+  width: 110%;
+  height: 3px;
+  background-color: var(--soviet-red);
+  transform: rotate(-8deg);
+}
+
+.bottom-sheet {
+  position: fixed;
+  bottom: -100%;
+  left: 0;
+  width: 100%;
+  background-color: var(--bg-paper);
+  border-top: var(--border-heavy);
+  box-shadow: 0 -10px 0 rgba(0, 0, 0, 1);
+  z-index: 150;
+  transition: bottom 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.bottom-sheet.open {
+  bottom: 0;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 140;
+  display: none;
+  backdrop-filter: blur(2px);
+}
+
+.overlay.open {
+  display: block;
+}
+
+.active-nav {
+  border-color: #000;
+  background: #000;
+  color: #fff;
+}
+
+.product-focus-shell {
+  box-shadow:
+    10px 10px 0 #000,
+    0 18px 48px rgba(0, 0, 0, 0.45);
+}
+
+.product-focus-quote {
+  border: 3px solid #000;
+  border-left-width: 8px;
+  background: #e0e0e0;
+  padding: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
