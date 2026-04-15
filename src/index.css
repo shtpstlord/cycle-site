@@ -373,3 +373,9 @@ a:active,
   text-transform: uppercase;
   opacity: 0.9;
 }
+
+.adm-footer {
+  background:
+    radial-gradient(circle at 50% 28%, rgba(0, 0, 0, 0.06) 0%, rgba(0, 0, 0, 0) 64%),
+    #f5f5f5;
+}

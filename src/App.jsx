@@ -951,12 +951,9 @@ export default function App() {
             Реальные отзывы загружаются из Яндекс Карт. Кнопки выше ведут на страницу отзывов и форму добавления.
           </div>
 
-          <footer className="brutal-box mt-6 mb-16 bg-white p-4">
-            <div className="flex flex-col items-center gap-2">
-              <img src={admLogo} alt="ADM logo" className="h-auto w-full max-w-[280px]" />
-              <p className="text-center text-[10px] font-bold uppercase tracking-wider text-black/70">
-                дизайн и разработка: ADM
-              </p>
+          <footer className="brutal-box adm-footer mt-6 mb-16 bg-white p-4">
+            <div className="flex items-center justify-center">
+              <img src={admLogo} alt="ADM logo" className="h-auto w-full max-w-[320px]" />
             </div>
           </footer>
         </div>

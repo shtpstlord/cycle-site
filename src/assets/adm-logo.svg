@@ -1,15 +1,32 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 420" role="img" aria-labelledby="admTitle">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" role="img" aria-labelledby="admTitle">
   <title id="admTitle">ADM logo</title>
-  <g fill="none" stroke="#111" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M168 294 430 294 692 294" />
-    <path d="M168 294 332 28" />
-    <path d="M692 294 528 28" />
-    <path d="M430 12 430 294" />
+  <g fill="none" stroke="#171717" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M308 418 600 418 892 418" />
+    <path d="M308 418 518 94" />
+    <path d="M892 418 682 94" />
+    <path d="M600 72 600 418" />
   </g>
-  <text x="430" y="245" font-family="Arial, Helvetica, sans-serif" font-size="120" text-anchor="middle" fill="#111">
+  <text
+    x="600"
+    y="374"
+    font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+    font-size="148"
+    font-weight="400"
+    text-anchor="middle"
+    fill="#161616"
+  >
     adm
   </text>
-  <text x="430" y="372" font-family="Arial, Helvetica, sans-serif" font-size="56" text-anchor="middle" fill="#333">
+  <text
+    x="600"
+    y="505"
+    font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+    font-size="62"
+    font-weight="300"
+    letter-spacing="0.6"
+    text-anchor="middle"
+    fill="#3f3f3f"
+  >
     average design manufacture
   </text>
 </svg>
