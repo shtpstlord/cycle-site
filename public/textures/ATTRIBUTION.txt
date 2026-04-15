@@ -1,7 +1,7 @@
 Pattern source:
-https://www.cadnav.com/textures/5844.html
+https://www.cadnav.com/textures/5824.html
 Direct image:
-https://img.cadnav.com/allimg/130906/1-130Z6152R0L2.jpg
+https://img.cadnav.com/allimg/130906/1-130Z6000024218.jpg
 
 License info on source page (as of 2026-04-15):
 "Free (Personal and Commercial)"

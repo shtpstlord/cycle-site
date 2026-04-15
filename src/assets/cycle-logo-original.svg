@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" role="img" aria-labelledby="cycleLogoTitle">
+  <title id="cycleLogoTitle">ЦИКЛ logo</title>
+  <rect width="640" height="640" fill="#07080b" rx="16" />
+
+  <g fill="none" stroke="#eef1f4" stroke-width="13" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M210 258 296 113q24-38 49 0l131 225" />
+    <path d="M172 370 97 499q-22 38 22 38h200" />
+    <path d="M370 537h156q46 0 24-38L479 375" />
+
+    <path d="m172 369-41 23" />
+    <path d="m172 369-12-45" />
+
+    <path d="m476 338 43 21" />
+    <path d="m476 338 10-45" />
+
+    <path d="m369 536 41 23" />
+    <path d="m369 536 42-22" />
+  </g>
+
+  <text
+    x="320"
+    y="346"
+    text-anchor="middle"
+    font-family="'Bahnschrift', 'Arial Black', Arial, sans-serif"
+    font-size="92"
+    font-weight="700"
+    letter-spacing="2"
+    fill="#eef1f4"
+  >
+    ЦИКЛ
+  </text>
+
+  <g fill="none" stroke="#eef1f4" stroke-width="11" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M244 526V493l28-40 48-17 48 17 28 40v33" />
+    <path d="M272 454 320 492l48-38" />
+    <path d="m292 446 28 44 28-44" />
+    <path d="M320 492v25h14v-25" />
+  </g>
+</svg>

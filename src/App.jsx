@@ -16,6 +16,7 @@ import {
   X,
 } from 'lucide-react'
 import admLogo from './assets/adm-logo.svg'
+import cycleLogoOriginal from './assets/cycle-logo-original.svg'
 
 const STORIES = [
   {
@@ -517,40 +518,7 @@ export default function App() {
         className="brutal-box pointer-events-auto flex h-16 flex-1 cursor-pointer items-center p-2"
         onClick={() => navigate('home')}
       >
-        <svg className="mr-3 h-11 w-11 shrink-0" viewBox="0 0 120 120" fill="none" aria-hidden="true">
-          <path
-            d="M60 12c7 0 13 3 17 10l27 46c4 7-1 16-9 16H25c-8 0-13-9-9-16l27-46c4-7 10-10 17-10Z"
-            stroke="black"
-            strokeWidth="5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M31 57 43 49m-12 8 3-11m-3 11 11-2M89 50l12 8m-12-8 11 2m-11-2 3 11M75 92H53m22 0-10-7m10 7-10 7"
-            stroke="black"
-            strokeWidth="4.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <text
-            x="60"
-            y="54"
-            textAnchor="middle"
-            fontFamily="'Anton', sans-serif"
-            fontSize="18"
-            letterSpacing="1"
-            fill="black"
-          >
-            ЦИКЛ
-          </text>
-          <path
-            d="M41 86V70l11-10 8 4 8-4 11 10v16M52 60l8 12 8-12M58 72v8h4v-8"
-            stroke="black"
-            strokeWidth="4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <img src={cycleLogoOriginal} alt="Логотип ЦИКЛ" className="mr-3 h-12 w-12 shrink-0 rounded-sm" />
         <div className="flex flex-col">
           <span className="heading-font text-2xl leading-none tracking-wider">ЦИКЛ</span>
           <span className="mt-1 flex items-center bg-black px-1 text-[8px] font-bold leading-tight text-white">
