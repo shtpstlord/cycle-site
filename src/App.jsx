@@ -5,9 +5,11 @@ import {
   Ghost,
   House,
   Info,
+  Minus,
   MapPin,
   MessageCircle,
   Phone,
+  Plus,
   Ruler,
   Send,
   Shirt,
@@ -15,8 +17,8 @@ import {
   Trash2,
   X,
 } from 'lucide-react'
-import admLogo from './assets/adm-logo.svg'
-import cycleLogoOriginal from './assets/cycle-logo-original.svg'
+import admLogo from './assets/adm.jpg'
+import cycleLogoOriginal from './assets/logo.jpg'
 
 const STORIES = [
   {
@@ -137,7 +139,6 @@ const YANDEX_ORG_ID = '62631138735'
 const YANDEX_ORG_URL = `https://yandex.ru/maps/org/tsikl/${YANDEX_ORG_ID}/`
 const YANDEX_MAP_WIDGET_URL =
   'https://yandex.ru/map-widget/v1/?ll=39.199928%2C51.660396&mode=search&oid=62631138735&ol=biz&z=17.17'
-const YANDEX_REVIEWS_WIDGET_URL = `https://yandex.ru/maps-reviews-widget/${YANDEX_ORG_ID}?comments`
 const YANDEX_ORG_REVIEWS_URL = `https://yandex.ru/maps/org/tsikl/${YANDEX_ORG_ID}/reviews/`
 const YANDEX_ORG_GALLERY_URL = `${YANDEX_ORG_URL}gallery/`
 const YANDEX_ADD_REVIEW_URL = `${YANDEX_ORG_REVIEWS_URL}?add-review`
@@ -149,8 +150,62 @@ const YANDEX_INTERIOR_PHOTOS = [
   'https://avatars.mds.yandex.net/get-altay/7730113/2a0000018fbfa96a74989e100d0ec2c13823/orig',
   'https://avatars.mds.yandex.net/get-altay/961502/2a0000018fbfa985590ccf811ce781885491/orig',
 ]
+const FEATURED_REVIEWS = [
+  {
+    id: 'review-1',
+    name: 'Лилия Масловиева',
+    date: '13 февраля',
+    rating: 5,
+    text: 'Нравится ваш магазин: много интересных и качественных вещей. Всегда вежливо, подскажут и порекомендуют.',
+  },
+  {
+    id: 'review-2',
+    name: 'Максим Литвинов',
+    date: '19 марта 2025',
+    rating: 5,
+    text: 'Отличный магазин. Хожу давно, доволен ассортиментом и ценами. Крутая атмосфера и приятный персонал.',
+  },
+  {
+    id: 'review-3',
+    name: 'Дмитрий Тарарыков',
+    date: '27 марта 2025',
+    rating: 5,
+    text: 'Большой выбор, редкие позиции и аккуратная выкладка. Удобно, что можно быстро собрать готовый образ.',
+  },
+  {
+    id: 'review-4',
+    name: 'Екатерина Ж.',
+    date: '5 апреля 2025',
+    rating: 5,
+    text: 'Точно попали в атмосферу винтажного шоурума: музыка, свет и подбор вещей очень в тему.',
+  },
+  {
+    id: 'review-5',
+    name: 'Игорь Н.',
+    date: '11 апреля 2025',
+    rating: 5,
+    text: 'Удобно, что сразу видно размеры и актуальные цены. Ребята на месте помогают быстро найти нужное.',
+  },
+]
 const ORDER_TG_LINK = 'https://t.me/cycle_order'
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '')
+const PRODUCT_STATUS_META = {
+  available: {
+    badge: 'В НАЛИЧИИ',
+    cta: 'ЗАБРАТЬ',
+    detail: 'ДОСТУПЕН',
+  },
+  reserved: {
+    badge: 'БРОНЬ',
+    cta: 'НА БРОНИ',
+    detail: 'ЗАБРОНИРОВАН',
+  },
+  sold: {
+    badge: 'ПРОДАНО',
+    cta: 'ПРОДАНО',
+    detail: 'ПРОДАН',
+  },
+}
 
 function buildApiUrl(path) {
   if (!API_BASE_URL) {
@@ -161,6 +216,29 @@ function buildApiUrl(path) {
 
 function formatRub(price) {
   return `${new Intl.NumberFormat('ru-RU').format(price)} ₽`
+}
+
+function normalizeProductStatus(status) {
+  const value = String(status ?? '')
+    .trim()
+    .toLowerCase()
+
+  if (value === 'reserved' || value === 'sold') {
+    return value
+  }
+
+  return 'available'
+}
+
+function normalizeProduct(rawProduct) {
+  return {
+    ...rawProduct,
+    status: normalizeProductStatus(rawProduct?.status),
+  }
+}
+
+function getStatusMeta(status) {
+  return PRODUCT_STATUS_META[normalizeProductStatus(status)]
 }
 
 export default function App() {
@@ -178,7 +256,12 @@ export default function App() {
   const [activeStory, setActiveStory] = useState(null)
   const [storyOpeningGlitch, setStoryOpeningGlitch] = useState(false)
   const [isMapUnlocked, setIsMapUnlocked] = useState(false)
-  const [products, setProducts] = useState(SEED_PRODUCTS)
+  const [isMapUnlocking, setIsMapUnlocking] = useState(false)
+  const [isMapRelocking, setIsMapRelocking] = useState(false)
+  const [zoomViewer, setZoomViewer] = useState(null)
+  const [zoomScale, setZoomScale] = useState(1)
+  const [zoomOffset, setZoomOffset] = useState({ x: 0, y: 0 })
+  const [products, setProducts] = useState(() => SEED_PRODUCTS.map((product) => normalizeProduct(product)))
 
   const [cartItems, setCartItems] = useState([])
   const [flashCartNav, setFlashCartNav] = useState(false)
@@ -186,7 +269,7 @@ export default function App() {
   const [glitchStoryId, setGlitchStoryId] = useState(null)
 
   const splashStartYRef = useRef(0)
-  const touchStartXRef = useRef(0)
+  const touchStartXRef = useRef(null)
   const lastScreenScrollRef = useRef({ home: 0, cart: 0, about: 0 })
 
   const splashIntroTimerRef = useRef(null)
@@ -195,6 +278,10 @@ export default function App() {
   const storyAutoCloseTimerRef = useRef(null)
   const storyGlitchTimerRef = useRef(null)
   const cartFlashTimerRef = useRef(null)
+  const mapTransitionTimerRef = useRef(null)
+  const zoomPointersRef = useRef(new Map())
+  const zoomDragRef = useRef({ active: false, lastX: 0, lastY: 0 })
+  const zoomPinchRef = useRef({ startDistance: 0, startScale: 1 })
 
   const homeScreenRef = useRef(null)
   const cartScreenRef = useRef(null)
@@ -251,7 +338,7 @@ export default function App() {
           return
         }
 
-        setProducts(payload.products)
+        setProducts(payload.products.map((product) => normalizeProduct(product)))
       } catch (error) {
         if (error?.name !== 'AbortError') {
           console.error('Failed to load products from API:', error)
@@ -290,6 +377,9 @@ export default function App() {
       if (cartFlashTimerRef.current) {
         clearTimeout(cartFlashTimerRef.current)
       }
+      if (mapTransitionTimerRef.current) {
+        clearTimeout(mapTransitionTimerRef.current)
+      }
     }
   }, [])
 
@@ -323,6 +413,21 @@ export default function App() {
     window.addEventListener('keydown', handleEsc)
     return () => window.removeEventListener('keydown', handleEsc)
   }, [activeStory])
+
+  useEffect(() => {
+    if (!zoomViewer) {
+      return undefined
+    }
+
+    const handleEsc = (event) => {
+      if (event.key === 'Escape') {
+        setZoomViewer(null)
+      }
+    }
+
+    window.addEventListener('keydown', handleEsc)
+    return () => window.removeEventListener('keydown', handleEsc)
+  }, [zoomViewer])
 
   const hideSplash = () => {
     if (!showSplash || splashClosing) {
@@ -380,13 +485,22 @@ export default function App() {
     })
   }
 
+  const isTouchFromScrollableZone = (target) =>
+    Boolean(
+      target.closest('.product-gallery') ||
+        target.closest('[data-stories-track]') ||
+        target.closest('[data-map-zone]'),
+    )
+
   const handleMainTouchStart = (event) => {
     const target = event.target
     if (!(target instanceof HTMLElement)) {
+      touchStartXRef.current = null
       return
     }
 
-    if (target.closest('.product-gallery') || target.closest('[data-stories-track]')) {
+    if (isTouchFromScrollableZone(target)) {
+      touchStartXRef.current = null
       return
     }
 
@@ -396,15 +510,18 @@ export default function App() {
   const handleMainTouchEnd = (event) => {
     const target = event.target
     if (!(target instanceof HTMLElement)) {
+      touchStartXRef.current = null
       return
     }
 
-    if (target.closest('.product-gallery') || target.closest('[data-stories-track]')) {
+    if (isTouchFromScrollableZone(target) || touchStartXRef.current === null) {
+      touchStartXRef.current = null
       return
     }
 
     const endX = event.changedTouches[0].screenX
     const distance = endX - touchStartXRef.current
+    touchStartXRef.current = null
 
     if (distance < -60) {
       const nextIndex = Math.min(SCREEN_ORDER.indexOf(currentScreen) + 1, SCREEN_ORDER.length - 1)
@@ -436,6 +553,10 @@ export default function App() {
   const isProductInCart = (productId) => cartProductIds.has(productId)
 
   const toggleCartItem = (product) => {
+    if (normalizeProductStatus(product?.status) !== 'available') {
+      return
+    }
+
     const exists = isProductInCart(product.id)
     setCartItems((prev) =>
       exists ? prev.filter((item) => item.id !== product.id) : [...prev, product],
@@ -512,25 +633,219 @@ export default function App() {
     setActiveProduct(product)
   }
 
+  const clampZoomScale = (value) => Math.min(4, Math.max(1, value))
+
+  const clampZoomOffset = (x, y, scale) => {
+    if (typeof window === 'undefined') {
+      return { x, y }
+    }
+
+    const maxX = ((scale - 1) * window.innerWidth) / 2
+    const maxY = ((scale - 1) * window.innerHeight) / 2
+    return {
+      x: Math.min(maxX, Math.max(-maxX, x)),
+      y: Math.min(maxY, Math.max(-maxY, y)),
+    }
+  }
+
+  const normalizeZoomAfterScale = (nextScale) => {
+    if (nextScale === 1) {
+      setZoomOffset({ x: 0, y: 0 })
+      return
+    }
+
+    setZoomOffset((prev) => clampZoomOffset(prev.x, prev.y, nextScale))
+  }
+
+  const applyZoomScale = (nextScale) => {
+    const clamped = clampZoomScale(nextScale)
+    setZoomScale(clamped)
+    normalizeZoomAfterScale(clamped)
+  }
+
+  const resetZoomRefs = () => {
+    zoomPointersRef.current.clear()
+    zoomDragRef.current = { active: false, lastX: 0, lastY: 0 }
+    zoomPinchRef.current = { startDistance: 0, startScale: 1 }
+  }
+
+  const openImageZoom = (src, alt) => {
+    setZoomViewer({ src, alt })
+    setZoomScale(1)
+    setZoomOffset({ x: 0, y: 0 })
+    resetZoomRefs()
+  }
+
+  const closeImageZoom = () => {
+    setZoomViewer(null)
+    setZoomScale(1)
+    setZoomOffset({ x: 0, y: 0 })
+    resetZoomRefs()
+  }
+
+  const getCurrentPinchDistance = () => {
+    const pointers = [...zoomPointersRef.current.values()]
+    if (pointers.length < 2) {
+      return 0
+    }
+
+    const [left, right] = pointers
+    return Math.hypot(left.x - right.x, left.y - right.y)
+  }
+
+  const handleZoomWheel = (event) => {
+    event.preventDefault()
+    const delta = event.deltaY < 0 ? 0.2 : -0.2
+    setZoomScale((prevScale) => {
+      const nextScale = clampZoomScale(prevScale + delta)
+      normalizeZoomAfterScale(nextScale)
+      return nextScale
+    })
+  }
+
+  const handleZoomPointerDown = (event) => {
+    event.preventDefault()
+    zoomPointersRef.current.set(event.pointerId, { x: event.clientX, y: event.clientY })
+    event.currentTarget.setPointerCapture(event.pointerId)
+
+    if (zoomPointersRef.current.size === 1 && zoomScale > 1) {
+      zoomDragRef.current = { active: true, lastX: event.clientX, lastY: event.clientY }
+      return
+    }
+
+    if (zoomPointersRef.current.size === 2) {
+      zoomDragRef.current = { active: false, lastX: 0, lastY: 0 }
+      zoomPinchRef.current = {
+        startDistance: getCurrentPinchDistance(),
+        startScale: zoomScale,
+      }
+    }
+  }
+
+  const handleZoomPointerMove = (event) => {
+    if (!zoomPointersRef.current.has(event.pointerId)) {
+      return
+    }
+
+    zoomPointersRef.current.set(event.pointerId, { x: event.clientX, y: event.clientY })
+
+    if (zoomPointersRef.current.size >= 2) {
+      const distance = getCurrentPinchDistance()
+      const { startDistance, startScale } = zoomPinchRef.current
+      if (startDistance > 0) {
+        const nextScale = clampZoomScale(startScale * (distance / startDistance))
+        setZoomScale(nextScale)
+        normalizeZoomAfterScale(nextScale)
+      }
+      return
+    }
+
+    if (!zoomDragRef.current.active || zoomScale <= 1) {
+      return
+    }
+
+    const dx = event.clientX - zoomDragRef.current.lastX
+    const dy = event.clientY - zoomDragRef.current.lastY
+    zoomDragRef.current = { active: true, lastX: event.clientX, lastY: event.clientY }
+
+    setZoomOffset((prev) => clampZoomOffset(prev.x + dx, prev.y + dy, zoomScale))
+  }
+
+  const handleZoomPointerUp = (event) => {
+    if (!zoomPointersRef.current.has(event.pointerId)) {
+      return
+    }
+
+    zoomPointersRef.current.delete(event.pointerId)
+
+    if (zoomPointersRef.current.size < 2) {
+      zoomPinchRef.current = { startDistance: 0, startScale: zoomScale }
+    }
+
+    if (zoomPointersRef.current.size === 0) {
+      zoomDragRef.current = { active: false, lastX: 0, lastY: 0 }
+      return
+    }
+
+    const [pointer] = zoomPointersRef.current.values()
+    zoomDragRef.current = {
+      active: zoomScale > 1,
+      lastX: pointer.x,
+      lastY: pointer.y,
+    }
+  }
+
+  const unlockMap = () => {
+    if (isMapUnlocked || isMapUnlocking || isMapRelocking) {
+      return
+    }
+
+    setIsMapUnlocking(true)
+    if (mapTransitionTimerRef.current) {
+      clearTimeout(mapTransitionTimerRef.current)
+    }
+    mapTransitionTimerRef.current = setTimeout(() => {
+      setIsMapUnlocked(true)
+      setIsMapUnlocking(false)
+      mapTransitionTimerRef.current = null
+    }, 220)
+  }
+
+  const lockMap = () => {
+    if (!isMapUnlocked || isMapUnlocking || isMapRelocking) {
+      return
+    }
+
+    setIsMapUnlocked(false)
+    setIsMapRelocking(true)
+    if (mapTransitionTimerRef.current) {
+      clearTimeout(mapTransitionTimerRef.current)
+    }
+    mapTransitionTimerRef.current = setTimeout(() => {
+      setIsMapRelocking(false)
+      mapTransitionTimerRef.current = null
+    }, 220)
+  }
+
+  const handleAboutPointerDown = (event) => {
+    const target = event.target
+    if (!(target instanceof HTMLElement)) {
+      return
+    }
+    if (target.closest('[data-map-zone]')) {
+      return
+    }
+    lockMap()
+  }
+
+  const activeProductStatus = normalizeProductStatus(activeProduct?.status)
+  const activeProductStatusMeta = getStatusMeta(activeProduct?.status)
+  const canPurchaseActiveProduct = activeProductStatus === 'available'
+
   const renderHeader = () => (
-    <header className="pointer-events-none flex justify-between gap-3">
-      <div
-        className="brutal-box pointer-events-auto flex h-16 flex-1 cursor-pointer items-center p-2"
+    <header className="pointer-events-none flex items-stretch justify-between gap-2">
+      <button
+        type="button"
+        className="brutal-box brutal-input pointer-events-auto flex h-24 flex-1 cursor-pointer items-center gap-3 p-3 text-left"
         onClick={() => navigate('home')}
       >
-        <img src={cycleLogoOriginal} alt="Логотип ЦИКЛ" className="mr-3 h-12 w-12 shrink-0 rounded-sm" />
-        <div className="flex flex-col">
-          <span className="heading-font text-2xl leading-none tracking-wider">ЦИКЛ</span>
-          <span className="mt-1 flex items-center bg-black px-1 text-[8px] font-bold leading-tight text-white">
+        <img
+          src={cycleLogoOriginal}
+          alt="Логотип ЦИКЛ"
+          className="h-[66px] w-[66px] shrink-0 rounded-sm border-2 border-black object-cover"
+        />
+        <div className="flex min-w-0 flex-col justify-center">
+          <span className="heading-font text-5xl leading-[0.82] tracking-[0.03em]">ЦИКЛ</span>
+          <span className="mt-1 inline-flex w-max max-w-full items-center bg-black px-1 text-[12px] font-bold leading-tight text-white">
             <MapPin className="mr-1 h-3 w-3" /> ВОРОНЕЖ, Ф.ЭНГЕЛЬСА, 35
           </span>
         </div>
-      </div>
+      </button>
 
-      <div className="brutal-box pointer-events-auto grid h-16 w-[92px] shrink-0 grid-cols-3 grid-rows-2 bg-[#E0E0E0]">
+      <div className="brutal-box pointer-events-auto grid h-24 w-24 shrink-0 grid-cols-2 grid-rows-2 overflow-hidden bg-[#E0E0E0]">
         <a
           href="tel:+79081332760"
-          className="col-span-3 flex items-center justify-center border-b-[3px] border-black active:bg-black active:text-white"
+          className="flex items-center justify-center border-b-[3px] border-r-[3px] border-black active:bg-black active:text-white"
           aria-label="Phone"
         >
           <Phone className="h-5 w-5" />
@@ -539,16 +854,16 @@ export default function App() {
           href="https://t.me/cycle_showroom"
           target="_blank"
           rel="noreferrer"
-          className="flex items-center justify-center border-r-[3px] border-black active:bg-black active:text-white"
+          className="flex items-center justify-center border-b-[3px] border-black active:bg-black active:text-white"
           aria-label="Telegram"
         >
-          <Send className="h-4 w-4" />
+          <Send className="h-5 w-5" />
         </a>
         <a
           href="https://vk.com/cycle_showroom"
           target="_blank"
           rel="noreferrer"
-          className="heading-font flex items-center justify-center border-r-[3px] border-black text-[12px] active:bg-black active:text-white"
+          className="heading-font flex items-center justify-center border-r-[3px] border-black text-[18px] active:bg-black active:text-white"
           aria-label="VK"
         >
           vk
@@ -674,6 +989,9 @@ export default function App() {
 
           <div className="grid grid-cols-2 gap-3 pb-6">
             {filteredProducts.map((product) => {
+              const productStatus = normalizeProductStatus(product.status)
+              const productStatusMeta = getStatusMeta(product.status)
+              const canPurchaseProduct = productStatus === 'available'
               const inCart = isProductInCart(product.id)
 
               return (
@@ -682,16 +1000,20 @@ export default function App() {
                   className="brutal-box group relative flex cursor-pointer flex-col bg-white"
                   onClick={() => openProductPost(product)}
                 >
-                  <span className="absolute right-1 top-1 z-20 border-2 border-black bg-[#E0E0E0] px-1 py-[1px] text-[9px] font-bold uppercase tracking-wide">
-                    пост
-                  </span>
                   <div className="product-gallery">
                     {product.images.map((image) => (
                       <img key={image} src={image} alt={product.name} />
                     ))}
                   </div>
                   <div className="flex flex-1 flex-col p-2">
-                    <h3 className="heading-font mb-2 text-[16px] leading-none uppercase">{product.name}</h3>
+                    <div className="mb-2 flex items-start justify-between gap-2">
+                      <h3 className="heading-font min-w-0 flex-1 text-[16px] leading-none uppercase">
+                        {product.name}
+                      </h3>
+                      <span className={`product-status-badge is-${productStatus}`}>
+                        {productStatusMeta.badge}
+                      </span>
+                    </div>
                     <div className="mt-auto">
                       <div className="mb-1 inline-block border-[2px] border-black px-1 text-[10px] font-bold">
                         РАЗМЕР: {product.size}
@@ -709,13 +1031,19 @@ export default function App() {
                       <button
                         onClick={(event) => {
                           event.stopPropagation()
+                          if (!canPurchaseProduct) {
+                            return
+                          }
                           toggleCartItem(product)
                         }}
-                        className={`brutal-btn w-full py-2 text-xs font-bold transition-colors ${
-                          inCart ? 'brutal-btn-muted' : 'brutal-btn-hot'
+                        disabled={!canPurchaseProduct}
+                        className={`w-full py-2 text-xs font-bold transition-colors ${
+                          canPurchaseProduct
+                            ? `brutal-btn ${inCart ? 'brutal-btn-muted' : 'brutal-btn-hot'}`
+                            : 'brutal-btn brutal-btn-disabled'
                         }`}
                       >
-                        {inCart ? 'В КОРЗИНЕ' : 'ЗАБРАТЬ'}
+                        {canPurchaseProduct ? (inCart ? 'В КОРЗИНЕ' : 'ЗАБРАТЬ') : productStatusMeta.cta}
                       </button>
                     </div>
                   </div>
@@ -784,23 +1112,28 @@ export default function App() {
           className="screen-container screen-panel px-4"
           style={{ transform: currentScreen === 'about' ? 'translateX(0)' : 'translateX(100%)' }}
           onScroll={handleScreenScroll('about')}
+          onPointerDown={handleAboutPointerDown}
         >
           <div className="mb-4">{renderHeader()}</div>
 
           <div className="brutal-box relative mb-6 bg-white p-4">
-            <div className="heading-font absolute -left-3 -top-3 bg-black px-2 py-1 text-white">ДОСЬЕ</div>
-            <h2 className="heading-font mt-2 mb-2 text-4xl uppercase">Манифест</h2>
+            <div className="heading-font absolute -left-3 -top-3 bg-black px-2 py-1 text-white">О НАС</div>
+            <h2 className="heading-font mt-2 mb-2 text-4xl uppercase">О нас</h2>
             <div className="space-y-3 text-sm font-bold leading-relaxed">
               <p className="border-l-4 border-black bg-[#E0E0E0] p-2">
-                {'>'} ЦИКЛ - магазин селективной и винтажной одежды.
+                Ресейл магазин, продвигающий вторичное использование одежды. У нас вы можете найти как
+                винтажные Американских джинсы Levi&apos;s, так и одежду Итальянского бренда Stone Island - в
+                идеальном состоянии. А так же премиум бренды и современную актуальную базу.
               </p>
               <p>
-                {'>'} Мы не просто продаем вещи, мы продлеваем их жизненный цикл. Каждая вещь
-                отобрана вручную.
-              </p>
-              <p>
-                {'>'} В наличии всегда интересные айтемы европейского и американского рынка с
-                историей.
+                Цикл запустил программу по эко-потреблению! Мы принимаем для переработки батарейки,
+                фломастеры, чеки, зубные щетки, винные пробки, крышки от бутылок (двойки), карты, ручки,
+                тюбики. Помимо этого мы принимаем вещи от всех желающих! Модники, ценители лучших брендов
+                и винтажа, теперь мы выкупаем самые интересные вещи, а так же принимаем одежду на
+                реализацию или в дар. У вас будет возможность получить деньги или выбрать что-то интересное
+                в магазине на сумму равную стоимости этой вещи. Мы отдаем не использованную одежду на
+                благотворительность. Если вы хотите освободить свой гардероб - теперь вы знаете, как это
+                можно сделать.
               </p>
             </div>
           </div>
@@ -822,12 +1155,13 @@ export default function App() {
 
             <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2" data-stories-track>
               {YANDEX_INTERIOR_PHOTOS.map((photo, index) => (
-                <a
+                <button
+                  type="button"
                   key={photo}
-                  href={YANDEX_ORG_GALLERY_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="relative h-72 w-[84%] shrink-0 snap-start overflow-hidden border-[3px] border-black"
+                  className="image-zoom-trigger relative h-72 w-[84%] shrink-0 snap-start overflow-hidden border-[3px] border-black"
+                  onClick={() =>
+                    openImageZoom(photo, `Интерьер ЦИКЛ — фото ${index + 1} из Яндекс Карт`)
+                  }
                 >
                   <img
                     src={photo}
@@ -835,21 +1169,21 @@ export default function App() {
                     className="h-full w-full object-cover"
                     loading="lazy"
                   />
-                </a>
+                </button>
               ))}
             </div>
           </div>
 
           <div className="brutal-box mb-6 bg-white p-2">
             <h3 className="heading-font mb-2 inline-block bg-black px-2 text-2xl text-white">ГЕОПОЗИЦИЯ</h3>
-            <div className="relative h-[320px] overflow-hidden border-[3px] border-black">
+            <div className="relative h-[320px] overflow-hidden border-[3px] border-black" data-map-zone>
               <iframe
                 src={YANDEX_MAP_WIDGET_URL}
                 title="Яндекс Карта — ЦИКЛ"
                 width="100%"
                 height="100%"
                 className={`h-full w-full transition-all duration-500 ${
-                  isMapUnlocked ? 'pointer-events-auto' : 'pointer-events-none grayscale'
+                  isMapUnlocked ? 'pointer-events-auto map-frame-active' : 'pointer-events-none map-frame-inactive'
                 }`}
                 frameBorder="0"
                 allowFullScreen
@@ -857,12 +1191,13 @@ export default function App() {
               {!isMapUnlocked && (
                 <button
                   type="button"
-                  className="map-lock-overlay group"
-                  onClick={() => setIsMapUnlocked(true)}
+                  className={`map-lock-overlay brutal-input group ${
+                    isMapUnlocking || isMapRelocking ? 'glitch-active' : ''
+                  }`}
+                  onClick={unlockMap}
                   aria-label="Активировать карту"
                 >
-                  <span className="map-lock-badge">Нажми, чтобы активировать карту</span>
-                  <span className="map-lock-hint">после нажатия можно двигать и масштабировать</span>
+                  <span className="map-lock-badge">Нажмите для управления</span>
                 </button>
               )}
             </div>
@@ -906,17 +1241,42 @@ export default function App() {
             </div>
           </div>
 
-          <div className="brutal-box overflow-hidden bg-white p-1">
-            <iframe
-              src={YANDEX_REVIEWS_WIDGET_URL}
-              title="Отзывы Яндекс Карт — ЦИКЛ"
-              width="100%"
-              height="760"
-              frameBorder="0"
-            />
-          </div>
-          <div className="mt-2 px-1 text-[10px] font-bold uppercase text-black/70">
-            Реальные отзывы загружаются из Яндекс Карт. Кнопки выше ведут на страницу отзывов и форму добавления.
+          <div className="brutal-box mb-4 bg-white p-2">
+            <div className="mb-2 flex items-center justify-between border-b-[3px] border-black pb-2">
+              <h3 className="heading-font inline-block bg-black px-2 text-2xl text-white">ОТЗЫВЫ</h3>
+              <a
+                href={YANDEX_ORG_REVIEWS_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="brutal-box brutal-input inline-flex items-center bg-[#E0E0E0] px-2 py-1 text-[10px] font-bold uppercase"
+              >
+                Яндекс Карты
+              </a>
+            </div>
+
+            <div className="reviews-feed max-h-[520px] overflow-y-auto pr-1">
+              {FEATURED_REVIEWS.map((review) => (
+                <article key={review.id} className="brutal-box mb-3 bg-[var(--bg-paper)] p-3 last:mb-0">
+                  <div className="flex gap-3">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center border-[3px] border-black bg-black text-lg font-bold text-white">
+                      {review.name.charAt(0)}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-start justify-between gap-x-2 gap-y-1">
+                        <p className="heading-font text-xl leading-none uppercase">{review.name}</p>
+                        <p className="text-[10px] font-bold uppercase text-black/70">{review.date}</p>
+                      </div>
+                      <p className="mt-1 text-[14px] leading-none tracking-[0.15em] text-[var(--soviet-red)]">
+                        {'★'.repeat(review.rating)}
+                      </p>
+                      <p className="mt-2 border-l-[3px] border-black bg-[#e7e2db] p-2 text-[12px] font-bold uppercase leading-snug">
+                        {review.text}
+                      </p>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
 
           <footer className="brutal-box adm-footer mt-6 mb-16 bg-white p-4">
@@ -994,6 +1354,9 @@ export default function App() {
                 <p className="heading-font text-[18px] leading-none tracking-wide">КАРТОЧКА ТОВАРА</p>
                 <p className="truncate text-[10px] font-bold tracking-wide text-white/80">ЦИКЛ / АРХИВ ШОУРУМА</p>
               </div>
+              <span className={`product-status-badge is-${activeProductStatus}`}>
+                {activeProductStatusMeta.badge}
+              </span>
               <button
                 className="flex h-8 w-8 items-center justify-center border-2 border-white bg-black text-white"
                 onClick={() => setActiveProduct(null)}
@@ -1007,12 +1370,19 @@ export default function App() {
               <img
                 src={activeProduct.images[0]}
                 alt={activeProduct.name}
-                className="aspect-[3/4] w-full object-cover"
+                className="image-zoom-trigger aspect-[3/4] w-full object-cover"
+                onClick={() => openImageZoom(activeProduct.images[0], activeProduct.name)}
               />
               <img
                 src={activeProduct.images[1] ?? activeProduct.images[0]}
                 alt={`${activeProduct.name} detail`}
-                className="aspect-[3/4] w-full object-cover"
+                className="image-zoom-trigger aspect-[3/4] w-full object-cover"
+                onClick={() =>
+                  openImageZoom(
+                    activeProduct.images[1] ?? activeProduct.images[0],
+                    `${activeProduct.name} detail`,
+                  )
+                }
               />
             </div>
 
@@ -1028,27 +1398,46 @@ export default function App() {
                 <p>- Размер: {activeProduct.size}</p>
                 <p>
                   - Цена: {formatRub(activeProduct.price)}
-                  {activeProduct.oldPrice ? ' (УЦЕНКА)' : ''} (БРОНЬ)
+                  {activeProduct.oldPrice ? ' (УЦЕНКА)' : ''}
                 </p>
+                <p>- Статус: {activeProductStatusMeta.detail}</p>
               </div>
 
-              <a
-                href={ORDER_TG_LINK}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-4 inline-flex items-center border-b-2 border-black text-[13px] font-bold uppercase text-black"
-              >
-                Для заказа к @cycle_order
-              </a>
+              {canPurchaseActiveProduct ? (
+                <a
+                  href={ORDER_TG_LINK}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-4 inline-flex items-center border-b-2 border-black text-[13px] font-bold uppercase text-black"
+                >
+                  Для заказа к @cycle_order
+                </a>
+              ) : (
+                <p className="product-status-note mt-4">
+                  СТАТУС: {activeProductStatusMeta.detail}. ПОКУПКА НЕДОСТУПНА.
+                </p>
+              )}
 
               <div className="mt-4 flex gap-2">
                 <button
-                  className={`brutal-btn flex-1 py-2 text-xs font-bold ${
-                    isProductInCart(activeProduct.id) ? 'brutal-btn-muted' : 'brutal-btn-hot'
+                  className={`flex-1 py-2 text-xs font-bold ${
+                    canPurchaseActiveProduct
+                      ? `brutal-btn ${isProductInCart(activeProduct.id) ? 'brutal-btn-muted' : 'brutal-btn-hot'}`
+                      : 'brutal-btn brutal-btn-disabled'
                   }`}
-                  onClick={() => toggleCartItem(activeProduct)}
+                  disabled={!canPurchaseActiveProduct}
+                  onClick={() => {
+                    if (!canPurchaseActiveProduct) {
+                      return
+                    }
+                    toggleCartItem(activeProduct)
+                  }}
                 >
-                  {isProductInCart(activeProduct.id) ? 'УБРАТЬ ИЗ КОРЗИНЫ' : 'ЗАБРАТЬ'}
+                  {canPurchaseActiveProduct
+                    ? isProductInCart(activeProduct.id)
+                      ? 'УБРАТЬ ИЗ КОРЗИНЫ'
+                      : 'ЗАБРАТЬ'
+                    : activeProductStatusMeta.cta}
                 </button>
                 <button
                   className="brutal-box brutal-input w-[92px] bg-[#E0E0E0] px-2 py-2 text-[11px] font-bold"
@@ -1063,6 +1452,69 @@ export default function App() {
               </div>
             </div>
           </article>
+        </div>
+      )}
+
+      {zoomViewer && (
+        <div className="image-zoom-overlay" onClick={closeImageZoom}>
+          <button
+            type="button"
+            className="image-zoom-close brutal-btn"
+            aria-label="Закрыть зум"
+            onClick={closeImageZoom}
+          >
+            <X className="h-5 w-5" />
+          </button>
+
+          <div
+            className="image-zoom-toolbar brutal-box bg-white p-1"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="brutal-box brutal-input flex h-10 w-10 items-center justify-center bg-[#E0E0E0]"
+              onClick={() => applyZoomScale(zoomScale - 0.3)}
+              aria-label="Уменьшить"
+            >
+              <Minus className="h-4 w-4" />
+            </button>
+            <button
+              type="button"
+              className="brutal-box brutal-input min-w-[74px] bg-black px-2 text-xs font-bold text-white"
+              onClick={() => applyZoomScale(1)}
+            >
+              {Math.round(zoomScale * 100)}%
+            </button>
+            <button
+              type="button"
+              className="brutal-box brutal-input flex h-10 w-10 items-center justify-center bg-[#E0E0E0]"
+              onClick={() => applyZoomScale(zoomScale + 0.3)}
+              aria-label="Увеличить"
+            >
+              <Plus className="h-4 w-4" />
+            </button>
+          </div>
+
+          <div
+            className="image-zoom-stage"
+            onClick={(event) => event.stopPropagation()}
+            onWheel={handleZoomWheel}
+            onPointerDown={handleZoomPointerDown}
+            onPointerMove={handleZoomPointerMove}
+            onPointerUp={handleZoomPointerUp}
+            onPointerCancel={handleZoomPointerUp}
+            onPointerLeave={handleZoomPointerUp}
+          >
+            <img
+              src={zoomViewer.src}
+              alt={zoomViewer.alt}
+              className="image-zoom-image"
+              draggable="false"
+              style={{
+                transform: `translate3d(${zoomOffset.x}px, ${zoomOffset.y}px, 0) scale(${zoomScale})`,
+              }}
+            />
+          </div>
         </div>
       )}
 
@@ -1134,7 +1586,7 @@ export default function App() {
             <button
               key={category.id}
               className={`brutal-box brutal-input flex items-center bg-white p-3 text-left text-sm font-bold ${
-                selectedCategory === category.id ? 'bg-black text-white' : ''
+                selectedCategory === category.id ? 'bg-[var(--soviet-red)] text-white' : ''
               }`}
               onClick={() => {
                 setSelectedCategory(category.id)

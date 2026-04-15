@@ -5,6 +5,7 @@ import dotenv from 'dotenv'
 import express from 'express'
 import { createProduct, readProducts } from './products-store.js'
 import { startTelegramBot } from './telegram-bot.js'
+import { startChannelSync } from './channel-sync.js'
 
 dotenv.config()
 
@@ -17,6 +18,7 @@ const UPLOADS_DIR = path.resolve(__dirname, '../uploads')
 const DIST_DIR = path.resolve(__dirname, '../dist')
 
 const app = express()
+let channelSyncController = null
 
 app.use(express.json({ limit: '10mb' }))
 app.use('/uploads', express.static(UPLOADS_DIR))
@@ -96,8 +98,25 @@ const server = app.listen(PORT, async () => {
   } catch (error) {
     console.error('[bot] startup failed, API keeps running:', error)
   }
+
+  try {
+    channelSyncController = await startChannelSync()
+  } catch (error) {
+    console.error('[channel-sync] startup failed, API keeps running:', error)
+  }
 })
 
 server.on('error', (error) => {
   console.error('[api] server error:', error)
 })
+
+function shutdownChannelSync() {
+  try {
+    channelSyncController?.stop?.()
+  } catch (error) {
+    console.error('[channel-sync] shutdown error:', error)
+  }
+}
+
+process.once('SIGINT', shutdownChannelSync)
+process.once('SIGTERM', shutdownChannelSync)

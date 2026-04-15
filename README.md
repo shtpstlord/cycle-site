@@ -76,3 +76,23 @@ API: `http://localhost:3001/api/products`
 
 - Для Telegram Web App нужен публичный `https` URL.
 - Если бот сохраняет фото, `PUBLIC_BASE_URL` должен быть доступен извне (чтобы фронт видел `/uploads/...`).
+
+## Telegram Channel Auto Sync
+
+Backend can automatically sync products from public channel feed `https://t.me/s/<channel>`.
+
+Environment variables:
+
+- `TG_CHANNEL_SYNC_ENABLED=true` - enable/disable sync loop
+- `TG_CHANNEL_USERNAME=cycle_showroom` - channel username or URL
+- `TG_CHANNEL_SYNC_INTERVAL_MS=300000` - polling interval
+- `TG_CHANNEL_SYNC_LIMIT=40` - max posts to process per sync run
+- `TG_CHANNEL_SYNC_MAX_PAGES=6` - how many feed pages (`?before=`) to scan
+- `TG_CHANNEL_SYNC_TIMEOUT_MS=15000` - timeout for Telegram HTTP requests
+
+Sync behavior:
+
+- creates cards for new channel posts with product data,
+- updates existing cards by `sourceChannel + sourcePostId`,
+- tracks status changes (`available`, `reserved`, `sold`),
+- updates price / old price when edited in Telegram post.

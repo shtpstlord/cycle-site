@@ -19,18 +19,22 @@ function cleanLine(value) {
     .trim()
 }
 
+function hasKeyword(source, expression) {
+  return expression.test(String(source ?? '').toLowerCase())
+}
+
 export function inferCategory(source) {
   const text = String(source ?? '').toLowerCase()
 
-  if (/кроссов|кед|ботин|сапог|туфл|sneaker|shoe/.test(text)) {
+  if (hasKeyword(text, /(кроссов|кед|ботин|сапог|туфл|shoe|sneaker)/i)) {
     return 'shoes'
   }
 
-  if (/брюк|джинс|карго|чинос|штаны|pants|jeans/.test(text)) {
+  if (hasKeyword(text, /(брюк|джинс|карго|чинос|штаны|pants|jeans)/i)) {
     return 'pants'
   }
 
-  if (/куртк|пухов|парка|пальто|ветровк|бомбер|софтшелл|outerwear|coat/.test(text)) {
+  if (hasKeyword(text, /(куртк|пухов|парка|пальт|ветровк|бомбер|софтшел|jacket|outerwear|coat)/i)) {
     return 'outerwear'
   }
 
@@ -38,10 +42,37 @@ export function inferCategory(source) {
 }
 
 function extractSize(lines) {
+  const looksLikeSize = (value) => {
+    const normalized = cleanLine(value).toUpperCase()
+    if (!normalized) {
+      return false
+    }
+
+    return /^(?:ONE SIZE|XXXL|XXL|XL|L|M|S|XS|W\d{2}|L\d{2}|\d{2,3}(?:\s*[-/]\s*\d{2,3})?|\d{2,3}\([A-Z]+\))$/i.test(
+      normalized,
+    )
+  }
+
   for (const line of lines) {
-    const match = line.match(/размер\s*[:-]\s*(.+)$/i)
-    if (match?.[1]) {
-      return cleanLine(match[1])
+    const normalized = cleanLine(line)
+    const explicit = normalized.match(/\b(?:размер|size)\s*[:-–—]?\s*(.+)$/i)
+    if (explicit?.[1]) {
+      const value = cleanLine(explicit[1])
+      if (looksLikeSize(value)) {
+        return value
+      }
+    }
+
+    const keyValue = normalized.match(/^[-•]?\s*[^:]{2,20}:\s*([A-Za-zА-Яа-я0-9()/ -]{1,16})$/u)
+    if (keyValue?.[1] && looksLikeSize(keyValue[1])) {
+      return cleanLine(keyValue[1])
+    }
+  }
+
+  for (const line of lines) {
+    const loose = line.match(/\b(XXXL|XXL|XL|L|M|S|XS|ONE SIZE|\d{2,3}(?:\s*[-/]\s*\d{2,3})?)\b/i)
+    if (loose?.[1] && looksLikeSize(loose[1])) {
+      return cleanLine(loose[1].toUpperCase())
     }
   }
 
@@ -49,17 +80,8 @@ function extractSize(lines) {
 }
 
 function extractPrice(rawText, lines) {
-  const joined = [rawText, ...lines].join('\n')
-
-  const ranged = joined.match(/(\d[\d\s.,]*)\s*(?:->|=>|→|\/)\s*(\d[\d\s.,]*)/i)
-  if (ranged) {
-    const oldPrice = toRubNumber(ranged[1])
-    const price = toRubNumber(ranged[2])
-    return { price, oldPrice }
-  }
-
   for (const line of lines) {
-    if (!/цена/i.test(line)) {
+    if (!/\b(?:цена|price)\b/i.test(line)) {
       continue
     }
 
@@ -78,7 +100,33 @@ function extractPrice(rawText, lines) {
     }
   }
 
-  const fallback = joined.match(/(\d[\d\s.,]*)\s*(?:₽|руб|р\b)/i)
+  const ranged = rawText.match(/(\d[\d\s.,]*)\s*(?:->|=>|→)\s*(\d[\d\s.,]*)/i)
+  if (ranged) {
+    return {
+      oldPrice: toRubNumber(ranged[1]),
+      price: toRubNumber(ranged[2]),
+    }
+  }
+
+  const allWithCurrency = [...rawText.matchAll(/(\d[\d\s.,]*)\s*(?:₽|р\b|руб)/gi)]
+    .map((match) => toRubNumber(match[1]))
+    .filter((value) => Number.isFinite(value))
+
+  if (allWithCurrency.length >= 2) {
+    return {
+      oldPrice: allWithCurrency[0],
+      price: allWithCurrency[allWithCurrency.length - 1],
+    }
+  }
+
+  if (allWithCurrency.length === 1) {
+    return {
+      oldPrice: null,
+      price: allWithCurrency[0],
+    }
+  }
+
+  const fallback = rawText.match(/(?:цена|price)[^\d]{0,16}(\d[\d\s.,]*)/i)
   return {
     oldPrice: null,
     price: fallback ? toRubNumber(fallback[1]) : null,
@@ -95,7 +143,7 @@ function extractQuote(lines) {
       return false
     }
 
-    if (/размер|цена|для заказа/i.test(line)) {
+    if (/\b(?:размер|size|цена|price|для заказа|order|бронь|продано)\b/i.test(line)) {
       return false
     }
 
@@ -109,6 +157,10 @@ function extractQuote(lines) {
   return candidate.replace(/^[«"“]/, '').replace(/[»"”]$/, '').trim()
 }
 
+function isMetaLine(line) {
+  return /^(?:-|•)?\s*(?:размер|size|цена|price)\s*[:-]/i.test(line)
+}
+
 export function parseTelegramPost(rawText) {
   const source = String(rawText ?? '').replace(/\r/g, '\n')
   const lines = source
@@ -120,11 +172,11 @@ export function parseTelegramPost(rawText) {
     return null
   }
 
-  const nonMetaLines = lines.filter((line) => !/^(?:-|•)?\s*(размер|цена)\s*[:-]/i.test(line))
+  const nonMetaLines = lines.filter((line) => !isMetaLine(line))
 
   const name = nonMetaLines[0] || 'Без названия'
   let subtitle = nonMetaLines[1] || ''
-  if (/для заказа|размер|цена/i.test(subtitle)) {
+  if (/\b(?:для заказа|размер|size|цена|price|бронь|продано)\b/i.test(subtitle)) {
     subtitle = ''
   }
 
