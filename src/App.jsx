@@ -1,5 +1,6 @@
 ﻿import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
+  Archive,
   ArrowDown,
   ChevronDown,
   Ghost,
@@ -49,22 +50,23 @@ const STORIES = [
   },
 ]
 
-const CATEGORIES = [
-  { id: 'all', label: 'ВСЕ КАТЕГОРИИ' },
-  { id: 'tops', label: 'ФУТБОЛКИ / ПОЛО' },
-  { id: 'pants', label: 'ШТАНЫ / ДЖИНСЫ' },
-  { id: 'outerwear', label: 'ВЕРХНЯЯ ОДЕЖДА' },
-  { id: 'shoes', label: 'ОБУВЬ' },
-]
-
-const SIZES = ['S', 'M', 'L', 'XL', 'XXL', 'ONE SIZE']
-
 const SORT_OPTIONS = [
   { id: 'new', label: 'СОРТ: ПО НОВИЗНЕ' },
   { id: 'price-asc', label: 'СОРТ: ЦЕНА ↑' },
   { id: 'price-desc', label: 'СОРТ: ЦЕНА ↓' },
   { id: 'discount', label: 'СОРТ: СО СКИДКОЙ' },
 ]
+const CATEGORY_LABELS = {
+  tops: 'ФУТБОЛКИ / ПОЛО',
+  pants: 'ШТАНЫ / ДЖИНСЫ',
+  outerwear: 'ВЕРХНЯЯ ОДЕЖДА',
+  shoes: 'ОБУВЬ',
+  accessories: 'АКСЕССУАРЫ',
+  knitwear: 'ТРИКОТАЖ',
+  denim: 'ДЕНИМ',
+}
+const SIZE_PRIORITY = ['XXXS', 'XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'ONE SIZE']
+const ORDER_LINE_REGEX = /для\s+заказа\s+к\s*@cycle_order/i
 
 const SEED_PRODUCTS = [
   {
@@ -187,7 +189,6 @@ const FEATURED_REVIEWS = [
     text: 'Удобно, что сразу видно размеры и актуальные цены. Ребята на месте помогают быстро найти нужное.',
   },
 ]
-const ORDER_TG_LINK = 'https://t.me/cycle_order'
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '')
 const PRODUCT_STATUS_META = {
   available: {
@@ -230,9 +231,118 @@ function normalizeProductStatus(status) {
   return 'available'
 }
 
+function normalizeCategoryId(category) {
+  return String(category ?? '')
+    .trim()
+    .toLowerCase()
+}
+
+function formatCategoryLabel(categoryId) {
+  if (!categoryId) {
+    return 'БЕЗ КАТЕГОРИИ'
+  }
+  return (
+    CATEGORY_LABELS[categoryId] ??
+    categoryId
+      .replace(/[_-]+/g, ' ')
+      .trim()
+      .toUpperCase()
+  )
+}
+
+function getCategoryIcon(categoryId) {
+  const normalized = normalizeCategoryId(categoryId)
+
+  if (normalized === 'pants' || normalized === 'denim') {
+    return Ruler
+  }
+
+  if (normalized === 'shoes' || normalized === 'accessories') {
+    return ShoppingBag
+  }
+
+  if (normalized === 'outerwear') {
+    return Archive
+  }
+
+  return Shirt
+}
+
+function sanitizeProductText(value) {
+  return String(value ?? '')
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0 && !ORDER_LINE_REGEX.test(line))
+    .join('\n')
+    .trim()
+}
+
+function splitProductSizes(sizeValue) {
+  const normalized = String(sizeValue ?? '')
+    .trim()
+    .toUpperCase()
+    .replace(/\s+/g, ' ')
+
+  if (!normalized) {
+    return []
+  }
+
+  const sizeParts = normalized
+    .split(/\s*,\s*|\s*\|\s*/)
+    .map((part) => part.trim())
+    .filter(Boolean)
+
+  const expanded = new Set(sizeParts.length > 0 ? sizeParts : [normalized])
+  ;[...expanded].forEach((token) => {
+    const parenthesisMatches = token.match(/\(([^)]+)\)/g) ?? []
+    parenthesisMatches.forEach((group) => {
+      const inside = group.slice(1, -1).trim()
+      if (inside) {
+        expanded.add(inside)
+      }
+    })
+  })
+
+  return [...expanded]
+}
+
+function compareSizeTokens(leftValue, rightValue) {
+  const left = String(leftValue).trim().toUpperCase()
+  const right = String(rightValue).trim().toUpperCase()
+
+  const leftPriority = SIZE_PRIORITY.indexOf(left)
+  const rightPriority = SIZE_PRIORITY.indexOf(right)
+
+  if (leftPriority !== -1 || rightPriority !== -1) {
+    if (leftPriority === -1) {
+      return 1
+    }
+    if (rightPriority === -1) {
+      return -1
+    }
+    return leftPriority - rightPriority
+  }
+
+  return left.localeCompare(right, 'ru-RU', { numeric: true })
+}
+
 function normalizeProduct(rawProduct) {
+  const normalizedSize = String(rawProduct?.size ?? '')
+    .trim()
+    .toUpperCase()
+
+  const normalizedImages = Array.isArray(rawProduct?.images)
+    ? rawProduct.images.filter((image) => typeof image === 'string' && image.trim())
+    : []
+
   return {
     ...rawProduct,
+    category: normalizeCategoryId(rawProduct?.category),
+    size: normalizedSize || 'ONE SIZE',
+    subtitle: sanitizeProductText(rawProduct?.subtitle),
+    quote: sanitizeProductText(rawProduct?.quote),
+    sourceText: sanitizeProductText(rawProduct?.sourceText),
+    images: normalizedImages.length > 0 ? normalizedImages : [cycleLogoOriginal],
     status: normalizeProductStatus(rawProduct?.status),
   }
 }
@@ -252,6 +362,7 @@ export default function App() {
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [selectedSize, setSelectedSize] = useState('all')
   const [sortOrder, setSortOrder] = useState('new')
+  const [catalogMode, setCatalogMode] = useState('catalog')
   const [activeProduct, setActiveProduct] = useState(null)
   const [activeStory, setActiveStory] = useState(null)
   const [storyOpeningGlitch, setStoryOpeningGlitch] = useState(false)
@@ -282,6 +393,14 @@ export default function App() {
   const zoomPointersRef = useRef(new Map())
   const zoomDragRef = useRef({ active: false, lastX: 0, lastY: 0 })
   const zoomPinchRef = useRef({ startDistance: 0, startScale: 1 })
+  const galleryGestureRef = useRef({
+    productId: null,
+    pointerId: null,
+    startX: 0,
+    startY: 0,
+    moved: false,
+  })
+  const suppressProductOpenRef = useRef(new Set())
 
   const homeScreenRef = useRef(null)
   const cartScreenRef = useRef(null)
@@ -292,12 +411,66 @@ export default function App() {
     [cartItems],
   )
   const cartProductIds = useMemo(() => new Set(cartItems.map((item) => item.id)), [cartItems])
+  const scopedProducts = useMemo(() => {
+    if (catalogMode === 'archive') {
+      return products.filter((product) => normalizeProductStatus(product.status) === 'sold')
+    }
+    return products.filter((product) => normalizeProductStatus(product.status) !== 'sold')
+  }, [products, catalogMode])
+
+  const categoryOptions = useMemo(() => {
+    const seen = new Set()
+    scopedProducts.forEach((product) => {
+      const categoryId = normalizeCategoryId(product.category)
+      if (categoryId) {
+        seen.add(categoryId)
+      }
+    })
+
+    return [
+      { id: 'all', label: 'ВСЕ КАТЕГОРИИ', Icon: Shirt },
+      ...[...seen].sort((left, right) => left.localeCompare(right, 'ru-RU')).map((categoryId) => ({
+        id: categoryId,
+        label: formatCategoryLabel(categoryId),
+        Icon: getCategoryIcon(categoryId),
+      })),
+    ]
+  }, [scopedProducts])
+
+  const normalizedSelectedCategory =
+    selectedCategory === 'all' || categoryOptions.some((category) => category.id === selectedCategory)
+      ? selectedCategory
+      : 'all'
+
+  const sizeOptions = useMemo(() => {
+    const seen = new Set()
+    scopedProducts.forEach((product) => {
+      if (normalizedSelectedCategory !== 'all' && product.category !== normalizedSelectedCategory) {
+        return
+      }
+      splitProductSizes(product.size).forEach((sizeToken) => {
+        if (sizeToken) {
+          seen.add(sizeToken)
+        }
+      })
+    })
+
+    return [...seen].sort(compareSizeTokens)
+  }, [scopedProducts, normalizedSelectedCategory])
+
+  const normalizedSelectedSize =
+    selectedSize === 'all' || sizeOptions.includes(selectedSize) ? selectedSize : 'all'
+  const selectedCategoryOption =
+    categoryOptions.find((category) => category.id === normalizedSelectedCategory) ?? categoryOptions[0]
+  const SelectedCategoryIcon = selectedCategoryOption?.Icon ?? Shirt
 
   const filteredProducts = useMemo(() => {
-    const next = products.filter((product) => {
-      const categoryMatch = selectedCategory === 'all' || product.category === selectedCategory
-      const sizeValue = String(product.size ?? '').toUpperCase()
-      const sizeMatch = selectedSize === 'all' || sizeValue.includes(selectedSize)
+    const next = scopedProducts.filter((product) => {
+      const categoryMatch =
+        normalizedSelectedCategory === 'all' || product.category === normalizedSelectedCategory
+      const sizeMatch =
+        normalizedSelectedSize === 'all' ||
+        splitProductSizes(product.size).some((sizeToken) => sizeToken === normalizedSelectedSize)
       return categoryMatch && sizeMatch
     })
 
@@ -316,10 +489,11 @@ export default function App() {
     }
 
     return next
-  }, [products, selectedCategory, selectedSize, sortOrder])
+  }, [scopedProducts, normalizedSelectedCategory, normalizedSelectedSize, sortOrder])
 
   const currentSort =
     SORT_OPTIONS.find((option) => option.id === sortOrder) ?? SORT_OPTIONS[0]
+  const catalogModeLabel = catalogMode === 'archive' ? 'АРХИВ' : 'КАТАЛОГ'
 
   useEffect(() => {
     const abortController = new AbortController()
@@ -623,13 +797,72 @@ export default function App() {
     }, 5800)
   }
 
-  const cycleSort = () => {
-    const currentIndex = SORT_OPTIONS.findIndex((option) => option.id === sortOrder)
-    const nextIndex = (currentIndex + 1) % SORT_OPTIONS.length
-    setSortOrder(SORT_OPTIONS[nextIndex].id)
+  const setSuppressProductOpen = (productId) => {
+    suppressProductOpenRef.current.add(productId)
+  }
+
+  const consumeSuppressProductOpen = (productId) => {
+    if (!suppressProductOpenRef.current.has(productId)) {
+      return false
+    }
+    suppressProductOpenRef.current.delete(productId)
+    return true
+  }
+
+  const handleGalleryPointerDown = (event, productId) => {
+    galleryGestureRef.current = {
+      productId,
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      moved: false,
+    }
+  }
+
+  const handleGalleryPointerMove = (event, productId) => {
+    const gesture = galleryGestureRef.current
+    if (gesture.productId !== productId || gesture.pointerId !== event.pointerId) {
+      return
+    }
+
+    const deltaX = event.clientX - gesture.startX
+    const deltaY = event.clientY - gesture.startY
+    if (Math.abs(deltaX) > 12 && Math.abs(deltaX) > Math.abs(deltaY)) {
+      gesture.moved = true
+    }
+  }
+
+  const handleGalleryPointerEnd = (event, productId) => {
+    const gesture = galleryGestureRef.current
+    if (gesture.productId !== productId || gesture.pointerId !== event.pointerId) {
+      return
+    }
+
+    if (gesture.moved) {
+      setSuppressProductOpen(productId)
+    }
+
+    galleryGestureRef.current = {
+      productId: null,
+      pointerId: null,
+      startX: 0,
+      startY: 0,
+      moved: false,
+    }
+  }
+
+  const handleGalleryClick = (event, productId) => {
+    if (!consumeSuppressProductOpen(productId)) {
+      return
+    }
+    event.preventDefault()
+    event.stopPropagation()
   }
 
   const openProductPost = (product) => {
+    if (consumeSuppressProductOpen(product.id)) {
+      return
+    }
     setActiveProduct(product)
   }
 
@@ -821,6 +1054,8 @@ export default function App() {
   const activeProductStatus = normalizeProductStatus(activeProduct?.status)
   const activeProductStatusMeta = getStatusMeta(activeProduct?.status)
   const canPurchaseActiveProduct = activeProductStatus === 'available'
+  const activeProductSubtitle = activeProduct?.subtitle || activeProduct?.sourceText || ''
+  const activeProductQuote = activeProduct?.quote || ''
 
   const renderHeader = () => (
     <header className="pointer-events-none flex items-stretch justify-between gap-2">
@@ -940,7 +1175,7 @@ export default function App() {
                   className="brutal-box brutal-input flex flex-1 items-center justify-center py-2 text-[11px] font-bold"
                   onClick={() => toggleSheet('category')}
                 >
-                  <Shirt className="mr-2 h-4 w-4" /> КАТЕГОРИИ
+                  <SelectedCategoryIcon className="mr-2 h-4 w-4" /> КАТЕГОРИИ
                 </button>
                 <button
                   className="brutal-box brutal-input flex flex-1 items-center justify-center py-2 text-[11px] font-bold"
@@ -951,9 +1186,9 @@ export default function App() {
               </div>
               <button
                 className="brutal-box brutal-input flex w-full items-center justify-between bg-[#E0E0E0] px-3 py-2 text-[11px] font-bold"
-                onClick={cycleSort}
+                onClick={() => toggleSheet('sort')}
               >
-                <span>{currentSort.label}</span>
+                <span>{`${catalogModeLabel} • ${currentSort.label}`}</span>
                 <ChevronDown className="h-4 w-4" />
               </button>
             </div>
@@ -988,11 +1223,20 @@ export default function App() {
           </div>
 
           <div className="grid grid-cols-2 gap-3 pb-6">
+            {filteredProducts.length === 0 && (
+              <div className="brutal-box col-span-2 border-dashed bg-white p-5 text-center text-sm font-bold uppercase">
+                {catalogMode === 'archive'
+                  ? 'В архиве пока нет проданных вещей'
+                  : 'По выбранным фильтрам ничего не найдено'}
+              </div>
+            )}
+
             {filteredProducts.map((product) => {
               const productStatus = normalizeProductStatus(product.status)
               const productStatusMeta = getStatusMeta(product.status)
               const canPurchaseProduct = productStatus === 'available'
               const inCart = isProductInCart(product.id)
+              const productImages = product.images.length > 0 ? product.images : [cycleLogoOriginal]
 
               return (
                 <div
@@ -1000,9 +1244,24 @@ export default function App() {
                   className="brutal-box group relative flex cursor-pointer flex-col bg-white"
                   onClick={() => openProductPost(product)}
                 >
-                  <div className="product-gallery">
-                    {product.images.map((image) => (
-                      <img key={image} src={image} alt={product.name} />
+                  <div
+                    className="product-gallery"
+                    onPointerDown={(event) => handleGalleryPointerDown(event, product.id)}
+                    onPointerMove={(event) => handleGalleryPointerMove(event, product.id)}
+                    onPointerUp={(event) => handleGalleryPointerEnd(event, product.id)}
+                    onPointerCancel={(event) => handleGalleryPointerEnd(event, product.id)}
+                    onPointerLeave={(event) => handleGalleryPointerEnd(event, product.id)}
+                    onClick={(event) => handleGalleryClick(event, product.id)}
+                  >
+                    {productImages.map((image, index) => (
+                      <div key={`${product.id}-${index}-${image}`} className="product-gallery-item">
+                        <img src={image} alt={`${product.name} • фото ${index + 1}`} loading="lazy" />
+                        {productImages.length > 1 && (
+                          <span className="product-gallery-counter">
+                            {index + 1}/{productImages.length}
+                          </span>
+                        )}
+                      </div>
                     ))}
                   </div>
                   <div className="flex flex-1 flex-col p-2">
@@ -1388,11 +1647,13 @@ export default function App() {
 
             <div className="bg-[var(--bg-paper)] p-4">
               <h4 className="heading-font text-[28px] leading-[0.95] uppercase text-black">{activeProduct.name}</h4>
-              <p className="mt-2 border-l-[3px] border-black bg-[#e7e2db] p-2 text-[12px] font-bold uppercase leading-tight">
-                {activeProduct.subtitle}
-              </p>
+              {activeProductSubtitle && (
+                <p className="mt-2 border-l-[3px] border-black bg-[#e7e2db] p-2 text-[12px] font-bold uppercase leading-tight">
+                  {activeProductSubtitle}
+                </p>
+              )}
 
-              <blockquote className="product-focus-quote mt-3">{activeProduct.quote}</blockquote>
+              {activeProductQuote && <blockquote className="product-focus-quote mt-3">{activeProductQuote}</blockquote>}
 
               <div className="mt-3 space-y-1 border-[3px] border-black bg-white p-2 text-[13px] font-bold leading-snug">
                 <p>- Размер: {activeProduct.size}</p>
@@ -1403,16 +1664,7 @@ export default function App() {
                 <p>- Статус: {activeProductStatusMeta.detail}</p>
               </div>
 
-              {canPurchaseActiveProduct ? (
-                <a
-                  href={ORDER_TG_LINK}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-4 inline-flex items-center border-b-2 border-black text-[13px] font-bold uppercase text-black"
-                >
-                  Для заказа к @cycle_order
-                </a>
-              ) : (
+              {!canPurchaseActiveProduct && (
                 <p className="product-status-note mt-4">
                   СТАТУС: {activeProductStatusMeta.detail}. ПОКУПКА НЕДОСТУПНА.
                 </p>
@@ -1570,6 +1822,63 @@ export default function App() {
         aria-hidden="true"
       />
 
+      <div id="sheet-sort" className={`bottom-sheet p-5 pt-6 pb-10 ${activeSheet === 'sort' ? 'open' : ''}`}>
+        <div className="mb-5 flex items-center justify-between border-b-[4px] border-black pb-2">
+          <h3 className="heading-font text-3xl">СОРТИРОВКА</h3>
+          <button
+            onClick={closeAllSheets}
+            className="flex h-8 w-8 items-center justify-center border-2 border-black bg-black text-white"
+            aria-label="Закрыть сортировку"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+        <div className="mb-4 grid grid-cols-2 gap-3">
+          <button
+            className={`brutal-box brutal-input flex items-center justify-center gap-2 py-3 text-sm font-bold ${
+              catalogMode === 'catalog' ? 'filter-option-selected' : 'bg-white'
+            }`}
+            onClick={() => {
+              setCatalogMode('catalog')
+              closeAllSheets()
+            }}
+          >
+            <Shirt className="h-4 w-4" />
+            КАТАЛОГ
+          </button>
+          <button
+            className={`brutal-box brutal-input flex items-center justify-center gap-2 py-3 text-sm font-bold ${
+              catalogMode === 'archive' ? 'filter-option-selected' : 'bg-white'
+            }`}
+            onClick={() => {
+              setCatalogMode('archive')
+              closeAllSheets()
+            }}
+          >
+            <Archive className="h-4 w-4" />
+            АРХИВ
+          </button>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          {SORT_OPTIONS.map((option) => (
+            <button
+              key={option.id}
+              className={`brutal-box brutal-input flex items-center justify-between bg-white p-3 text-left text-sm font-bold ${
+                sortOrder === option.id ? 'filter-option-selected' : ''
+              }`}
+              onClick={() => {
+                setSortOrder(option.id)
+                closeAllSheets()
+              }}
+            >
+              <span>{option.label}</span>
+              <ChevronDown className="h-4 w-4" />
+            </button>
+          ))}
+        </div>
+      </div>
+
       <div id="sheet-category" className={`bottom-sheet p-5 pt-6 pb-10 ${activeSheet === 'category' ? 'open' : ''}`}>
         <div className="mb-5 flex items-center justify-between border-b-[4px] border-black pb-2">
           <h3 className="heading-font text-3xl">КАТЕГОРИИ</h3>
@@ -1582,18 +1891,18 @@ export default function App() {
           </button>
         </div>
         <div className="flex flex-col gap-3">
-          {CATEGORIES.map((category) => (
+          {categoryOptions.map((category) => (
             <button
               key={category.id}
               className={`brutal-box brutal-input flex items-center bg-white p-3 text-left text-sm font-bold ${
-                selectedCategory === category.id ? 'bg-[var(--soviet-red)] text-white' : ''
+                normalizedSelectedCategory === category.id ? 'filter-option-selected' : ''
               }`}
               onClick={() => {
                 setSelectedCategory(category.id)
                 closeAllSheets()
               }}
             >
-              <Shirt className="mr-3 h-6 w-6 border-r-2 border-black pr-2" />
+              <category.Icon className="mr-3 h-6 w-6 border-r-2 border-black pr-2" />
               {category.label}
             </button>
           ))}
@@ -1611,10 +1920,10 @@ export default function App() {
             <X className="h-4 w-4" />
           </button>
         </div>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           <button
             className={`brutal-box brutal-input py-4 text-center text-sm font-bold ${
-              selectedSize === 'all' ? 'bg-black text-white' : 'bg-[#E0E0E0]'
+              normalizedSelectedSize === 'all' ? 'filter-option-selected' : 'bg-[#E0E0E0]'
             }`}
             onClick={() => {
               setSelectedSize('all')
@@ -1623,28 +1932,34 @@ export default function App() {
           >
             ВСЕ
           </button>
-          {SIZES.map((size) => (
-            <button
-              key={size}
-              className={`brutal-box brutal-input py-4 text-center font-bold ${
-                selectedSize === size ? 'border-white bg-black text-lg text-white border-[3px]' : 'bg-white text-lg'
-              }`}
-              onClick={() => {
-                setSelectedSize(size)
-                closeAllSheets()
-              }}
-            >
-              {size === 'ONE SIZE' ? (
-                <span className="flex items-center justify-center text-sm leading-tight">
-                  ONE
-                  <br />
-                  SIZE
-                </span>
-              ) : (
-                size
-              )}
-            </button>
-          ))}
+          {sizeOptions.length === 0 ? (
+            <div className="brutal-box col-span-2 flex items-center justify-center bg-white px-2 py-4 text-center text-xs font-bold uppercase">
+              В текущей выборке нет размеров
+            </div>
+          ) : (
+            sizeOptions.map((size) => (
+              <button
+                key={size}
+                className={`brutal-box brutal-input py-4 text-center font-bold ${
+                  normalizedSelectedSize === size ? 'filter-option-selected text-lg' : 'bg-white text-lg'
+                }`}
+                onClick={() => {
+                  setSelectedSize(size)
+                  closeAllSheets()
+                }}
+              >
+                {size === 'ONE SIZE' ? (
+                  <span className="flex items-center justify-center text-sm leading-tight">
+                    ONE
+                    <br />
+                    SIZE
+                  </span>
+                ) : (
+                  size
+                )}
+              </button>
+            ))
+          )}
         </div>
       </div>
     </div>

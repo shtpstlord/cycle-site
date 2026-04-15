@@ -67,11 +67,11 @@ function normalizeStatus(value) {
     return DEFAULT_STATUS
   }
 
-  if (raw === 'sold' || /(sold|продан|продано)/i.test(raw)) {
+  if (raw === 'sold' || /(sold|sold out|продан|продано|распродан)/iu.test(raw)) {
     return 'sold'
   }
 
-  if (raw === 'reserved' || /(reserved|reserve|брон)/i.test(raw)) {
+  if (raw === 'reserved' || /(reserved|reserve|бронь|забронир)/iu.test(raw)) {
     return 'reserved'
   }
 
@@ -79,12 +79,12 @@ function normalizeStatus(value) {
 }
 
 function normalizeCategory(value) {
-  const raw = String(value ?? '').toLowerCase()
-  if (['tops', 'pants', 'outerwear', 'shoes'].includes(raw)) {
-    return raw
-  }
+  const raw = String(value ?? '')
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, '-')
 
-  return 'tops'
+  return raw || 'tops'
 }
 
 function sanitizeImageList(value) {
@@ -112,11 +112,7 @@ function formatPostTime(date = new Date()) {
 
 function normalizeSourceType(value) {
   const raw = normalizeString(value).toLowerCase()
-  if (!raw) {
-    return null
-  }
-
-  return raw
+  return raw || null
 }
 
 function normalizeProduct(input, fallbackId = 1) {
@@ -125,13 +121,6 @@ function normalizeProduct(input, fallbackId = 1) {
   const hasOldPrice = Object.prototype.hasOwnProperty.call(input ?? {}, 'oldPrice')
   const oldPrice = hasOldPrice ? parsePrice(input?.oldPrice) : null
   const createdAt = normalizeIsoDate(input?.createdAt) ?? new Date().toISOString()
-  const sourceDateTime = normalizeIsoDate(input?.sourceDateTime)
-  const syncedAt = normalizeIsoDate(input?.syncedAt)
-  const sourceType = normalizeSourceType(input?.sourceType)
-  const sourceChannel = normalizeString(input?.sourceChannel) || null
-  const sourcePostId = normalizeSourcePostId(input?.sourcePostId)
-  const sourceUrl = normalizeString(input?.sourceUrl) || null
-  const sourceText = normalizeString(input?.sourceText)
 
   return {
     id: Number.isFinite(id) && id > 0 ? id : fallbackId,
@@ -144,15 +133,15 @@ function normalizeProduct(input, fallbackId = 1) {
     subtitle: normalizeString(input?.subtitle),
     quote: normalizeString(input?.quote),
     postViews: Number.isFinite(Number(input?.postViews)) ? Number(input.postViews) : 0,
-    postTime: String(input?.postTime ?? formatPostTime()).trim() || formatPostTime(),
+    postTime: normalizeString(input?.postTime) || formatPostTime(),
     status: normalizeStatus(input?.status),
-    sourceType,
-    sourceChannel,
-    sourcePostId,
-    sourceUrl,
-    sourceDateTime,
-    sourceText,
-    syncedAt,
+    sourceType: normalizeSourceType(input?.sourceType),
+    sourceChannel: normalizeString(input?.sourceChannel) || null,
+    sourcePostId: normalizeSourcePostId(input?.sourcePostId),
+    sourceUrl: normalizeString(input?.sourceUrl) || null,
+    sourceDateTime: normalizeIsoDate(input?.sourceDateTime),
+    sourceText: normalizeString(input?.sourceText),
+    syncedAt: normalizeIsoDate(input?.syncedAt),
     createdAt,
   }
 }
@@ -165,78 +154,16 @@ function buildSourceKey(sourceChannel, sourcePostId) {
   return `${sourceChannel}:${sourcePostId}`
 }
 
-function buildNewSyncedProduct(input, nextId) {
-  const sourceDateTime = normalizeIsoDate(input?.sourceDateTime)
-  const createdAt = normalizeIsoDate(input?.createdAt) ?? sourceDateTime ?? new Date().toISOString()
-  const postTime = normalizeString(input?.postTime) || formatPostTime(sourceDateTime ? new Date(sourceDateTime) : new Date())
-  const syncedAt = normalizeIsoDate(input?.syncedAt) ?? new Date().toISOString()
-
-  return normalizeProduct(
-    {
-      ...input,
-      id: nextId,
-      postViews: Number.isFinite(Number(input?.postViews)) ? Number(input.postViews) : 0,
-      postTime,
-      createdAt,
-      syncedAt,
-      sourceType: normalizeSourceType(input?.sourceType) ?? SOURCE_TYPE_TELEGRAM,
-      status: normalizeStatus(input?.status),
-    },
-    nextId,
-  )
-}
-
-function mergeSyncedProduct(existing, incoming) {
-  const incomingName = normalizeString(incoming?.name)
-  const incomingSize = normalizeString(incoming?.size)
-  const incomingSubtitle = normalizeString(incoming?.subtitle)
-  const incomingQuote = normalizeString(incoming?.quote)
-  const incomingPrice = parsePrice(incoming?.price)
-  const incomingOldPriceProvided = Object.prototype.hasOwnProperty.call(incoming ?? {}, 'oldPrice')
-  const incomingOldPrice = parsePrice(incoming?.oldPrice)
-  const incomingImages = sanitizeImageList(incoming?.images)
-  const incomingSourceType = normalizeSourceType(incoming?.sourceType)
-  const incomingSourceChannel = normalizeString(incoming?.sourceChannel)
-  const incomingSourcePostId = normalizeSourcePostId(incoming?.sourcePostId)
-  const incomingSourceUrl = normalizeString(incoming?.sourceUrl)
-  const incomingSourceDateTime = normalizeIsoDate(incoming?.sourceDateTime)
-  const incomingSourceTextProvided = typeof incoming?.sourceText === 'string'
-  const incomingSyncedAt = normalizeIsoDate(incoming?.syncedAt) ?? new Date().toISOString()
-  const incomingPostTime = normalizeString(incoming?.postTime)
-  const incomingCategory = normalizeString(incoming?.category)
-  const incomingStatus = normalizeStatus(incoming?.status)
-
-  return normalizeProduct(
-    {
-      ...existing,
-      name: incomingName || existing.name,
-      size: incomingSize || existing.size,
-      subtitle: incomingSubtitle || existing.subtitle,
-      quote: incomingQuote || existing.quote,
-      category: incomingCategory || existing.category,
-      price: incomingPrice ?? existing.price,
-      oldPrice: incomingOldPriceProvided ? incomingOldPrice : existing.oldPrice,
-      images: incomingImages.length > 0 ? incomingImages : existing.images,
-      postViews: Number.isFinite(Number(incoming?.postViews)) ? Number(incoming.postViews) : existing.postViews,
-      postTime: incomingPostTime || existing.postTime,
-      status: incomingStatus || existing.status || DEFAULT_STATUS,
-      sourceType: incomingSourceType || existing.sourceType,
-      sourceChannel: incomingSourceChannel || existing.sourceChannel,
-      sourcePostId: incomingSourcePostId || existing.sourcePostId,
-      sourceUrl: incomingSourceUrl || existing.sourceUrl,
-      sourceDateTime: incomingSourceDateTime || existing.sourceDateTime,
-      sourceText: incomingSourceTextProvided ? normalizeString(incoming.sourceText) : existing.sourceText,
-      syncedAt: incomingSyncedAt,
-      createdAt: existing.createdAt,
-    },
-    existing.id,
-  )
+function buildFallbackDedupKey(product) {
+  const normalized = normalizeProduct(product, product?.id ?? 1)
+  const image = normalized.images[0] ? normalized.images[0].split('?')[0].toLowerCase() : ''
+  return `${normalized.name.toLowerCase()}|${normalized.size.toUpperCase()}|${normalized.price}|${image}`
 }
 
 function sortProducts(products) {
   return [...products].sort((left, right) => {
-    const leftTs = Date.parse(left?.createdAt ?? '')
-    const rightTs = Date.parse(right?.createdAt ?? '')
+    const leftTs = Date.parse(left?.sourceDateTime || left?.createdAt || '')
+    const rightTs = Date.parse(right?.sourceDateTime || right?.createdAt || '')
 
     if (Number.isFinite(leftTs) && Number.isFinite(rightTs) && leftTs !== rightTs) {
       return rightTs - leftTs
@@ -250,7 +177,6 @@ function arraysEqual(left, right) {
   if (!Array.isArray(left) || !Array.isArray(right)) {
     return false
   }
-
   if (left.length !== right.length) {
     return false
   }
@@ -265,94 +191,111 @@ function arraysEqual(left, right) {
 }
 
 function hasSourceProductChanges(existing, incoming) {
-  const incomingName = normalizeString(incoming?.name)
-  if (incomingName && incomingName !== existing.name) {
+  const existingNormalized = normalizeProduct(existing, existing.id)
+  const incomingNormalized = normalizeProduct(
+    {
+      ...existingNormalized,
+      ...incoming,
+      syncedAt: existingNormalized.syncedAt,
+      createdAt: existingNormalized.createdAt,
+      id: existingNormalized.id,
+    },
+    existingNormalized.id,
+  )
+
+  if (incomingNormalized.name !== existingNormalized.name) {
     return true
   }
-
-  const incomingSize = normalizeString(incoming?.size)
-  if (incomingSize && incomingSize !== existing.size) {
+  if (incomingNormalized.size !== existingNormalized.size) {
     return true
   }
-
-  const incomingSubtitle = normalizeString(incoming?.subtitle)
-  if (incomingSubtitle && incomingSubtitle !== existing.subtitle) {
+  if (incomingNormalized.subtitle !== existingNormalized.subtitle) {
     return true
   }
-
-  const incomingQuote = normalizeString(incoming?.quote)
-  if (incomingQuote && incomingQuote !== existing.quote) {
+  if (incomingNormalized.quote !== existingNormalized.quote) {
     return true
   }
-
-  const incomingCategory = normalizeString(incoming?.category)
-  if (incomingCategory && incomingCategory !== existing.category) {
+  if (incomingNormalized.category !== existingNormalized.category) {
     return true
   }
-
-  const incomingPrice = parsePrice(incoming?.price)
-  if (incomingPrice !== null && incomingPrice !== existing.price) {
+  if (incomingNormalized.price !== existingNormalized.price) {
     return true
   }
-
-  const oldPriceProvided = Object.prototype.hasOwnProperty.call(incoming ?? {}, 'oldPrice')
-  if (oldPriceProvided) {
-    const incomingOldPrice = parsePrice(incoming?.oldPrice)
-    if (incomingOldPrice !== existing.oldPrice) {
-      return true
-    }
-  }
-
-  const incomingImages = sanitizeImageList(incoming?.images)
-  if (incomingImages.length > 0 && !arraysEqual(incomingImages, existing.images)) {
+  if (incomingNormalized.oldPrice !== existingNormalized.oldPrice) {
     return true
   }
-
-  if (Number.isFinite(Number(incoming?.postViews)) && Number(incoming.postViews) !== existing.postViews) {
+  if (!arraysEqual(incomingNormalized.images, existingNormalized.images)) {
     return true
   }
-
-  const incomingPostTime = normalizeString(incoming?.postTime)
-  if (incomingPostTime && incomingPostTime !== existing.postTime) {
+  if (incomingNormalized.postViews !== existingNormalized.postViews) {
     return true
   }
-
-  const incomingStatus = normalizeStatus(incoming?.status)
-  if (incomingStatus !== existing.status) {
+  if (incomingNormalized.postTime !== existingNormalized.postTime) {
     return true
   }
-
-  const incomingSourceType = normalizeSourceType(incoming?.sourceType)
-  if (incomingSourceType && incomingSourceType !== existing.sourceType) {
+  if (incomingNormalized.status !== existingNormalized.status) {
     return true
   }
-
-  const incomingSourceChannel = normalizeString(incoming?.sourceChannel)
-  if (incomingSourceChannel && incomingSourceChannel !== existing.sourceChannel) {
+  if (incomingNormalized.sourceType !== existingNormalized.sourceType) {
     return true
   }
-
-  const incomingSourcePostId = normalizeSourcePostId(incoming?.sourcePostId)
-  if (incomingSourcePostId && incomingSourcePostId !== existing.sourcePostId) {
+  if (incomingNormalized.sourceChannel !== existingNormalized.sourceChannel) {
     return true
   }
-
-  const incomingSourceUrl = normalizeString(incoming?.sourceUrl)
-  if (incomingSourceUrl && incomingSourceUrl !== existing.sourceUrl) {
+  if (incomingNormalized.sourcePostId !== existingNormalized.sourcePostId) {
     return true
   }
-
-  const incomingSourceDateTime = normalizeIsoDate(incoming?.sourceDateTime)
-  if (incomingSourceDateTime && incomingSourceDateTime !== existing.sourceDateTime) {
+  if (incomingNormalized.sourceUrl !== existingNormalized.sourceUrl) {
     return true
   }
-
-  const sourceTextProvided = typeof incoming?.sourceText === 'string'
-  if (sourceTextProvided && normalizeString(incoming.sourceText) !== existing.sourceText) {
+  if (incomingNormalized.sourceDateTime !== existingNormalized.sourceDateTime) {
+    return true
+  }
+  if (incomingNormalized.sourceText !== existingNormalized.sourceText) {
     return true
   }
 
   return false
+}
+
+function mergeSyncedProduct(existing, incoming) {
+  const base = normalizeProduct(existing, existing.id)
+  return normalizeProduct(
+    {
+      ...base,
+      ...incoming,
+      id: base.id,
+      createdAt: base.createdAt,
+      syncedAt: normalizeIsoDate(incoming?.syncedAt) ?? new Date().toISOString(),
+      sourceType: normalizeSourceType(incoming?.sourceType) ?? base.sourceType ?? SOURCE_TYPE_TELEGRAM,
+      status: normalizeStatus(incoming?.status ?? base.status),
+      postViews: Number.isFinite(Number(incoming?.postViews)) ? Number(incoming.postViews) : base.postViews,
+      postTime: normalizeString(incoming?.postTime) || base.postTime || formatPostTime(),
+      images: sanitizeImageList(incoming?.images).length > 0 ? incoming.images : base.images,
+    },
+    base.id,
+  )
+}
+
+function buildNewSyncedProduct(input, nextId) {
+  const sourceDateTime = normalizeIsoDate(input?.sourceDateTime)
+  const createdAt = normalizeIsoDate(input?.createdAt) ?? sourceDateTime ?? new Date().toISOString()
+
+  return normalizeProduct(
+    {
+      ...input,
+      id: nextId,
+      createdAt,
+      syncedAt: normalizeIsoDate(input?.syncedAt) ?? new Date().toISOString(),
+      sourceType: normalizeSourceType(input?.sourceType) ?? SOURCE_TYPE_TELEGRAM,
+      status: normalizeStatus(input?.status),
+      postViews: Number.isFinite(Number(input?.postViews)) ? Number(input.postViews) : 0,
+      postTime:
+        normalizeString(input?.postTime) ||
+        formatPostTime(sourceDateTime ? new Date(sourceDateTime) : new Date()),
+    },
+    nextId,
+  )
 }
 
 async function ensureStore() {
@@ -485,5 +428,57 @@ export async function upsertProductsBySource(incomingProducts) {
     created,
     updated,
     skipped,
+  }
+}
+
+export async function cleanupProductsStore(options = {}) {
+  const keepOnlyTelegram = options.keepOnlyTelegram !== false
+  const current = await readProducts()
+  const sorted = sortProducts(current)
+
+  const seenSource = new Set()
+  const seenFallback = new Set()
+  const cleaned = []
+  let removedNonTelegram = 0
+  let removedDuplicates = 0
+
+  for (const product of sorted) {
+    const normalized = normalizeProduct(product, product.id)
+
+    if (keepOnlyTelegram && normalized.sourceType !== SOURCE_TYPE_TELEGRAM) {
+      removedNonTelegram += 1
+      continue
+    }
+
+    const sourceKey = buildSourceKey(normalized.sourceChannel, normalized.sourcePostId)
+    if (sourceKey) {
+      if (seenSource.has(sourceKey)) {
+        removedDuplicates += 1
+        continue
+      }
+      seenSource.add(sourceKey)
+    } else {
+      const fallbackKey = buildFallbackDedupKey(normalized)
+      if (seenFallback.has(fallbackKey)) {
+        removedDuplicates += 1
+        continue
+      }
+      seenFallback.add(fallbackKey)
+    }
+
+    cleaned.push(normalized)
+  }
+
+  const changed = cleaned.length !== current.length
+  if (changed) {
+    await writeProducts(cleaned)
+  }
+
+  return {
+    total: current.length,
+    kept: cleaned.length,
+    removedNonTelegram,
+    removedDuplicates,
+    changed,
   }
 }

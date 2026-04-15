@@ -88,6 +88,8 @@ Environment variables:
 - `TG_CHANNEL_SYNC_INTERVAL_MS=300000` - polling interval
 - `TG_CHANNEL_SYNC_LIMIT=40` - max posts to process per sync run
 - `TG_CHANNEL_SYNC_MAX_PAGES=6` - how many feed pages (`?before=`) to scan
+- `TG_CHANNEL_SYNC_FULL=false` - if true, a sync run scans the whole available feed
+- `TG_CHANNEL_SYNC_FULL_MAX_PAGES=` - optional safety cap for full import script
 - `TG_CHANNEL_SYNC_TIMEOUT_MS=15000` - timeout for Telegram HTTP requests
 
 Sync behavior:
@@ -96,3 +98,9 @@ Sync behavior:
 - updates existing cards by `sourceChannel + sourcePostId`,
 - tracks status changes (`available`, `reserved`, `sold`),
 - updates price / old price when edited in Telegram post.
+
+Maintenance scripts:
+
+- `npm run products:clean` - remove non-telegram cards and deduplicate cards
+- `npm run sync:channel:full` - full import of all available channel pages via `?before=`
+- `npm run sync:channel:refresh` - clean -> full import -> clean

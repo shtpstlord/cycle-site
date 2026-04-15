@@ -268,14 +268,56 @@ a:active,
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   border-bottom: var(--border-heavy);
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x;
+  scrollbar-width: none;
+}
+
+.product-gallery::-webkit-scrollbar {
+  display: none;
+}
+
+.product-gallery-item {
+  position: relative;
+  width: 100%;
+  flex-shrink: 0;
+  scroll-snap-align: start;
 }
 
 .product-gallery img {
   width: 100%;
-  flex-shrink: 0;
-  scroll-snap-align: start;
+  display: block;
   object-fit: cover;
   aspect-ratio: 4 / 5;
+  user-select: none;
+  pointer-events: none;
+}
+
+.product-gallery-counter {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  border: 2px solid #000;
+  background: rgba(0, 0, 0, 0.86);
+  color: #fff;
+  padding: 2px 6px;
+  font-family: 'Anton', sans-serif;
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  box-shadow: 2px 2px 0 #000;
+}
+
+.filter-option-selected {
+  background: #000 !important;
+  color: var(--soviet-red) !important;
+  border-color: var(--soviet-red) !important;
+  box-shadow: 4px 4px 0 var(--soviet-red) !important;
+}
+
+.filter-option-selected svg {
+  color: var(--soviet-red) !important;
 }
 
 .price-crossed {
@@ -347,6 +389,8 @@ a:active,
   bottom: -100%;
   left: 0;
   width: 100%;
+  max-height: min(78vh, 760px);
+  overflow-y: auto;
   background-color: var(--bg-paper);
   border-top: var(--border-heavy);
   box-shadow: 0 -10px 0 rgba(0, 0, 0, 1);

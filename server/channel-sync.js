@@ -7,6 +7,7 @@ const DEFAULT_INTERVAL_MS = 5 * 60 * 1000
 const DEFAULT_POST_LIMIT = 40
 const DEFAULT_REQUEST_TIMEOUT_MS = 15000
 const DEFAULT_MAX_PAGES = 6
+const DEFAULT_FULL_SYNC_ENABLED = false
 
 function parseBoolean(value, fallback) {
   if (value === undefined || value === null || value === '') {
@@ -51,6 +52,7 @@ function normalizeChannelUsername(value) {
 function resolveSyncConfig(overrides = {}) {
   const username = normalizeChannelUsername(overrides.username ?? process.env.TG_CHANNEL_USERNAME)
   const enabled = parseBoolean(overrides.enabled ?? process.env.TG_CHANNEL_SYNC_ENABLED, DEFAULT_SYNC_ENABLED)
+  const fullSync = parseBoolean(overrides.fullSync ?? process.env.TG_CHANNEL_SYNC_FULL, DEFAULT_FULL_SYNC_ENABLED)
   const intervalMs = parseNumber(overrides.intervalMs ?? process.env.TG_CHANNEL_SYNC_INTERVAL_MS, DEFAULT_INTERVAL_MS, 10000)
   const postsLimit = parseNumber(overrides.postsLimit ?? process.env.TG_CHANNEL_SYNC_LIMIT, DEFAULT_POST_LIMIT, 1)
   const maxPages = parseNumber(overrides.maxPages ?? process.env.TG_CHANNEL_SYNC_MAX_PAGES, DEFAULT_MAX_PAGES, 1)
@@ -62,6 +64,7 @@ function resolveSyncConfig(overrides = {}) {
 
   return {
     enabled,
+    fullSync,
     username,
     intervalMs,
     postsLimit,
@@ -226,7 +229,7 @@ export function parseTelegramChannelHtml(html, fallbackUsername = DEFAULT_CHANNE
 function detectStatus(text) {
   const normalized = String(text ?? '').toLowerCase()
 
-  if (/(sold|продано|продан|продана|проданы|sold out)/i.test(normalized)) {
+  if (/(sold|sold out|продан|продано|распродан)/i.test(normalized)) {
     return 'sold'
   }
 
@@ -262,6 +265,15 @@ function toPostTime(datetime) {
   })
 }
 
+function removeOrderLine(text) {
+  return String(text ?? '')
+    .split('\n')
+    .map((line) => line.trim())
+    .filter((line) => line && !/(для\s+заказа|@cycle_order|cycle[_\s-]?order)/i.test(line))
+    .join('\n')
+    .trim()
+}
+
 function isLikelyProductPost(post, parsed, status) {
   if (!post?.text || !Array.isArray(post.images) || post.images.length === 0) {
     return false
@@ -275,7 +287,7 @@ function isLikelyProductPost(post, parsed, status) {
     return true
   }
 
-  return /(размер|цена|для заказа|price|size)/i.test(post.text)
+  return /(размер|цена|price|size|₽|руб|р\.)/i.test(post.text)
 }
 
 function postToProduct(post, defaultChannel) {
@@ -286,6 +298,7 @@ function postToProduct(post, defaultChannel) {
     return null
   }
 
+  const sourceText = parsed?.sourceText?.trim() || removeOrderLine(post.text)
   const now = new Date().toISOString()
   const product = {
     name: parsed?.name?.trim() || firstMeaningfulLine(post.text) || `Telegram post ${post.postId}`,
@@ -300,7 +313,7 @@ function postToProduct(post, defaultChannel) {
     sourcePostId: post.postId,
     sourceUrl: post.url,
     sourceDateTime: post.datetime,
-    sourceText: post.text,
+    sourceText,
     syncedAt: now,
     postViews: post.views || 0,
     postTime: toPostTime(post.datetime),
@@ -363,8 +376,17 @@ async function fetchChannelPosts(config) {
   const seenIds = new Set()
   let beforeCursor = null
   let pagesFetched = 0
+  const targetLimit = config.fullSync ? Number.POSITIVE_INFINITY : config.postsLimit
 
-  while (pagesFetched < config.maxPages && collected.length < config.postsLimit) {
+  while (true) {
+    if (!config.fullSync && pagesFetched >= config.maxPages) {
+      break
+    }
+
+    if (collected.length >= targetLimit) {
+      break
+    }
+
     const html = await fetchChannelHtmlPage(config, beforeCursor)
     pagesFetched += 1
 
@@ -376,7 +398,7 @@ async function fetchChannelPosts(config) {
       }
       seenIds.add(key)
       collected.push(post)
-      if (collected.length >= config.postsLimit) {
+      if (collected.length >= targetLimit) {
         break
       }
     }
@@ -389,7 +411,7 @@ async function fetchChannelPosts(config) {
   }
 
   return {
-    posts: collected.slice(0, config.postsLimit),
+    posts: Number.isFinite(targetLimit) ? collected.slice(0, targetLimit) : collected,
     pagesFetched,
   }
 }
@@ -429,6 +451,14 @@ export async function syncChannelOnce(overrides = {}) {
     updated: upsertResult.updated,
     skippedItems: upsertResult.skipped,
   }
+}
+
+export async function syncChannelFull(overrides = {}) {
+  return syncChannelOnce({
+    ...overrides,
+    enabled: true,
+    fullSync: true,
+  })
 }
 
 export async function startChannelSync(overrides = {}) {
