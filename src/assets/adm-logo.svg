@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 420" role="img" aria-labelledby="admTitle">
+  <title id="admTitle">ADM logo</title>
+  <g fill="none" stroke="#111" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M168 294 430 294 692 294" />
+    <path d="M168 294 332 28" />
+    <path d="M692 294 528 28" />
+    <path d="M430 12 430 294" />
+  </g>
+  <text x="430" y="245" font-family="Arial, Helvetica, sans-serif" font-size="120" text-anchor="middle" fill="#111">
+    adm
+  </text>
+  <text x="430" y="372" font-family="Arial, Helvetica, sans-serif" font-size="56" text-anchor="middle" fill="#333">
+    average design manufacture
+  </text>
+</svg>
