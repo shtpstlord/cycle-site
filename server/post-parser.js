@@ -1,8 +1,8 @@
-﻿const ORDER_MARKER_REGEX = /(для\s+заказа|@cycle_order|cycle[_\s-]?order|order\s*@)/iu
+const ORDER_MARKER_REGEX = /(для\s+заказа|@cycle_order|cycle[_\s-]?order|order\s*@)/iu
 const STATUS_MARKER_REGEX = /(sold|sold\s*out|продан[аоы]?|бронь|reserved|reserve)/iu
-const SIZE_LINE_REGEX = /^(?:[-*•]\s*)?(?:размер|size)\s*[:\-–—]?\s*(.+)$/iu
-const PRICE_LINE_REGEX = /^(?:[-*•]\s*)?(?:цена|price)\s*[:\-–—]?\s*(.+)$/iu
-const META_LINE_REGEX = /^(?:[-*•]\s*)?(?:размер|size|цена|price)\s*[:\-–—]/iu
+const SIZE_LINE_REGEX = /^(?:[-*•⁃–—]\s*)?(?:размер|size)\s*:\s*(.+)$/iu
+const PRICE_LINE_REGEX = /^(?:[-*•⁃–—]\s*)?(?:цена|price)\s*:\s*(.+)$/iu
+const META_LINE_REGEX = /^(?:[-*•⁃–—]\s*)?(?:размер|size|цена|price)\s*:/iu
 
 function toRubNumber(rawValue) {
   if (!rawValue) {
@@ -43,7 +43,7 @@ function isMetaLine(line) {
     return true
   }
 
-  return STATUS_MARKER_REGEX.test(normalized) && /^(?:[-*•]|\()/u.test(normalized)
+  return STATUS_MARKER_REGEX.test(normalized) && /^(?:[-*•⁃–—]|\()/u.test(normalized)
 }
 
 function normalizeSizeValue(value) {
@@ -58,35 +58,15 @@ function normalizeSizeValue(value) {
 
   const compact = cleaned.replace(/\s+/g, ' ')
 
-  if (/^(xxxl|xxl|xl|l|m|s|xs|one size|os)$/iu.test(compact)) {
-    if (/^os$/iu.test(compact)) {
-      return 'ONE SIZE'
-    }
+  if (/^os$/iu.test(compact)) {
+    return 'ONE SIZE'
+  }
+
+  if (/^(xxxl|xxl|xl|l|m|s|xs|one size)$/iu.test(compact)) {
     return compact.toUpperCase()
   }
 
   return compact.replace(/\s*\/\s*/g, '/')
-}
-
-function looksLikeSize(value) {
-  const normalized = normalizeSizeValue(value)
-  if (!normalized) {
-    return false
-  }
-
-  if (/^(?:ONE SIZE|XXXL|XXL|XL|L|M|S|XS)$/u.test(normalized)) {
-    return true
-  }
-
-  if (/^\d{2,3}(?:[/-]\d{2,3})?$/u.test(normalized)) {
-    return true
-  }
-
-  if (/^(?:W|L)\d{2}$/iu.test(normalized)) {
-    return true
-  }
-
-  return /^(?:IT|EU|US)\s*\d{1,3}$/iu.test(normalized)
 }
 
 function hasKeyword(source, expression) {
@@ -111,7 +91,7 @@ export function inferCategory(source) {
   return 'tops'
 }
 
-function extractSize(lines) {
+function extractExplicitSize(lines) {
   for (const line of lines) {
     const explicit = cleanLine(line).match(SIZE_LINE_REGEX)
     if (!explicit?.[1]) {
@@ -119,41 +99,64 @@ function extractSize(lines) {
     }
 
     const candidate = normalizeSizeValue(explicit[1])
-    if (looksLikeSize(candidate)) {
+    if (candidate) {
       return candidate
     }
   }
 
-  for (const line of lines) {
-    const loose = cleanLine(line).match(/\b(XXXL|XXL|XL|L|M|S|XS|ONE SIZE|OS|W\d{2}|L\d{2}|\d{2,3}\s*\/\s*\d{2,3})\b/iu)
-    if (!loose?.[1]) {
-      continue
-    }
-
-    const candidate = normalizeSizeValue(loose[1])
-    if (looksLikeSize(candidate)) {
-      return candidate
-    }
-  }
-
-  return 'ONE SIZE'
+  return null
 }
 
-function parsePriceFromLine(line) {
-  const source = cleanLine(line)
-  const values = source.match(/\d[\d\s.,]*/g) || []
+function parsePriceFromValue(value) {
+  const source = cleanLine(value)
+  const currencyValues = [...source.matchAll(/(\d[\d\s.,]*)\s*(?:₽|р\b|руб)/giu)]
+    .map((match) => toRubNumber(match[1]))
+    .filter((number) => Number.isFinite(number) && number > 0)
 
-  if (values.length >= 2) {
+  const percentValues = new Set(
+    [...source.matchAll(/(\d[\d\s.,]*)\s*%/giu)]
+      .map((match) => toRubNumber(match[1]))
+      .filter((number) => Number.isFinite(number) && number > 0),
+  )
+
+  const dateValues = new Set(
+    [...source.matchAll(/\b(\d{1,2}\.\d{1,2})\b/gu)]
+      .map((match) => toRubNumber(match[1]))
+      .filter((number) => Number.isFinite(number) && number > 0),
+  )
+
+  const allNumbers = [...source.matchAll(/\d[\d\s.,]*/g)]
+    .map((match) => toRubNumber(match[0]))
+    .filter((number) => Number.isFinite(number) && number > 0)
+    .filter((number) => !percentValues.has(number) && !dateValues.has(number))
+
+  if (currencyValues.length >= 2) {
     return {
-      oldPrice: toRubNumber(values[0]),
-      price: toRubNumber(values[values.length - 1]),
+      oldPrice: currencyValues[0],
+      price: currencyValues[currencyValues.length - 1],
     }
   }
 
-  if (values.length === 1) {
+  if (currencyValues.length === 1) {
+    const price = currencyValues[0]
+    const oldPrice = allNumbers.find((number) => number > price && number !== price) ?? null
+    return {
+      oldPrice,
+      price,
+    }
+  }
+
+  if (allNumbers.length >= 2) {
+    return {
+      oldPrice: allNumbers[0],
+      price: allNumbers[allNumbers.length - 1],
+    }
+  }
+
+  if (allNumbers.length === 1) {
     return {
       oldPrice: null,
-      price: toRubNumber(values[0]),
+      price: allNumbers[0],
     }
   }
 
@@ -163,49 +166,22 @@ function parsePriceFromLine(line) {
   }
 }
 
-function extractPrice(rawText, lines) {
+function extractExplicitPrice(lines) {
   for (const line of lines) {
-    const normalized = cleanLine(line)
-    if (!PRICE_LINE_REGEX.test(normalized)) {
+    const explicit = cleanLine(line).match(PRICE_LINE_REGEX)
+    if (!explicit?.[1]) {
       continue
     }
 
-    const parsed = parsePriceFromLine(normalized)
-    if (parsed.price) {
+    const parsed = parsePriceFromValue(explicit[1])
+    if (parsed.price && parsed.price > 0) {
       return parsed
     }
   }
 
-  const ranged = String(rawText ?? '').match(/(\d[\d\s.,]*)\s*(?:->|=>|→|-{1,2}>?)\s*(\d[\d\s.,]*)/iu)
-  if (ranged) {
-    return {
-      oldPrice: toRubNumber(ranged[1]),
-      price: toRubNumber(ranged[2]),
-    }
-  }
-
-  const allWithCurrency = [...String(rawText ?? '').matchAll(/(\d[\d\s.,]*)\s*(?:₽|р\b|руб)/giu)]
-    .map((match) => toRubNumber(match[1]))
-    .filter((value) => Number.isFinite(value))
-
-  if (allWithCurrency.length >= 2) {
-    return {
-      oldPrice: allWithCurrency[0],
-      price: allWithCurrency[allWithCurrency.length - 1],
-    }
-  }
-
-  if (allWithCurrency.length === 1) {
-    return {
-      oldPrice: null,
-      price: allWithCurrency[0],
-    }
-  }
-
-  const fallback = String(rawText ?? '').match(/(?:цена|price)[^\d]{0,16}(\d[\d\s.,]*)/iu)
   return {
     oldPrice: null,
-    price: fallback ? toRubNumber(fallback[1]) : null,
+    price: null,
   }
 }
 
@@ -248,8 +224,19 @@ export function parseTelegramPost(rawText) {
   }
 
   const sanitizedLines = sanitizeSourceLines(lines)
-  const nonMetaLines = sanitizedLines.filter((line) => !isMetaLine(line))
+  if (!sanitizedLines.length) {
+    return null
+  }
 
+  const size = extractExplicitSize(sanitizedLines)
+  const { price, oldPrice } = extractExplicitPrice(sanitizedLines)
+
+  // Strict mode: create cards only if explicit size and price fields are present.
+  if (!size || !price || price <= 0) {
+    return null
+  }
+
+  const nonMetaLines = sanitizedLines.filter((line) => !isMetaLine(line))
   const name = cleanLine(nonMetaLines[0] || 'Без названия')
   let subtitle = cleanLine(nonMetaLines[1] || '')
 
@@ -258,25 +245,18 @@ export function parseTelegramPost(rawText) {
   }
 
   const quote = extractQuote(nonMetaLines, subtitle)
-  const size = extractSize(sanitizedLines)
   const sanitizedSourceText = sanitizedLines.join('\n')
-  const { price, oldPrice } = extractPrice(sanitizedSourceText, sanitizedLines)
   const category = inferCategory([name, subtitle, quote].join(' '))
-
-  const warnings = []
-  if (!price || price <= 0) {
-    warnings.push('Не удалось уверенно распознать цену')
-  }
 
   return {
     name,
     subtitle,
     quote: cleanLine(quote),
-    size: cleanLine(size) || 'ONE SIZE',
-    price: price ?? 0,
+    size,
+    price,
     oldPrice: oldPrice ?? null,
     category,
-    warnings,
+    warnings: [],
     sourceText: sanitizedSourceText,
   }
 }

@@ -3,6 +3,8 @@ import {
   Archive,
   ArrowDown,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Ghost,
   House,
   Info,
@@ -158,35 +160,40 @@ const FEATURED_REVIEWS = [
     name: 'Лилия Масловиева',
     date: '13 февраля',
     rating: 5,
-    text: 'Нравится ваш магазин: много интересных и качественных вещей. Всегда вежливо, подскажут и порекомендуют.',
+    text:
+      'Нравится ваш магазин: много интересных, брендовых и качественных вещей. Мы приезжаем к вам из другого города, и каждый раз остаемся довольны. Персонал всегда вежливый, помогает с выбором и дает точные рекомендации.',
   },
   {
     id: 'review-2',
     name: 'Максим Литвинов',
     date: '19 марта 2025',
     rating: 5,
-    text: 'Отличный магазин. Хожу давно, доволен ассортиментом и ценами. Крутая атмосфера и приятный персонал.',
+    text:
+      'Отличный магазин, хожу сюда уже давно. Всегда доволен качеством вещей и ценами, ассортимент постоянно обновляется. Отдельно отмечу атмосферу: в шоуруме комфортно, спокойно и реально хочется возвращаться.',
   },
   {
     id: 'review-3',
     name: 'Дмитрий Тарарыков',
     date: '27 марта 2025',
     rating: 5,
-    text: 'Большой выбор, редкие позиции и аккуратная выкладка. Удобно, что можно быстро собрать готовый образ.',
+    text:
+      'Большой выбор и много редких позиций в хорошем состоянии. Удобно, что можно быстро собрать полноценный образ: от базовых вещей до акцентных деталей. Отдельный плюс за аккуратную выкладку и помощь на месте.',
   },
   {
     id: 'review-4',
     name: 'Екатерина Ж.',
     date: '5 апреля 2025',
     rating: 5,
-    text: 'Точно попали в атмосферу винтажного шоурума: музыка, свет и подбор вещей очень в тему.',
+    text:
+      'Очень понравилось, как продумано пространство: свет, музыка и подбор вещей создают цельную атмосферу винтажного шоурума. Примерка удобная, сотрудники внимательные, при этом не навязчивые.',
   },
   {
     id: 'review-5',
     name: 'Игорь Н.',
     date: '11 апреля 2025',
     rating: 5,
-    text: 'Удобно, что сразу видно размеры и актуальные цены. Ребята на месте помогают быстро найти нужное.',
+    text:
+      'Удобно, что на карточках сразу указаны актуальные размеры и цены. Благодаря этому легко ориентироваться по ассортименту и быстро находить нужную вещь. Хороший сервис и честное состояние одежды.',
   },
 ]
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '')
@@ -366,6 +373,9 @@ export default function App() {
   const [activeProduct, setActiveProduct] = useState(null)
   const [activeStory, setActiveStory] = useState(null)
   const [storyOpeningGlitch, setStoryOpeningGlitch] = useState(false)
+  const [productGalleryIndexes, setProductGalleryIndexes] = useState({})
+  const [activeProductImageIndex, setActiveProductImageIndex] = useState(0)
+  const [interiorImageIndex, setInteriorImageIndex] = useState(0)
   const [isMapUnlocked, setIsMapUnlocked] = useState(false)
   const [isMapUnlocking, setIsMapUnlocking] = useState(false)
   const [isMapRelocking, setIsMapRelocking] = useState(false)
@@ -390,6 +400,9 @@ export default function App() {
   const storyGlitchTimerRef = useRef(null)
   const cartFlashTimerRef = useRef(null)
   const mapTransitionTimerRef = useRef(null)
+  const productGalleryRefs = useRef(new Map())
+  const activeProductGalleryRef = useRef(null)
+  const interiorGalleryRef = useRef(null)
   const zoomPointersRef = useRef(new Map())
   const zoomDragRef = useRef({ active: false, lastX: 0, lastY: 0 })
   const zoomPinchRef = useRef({ startDistance: 0, startScale: 1 })
@@ -859,9 +872,142 @@ export default function App() {
     event.stopPropagation()
   }
 
+  const getGalleryItems = (container) => {
+    if (!(container instanceof HTMLElement)) {
+      return []
+    }
+    return [...container.children].filter((child) => child instanceof HTMLElement)
+  }
+
+  const clampGalleryIndex = (value, total) => Math.max(0, Math.min(total - 1, value))
+
+  const getClosestGalleryIndex = (container) => {
+    const galleryItems = getGalleryItems(container)
+    if (galleryItems.length === 0) {
+      return 0
+    }
+
+    const viewportCenter = container.scrollLeft + container.clientWidth / 2
+    let closestIndex = 0
+    let closestDistance = Number.POSITIVE_INFINITY
+
+    galleryItems.forEach((item, index) => {
+      const itemCenter = item.offsetLeft + item.offsetWidth / 2
+      const distance = Math.abs(itemCenter - viewportCenter)
+      if (distance < closestDistance) {
+        closestDistance = distance
+        closestIndex = index
+      }
+    })
+
+    return closestIndex
+  }
+
+  const scrollGalleryToIndex = (container, index) => {
+    const galleryItems = getGalleryItems(container)
+    const target = galleryItems[index]
+    if (!target) {
+      return
+    }
+
+    container.scrollTo({
+      left: target.offsetLeft,
+      behavior: 'smooth',
+    })
+  }
+
+  const setProductGalleryRef = (productId, node) => {
+    if (node) {
+      productGalleryRefs.current.set(productId, node)
+      return
+    }
+    productGalleryRefs.current.delete(productId)
+  }
+
+  const setProductGalleryIndex = (productId, index) => {
+    setProductGalleryIndexes((prev) => {
+      if (prev[productId] === index) {
+        return prev
+      }
+      return { ...prev, [productId]: index }
+    })
+  }
+
+  const handleProductGalleryScroll = (productId, event) => {
+    const nextIndex = getClosestGalleryIndex(event.currentTarget)
+    setProductGalleryIndex(productId, nextIndex)
+  }
+
+  const handleProductGalleryNav = (event, productId, step, total) => {
+    event.preventDefault()
+    event.stopPropagation()
+    if (total < 2) {
+      return
+    }
+
+    const galleryNode = productGalleryRefs.current.get(productId)
+    if (!galleryNode) {
+      return
+    }
+
+    const currentIndex = getClosestGalleryIndex(galleryNode)
+    const nextIndex = clampGalleryIndex(currentIndex + step, total)
+    scrollGalleryToIndex(galleryNode, nextIndex)
+    setProductGalleryIndex(productId, nextIndex)
+    setSuppressProductOpen(productId)
+  }
+
+  const handleActiveProductGalleryScroll = (event) => {
+    const nextIndex = getClosestGalleryIndex(event.currentTarget)
+    setActiveProductImageIndex(nextIndex)
+  }
+
+  const handleActiveProductGalleryNav = (event, step, total) => {
+    event.preventDefault()
+    event.stopPropagation()
+    if (total < 2 || !activeProductGalleryRef.current) {
+      return
+    }
+
+    const currentIndex = getClosestGalleryIndex(activeProductGalleryRef.current)
+    const nextIndex = clampGalleryIndex(currentIndex + step, total)
+    scrollGalleryToIndex(activeProductGalleryRef.current, nextIndex)
+    setActiveProductImageIndex(nextIndex)
+  }
+
+  const handleInteriorGalleryScroll = (event) => {
+    const nextIndex = getClosestGalleryIndex(event.currentTarget)
+    setInteriorImageIndex(nextIndex)
+  }
+
+  const handleInteriorGalleryNav = (event, step, total) => {
+    event.preventDefault()
+    event.stopPropagation()
+    if (total < 2 || !interiorGalleryRef.current) {
+      return
+    }
+
+    const currentIndex = getClosestGalleryIndex(interiorGalleryRef.current)
+    const nextIndex = clampGalleryIndex(currentIndex + step, total)
+    scrollGalleryToIndex(interiorGalleryRef.current, nextIndex)
+    setInteriorImageIndex(nextIndex)
+  }
+
+  const closeProductPost = () => {
+    setActiveProduct(null)
+    setActiveProductImageIndex(0)
+    if (activeProductGalleryRef.current) {
+      activeProductGalleryRef.current.scrollTo({ left: 0, behavior: 'auto' })
+    }
+  }
+
   const openProductPost = (product) => {
     if (consumeSuppressProductOpen(product.id)) {
       return
+    }
+    setActiveProductImageIndex(0)
+    if (activeProductGalleryRef.current) {
+      activeProductGalleryRef.current.scrollTo({ left: 0, behavior: 'auto' })
     }
     setActiveProduct(product)
   }
@@ -1054,6 +1200,8 @@ export default function App() {
   const activeProductStatus = normalizeProductStatus(activeProduct?.status)
   const activeProductStatusMeta = getStatusMeta(activeProduct?.status)
   const canPurchaseActiveProduct = activeProductStatus === 'available'
+  const activeProductImages =
+    activeProduct?.images?.length > 0 ? activeProduct.images : [cycleLogoOriginal]
   const activeProductSubtitle = activeProduct?.subtitle || activeProduct?.sourceText || ''
   const activeProductQuote = activeProduct?.quote || ''
 
@@ -1237,6 +1385,10 @@ export default function App() {
               const canPurchaseProduct = productStatus === 'available'
               const inCart = isProductInCart(product.id)
               const productImages = product.images.length > 0 ? product.images : [cycleLogoOriginal]
+              const productImageIndex = clampGalleryIndex(
+                productGalleryIndexes[product.id] ?? 0,
+                productImages.length,
+              )
 
               return (
                 <div
@@ -1244,25 +1396,51 @@ export default function App() {
                   className="brutal-box group relative flex cursor-pointer flex-col bg-white"
                   onClick={() => openProductPost(product)}
                 >
-                  <div
-                    className="product-gallery"
-                    onPointerDown={(event) => handleGalleryPointerDown(event, product.id)}
-                    onPointerMove={(event) => handleGalleryPointerMove(event, product.id)}
-                    onPointerUp={(event) => handleGalleryPointerEnd(event, product.id)}
-                    onPointerCancel={(event) => handleGalleryPointerEnd(event, product.id)}
-                    onPointerLeave={(event) => handleGalleryPointerEnd(event, product.id)}
-                    onClick={(event) => handleGalleryClick(event, product.id)}
-                  >
-                    {productImages.map((image, index) => (
-                      <div key={`${product.id}-${index}-${image}`} className="product-gallery-item">
-                        <img src={image} alt={`${product.name} • фото ${index + 1}`} loading="lazy" />
-                        {productImages.length > 1 && (
-                          <span className="product-gallery-counter">
-                            {index + 1}/{productImages.length}
-                          </span>
-                        )}
-                      </div>
-                    ))}
+                  <div className="relative">
+                    <div
+                      ref={(node) => setProductGalleryRef(product.id, node)}
+                      className="product-gallery"
+                      onScroll={(event) => handleProductGalleryScroll(product.id, event)}
+                      onPointerDown={(event) => handleGalleryPointerDown(event, product.id)}
+                      onPointerMove={(event) => handleGalleryPointerMove(event, product.id)}
+                      onPointerUp={(event) => handleGalleryPointerEnd(event, product.id)}
+                      onPointerCancel={(event) => handleGalleryPointerEnd(event, product.id)}
+                      onPointerLeave={(event) => handleGalleryPointerEnd(event, product.id)}
+                      onClick={(event) => handleGalleryClick(event, product.id)}
+                    >
+                      {productImages.map((image, index) => (
+                        <div key={`${product.id}-${index}-${image}`} className="product-gallery-item">
+                          <img src={image} alt={`${product.name} • фото ${index + 1}`} loading="lazy" />
+                        </div>
+                      ))}
+                    </div>
+                    {productImages.length > 1 && (
+                      <>
+                        <button
+                          type="button"
+                          className="brutal-box brutal-input absolute left-2 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center bg-white/90"
+                          aria-label="Предыдущее фото"
+                          onClick={(event) =>
+                            handleProductGalleryNav(event, product.id, -1, productImages.length)
+                          }
+                        >
+                          <ChevronLeft className="h-4 w-4" />
+                        </button>
+                        <button
+                          type="button"
+                          className="brutal-box brutal-input absolute right-2 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center bg-white/90"
+                          aria-label="Следующее фото"
+                          onClick={(event) =>
+                            handleProductGalleryNav(event, product.id, 1, productImages.length)
+                          }
+                        >
+                          <ChevronRight className="h-4 w-4" />
+                        </button>
+                        <span className="product-gallery-counter">
+                          {productImageIndex + 1}/{productImages.length}
+                        </span>
+                      </>
+                    )}
                   </div>
                   <div className="flex flex-1 flex-col p-2">
                     <div className="mb-2 flex items-start justify-between gap-2">
@@ -1377,31 +1555,28 @@ export default function App() {
 
           <div className="brutal-box relative mb-6 bg-white p-4">
             <div className="heading-font absolute -left-3 -top-3 bg-black px-2 py-1 text-white">О НАС</div>
-            <h2 className="heading-font mt-2 mb-2 text-4xl uppercase">О нас</h2>
-            <div className="space-y-3 text-sm font-bold leading-relaxed">
+            <div className="space-y-3 pt-2 text-sm font-bold leading-relaxed">
               <p className="border-l-4 border-black bg-[#E0E0E0] p-2">
-                Ресейл магазин, продвигающий вторичное использование одежды. У нас вы можете найти как
-                винтажные Американских джинсы Levi&apos;s, так и одежду Итальянского бренда Stone Island - в
-                идеальном состоянии. А так же премиум бренды и современную актуальную базу.
+                Цикл - ресейл-магазин, который продвигает осознанное вторичное использование одежды. У нас
+                можно найти и винтажные американские джинсы Levi&apos;s, и вещи итальянского бренда Stone
+                Island в отличном состоянии. Также в ассортименте представлены премиальные бренды и
+                современная актуальная база.
               </p>
               <p>
-                Цикл запустил программу по эко-потреблению! Мы принимаем для переработки батарейки,
-                фломастеры, чеки, зубные щетки, винные пробки, крышки от бутылок (двойки), карты, ручки,
-                тюбики. Помимо этого мы принимаем вещи от всех желающих! Модники, ценители лучших брендов
-                и винтажа, теперь мы выкупаем самые интересные вещи, а так же принимаем одежду на
-                реализацию или в дар. У вас будет возможность получить деньги или выбрать что-то интересное
-                в магазине на сумму равную стоимости этой вещи. Мы отдаем не использованную одежду на
-                благотворительность. Если вы хотите освободить свой гардероб - теперь вы знаете, как это
-                можно сделать.
+                Цикл запустил программу эко-потребления. Мы принимаем на переработку батарейки, фломастеры,
+                чеки, зубные щетки, винные пробки, крышки от бутылок (двойки), пластиковые карты, ручки и
+                тюбики. Кроме этого, принимаем одежду от всех желающих: выкупаем интересные позиции,
+                берем вещи на реализацию или в дар. Вы можете получить деньги или выбрать вещь в магазине
+                на сумму, равную оценке вашего изделия. Невостребованную одежду передаем на
+                благотворительность. Если хотите освободить гардероб, теперь это можно сделать экологично
+                и с пользой.
               </p>
             </div>
           </div>
 
           <div className="brutal-box mb-6 bg-white p-2">
             <div className="mb-2 flex items-center justify-between gap-2">
-              <h3 className="heading-font inline-block bg-black px-2 text-2xl text-white">
-                ИНТЕРЬЕР • ЯНДЕКС КАРТЫ
-              </h3>
+              <h3 className="heading-font inline-block bg-black px-2 text-2xl text-white">ИНТЕРЬЕР</h3>
               <a
                 href={YANDEX_ORG_GALLERY_URL}
                 target="_blank"
@@ -1412,24 +1587,59 @@ export default function App() {
               </a>
             </div>
 
-            <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2" data-stories-track>
-              {YANDEX_INTERIOR_PHOTOS.map((photo, index) => (
-                <button
-                  type="button"
-                  key={photo}
-                  className="image-zoom-trigger relative h-72 w-[84%] shrink-0 snap-start overflow-hidden border-[3px] border-black"
-                  onClick={() =>
-                    openImageZoom(photo, `Интерьер ЦИКЛ — фото ${index + 1} из Яндекс Карт`)
-                  }
-                >
-                  <img
-                    src={photo}
-                    alt={`Интерьер ЦИКЛ — фото ${index + 1} из Яндекс Карт`}
-                    className="h-full w-full object-cover"
-                    loading="lazy"
-                  />
-                </button>
-              ))}
+            <div className="relative">
+              <div
+                ref={interiorGalleryRef}
+                className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2"
+                data-stories-track
+                onScroll={handleInteriorGalleryScroll}
+              >
+                {YANDEX_INTERIOR_PHOTOS.map((photo, index) => (
+                  <button
+                    type="button"
+                    key={photo}
+                    className="image-zoom-trigger relative h-72 w-[84%] shrink-0 snap-start overflow-hidden border-[3px] border-black"
+                    onClick={() =>
+                      openImageZoom(photo, `Интерьер ЦИКЛ — фото ${index + 1} из Яндекс Карт`)
+                    }
+                  >
+                    <img
+                      src={photo}
+                      alt={`Интерьер ЦИКЛ — фото ${index + 1} из Яндекс Карт`}
+                      className="h-full w-full object-cover"
+                      loading="lazy"
+                    />
+                  </button>
+                ))}
+              </div>
+              {YANDEX_INTERIOR_PHOTOS.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    className="brutal-box brutal-input absolute left-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center bg-white/90"
+                    aria-label="Предыдущее фото интерьера"
+                    onClick={(event) =>
+                      handleInteriorGalleryNav(event, -1, YANDEX_INTERIOR_PHOTOS.length)
+                    }
+                  >
+                    <ChevronLeft className="h-5 w-5" />
+                  </button>
+                  <button
+                    type="button"
+                    className="brutal-box brutal-input absolute right-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center bg-white/90"
+                    aria-label="Следующее фото интерьера"
+                    onClick={(event) =>
+                      handleInteriorGalleryNav(event, 1, YANDEX_INTERIOR_PHOTOS.length)
+                    }
+                  >
+                    <ChevronRight className="h-5 w-5" />
+                  </button>
+                  <span className="product-gallery-counter">
+                    {clampGalleryIndex(interiorImageIndex, YANDEX_INTERIOR_PHOTOS.length) + 1}/
+                    {YANDEX_INTERIOR_PHOTOS.length}
+                  </span>
+                </>
+              )}
             </div>
           </div>
 
@@ -1528,7 +1738,7 @@ export default function App() {
                       <p className="mt-1 text-[14px] leading-none tracking-[0.15em] text-[var(--soviet-red)]">
                         {'★'.repeat(review.rating)}
                       </p>
-                      <p className="mt-2 border-l-[3px] border-black bg-[#e7e2db] p-2 text-[12px] font-bold uppercase leading-snug">
+                      <p className="mt-2 border-l-[3px] border-black bg-[#e7e2db] p-2 text-[12px] font-bold leading-snug">
                         {review.text}
                       </p>
                     </div>
@@ -1602,7 +1812,7 @@ export default function App() {
       {activeProduct && (
         <div
           className="fixed inset-0 z-[190] bg-black/70 p-3 backdrop-blur-[2px]"
-          onClick={() => setActiveProduct(null)}
+          onClick={closeProductPost}
         >
           <article
             className="product-focus-shell brutal-box mx-auto mt-12 max-w-md overflow-hidden"
@@ -1618,31 +1828,68 @@ export default function App() {
               </span>
               <button
                 className="flex h-8 w-8 items-center justify-center border-2 border-white bg-black text-white"
-                onClick={() => setActiveProduct(null)}
+                onClick={closeProductPost}
                 aria-label="Закрыть описание товара"
               >
                 <X className="h-4 w-4" />
               </button>
             </div>
 
-            <div className="grid grid-cols-2 gap-[2px] border-b-[3px] border-black bg-black p-[2px]">
-              <img
-                src={activeProduct.images[0]}
-                alt={activeProduct.name}
-                className="image-zoom-trigger aspect-[3/4] w-full object-cover"
-                onClick={() => openImageZoom(activeProduct.images[0], activeProduct.name)}
-              />
-              <img
-                src={activeProduct.images[1] ?? activeProduct.images[0]}
-                alt={`${activeProduct.name} detail`}
-                className="image-zoom-trigger aspect-[3/4] w-full object-cover"
-                onClick={() =>
-                  openImageZoom(
-                    activeProduct.images[1] ?? activeProduct.images[0],
-                    `${activeProduct.name} detail`,
-                  )
-                }
-              />
+            <div className="relative border-b-[3px] border-black bg-black p-[2px]">
+              <div
+                ref={activeProductGalleryRef}
+                className="flex snap-x snap-mandatory overflow-x-auto"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                onScroll={handleActiveProductGalleryScroll}
+              >
+                {activeProductImages.map((image, index) => (
+                  <button
+                    type="button"
+                    key={`${activeProduct.id}-modal-${index}-${image}`}
+                    className="image-zoom-trigger relative block w-full shrink-0 snap-start"
+                    onClick={() =>
+                      openImageZoom(
+                        image,
+                        `${activeProduct.name} • фото ${index + 1}/${activeProductImages.length}`,
+                      )
+                    }
+                  >
+                    <img
+                      src={image}
+                      alt={`${activeProduct.name} • фото ${index + 1}`}
+                      className="aspect-[3/4] w-full object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+              {activeProductImages.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    className="brutal-box brutal-input absolute left-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center bg-white/90"
+                    aria-label="Предыдущее фото товара"
+                    onClick={(event) =>
+                      handleActiveProductGalleryNav(event, -1, activeProductImages.length)
+                    }
+                  >
+                    <ChevronLeft className="h-5 w-5" />
+                  </button>
+                  <button
+                    type="button"
+                    className="brutal-box brutal-input absolute right-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center bg-white/90"
+                    aria-label="Следующее фото товара"
+                    onClick={(event) =>
+                      handleActiveProductGalleryNav(event, 1, activeProductImages.length)
+                    }
+                  >
+                    <ChevronRight className="h-5 w-5" />
+                  </button>
+                  <span className="product-gallery-counter">
+                    {clampGalleryIndex(activeProductImageIndex, activeProductImages.length) + 1}/
+                    {activeProductImages.length}
+                  </span>
+                </>
+              )}
             </div>
 
             <div className="bg-[var(--bg-paper)] p-4">
@@ -1693,7 +1940,7 @@ export default function App() {
                 </button>
                 <button
                   className="brutal-box brutal-input w-[92px] bg-[#E0E0E0] px-2 py-2 text-[11px] font-bold"
-                  onClick={() => setActiveProduct(null)}
+                  onClick={closeProductPost}
                 >
                   ЗАКРЫТЬ
                 </button>

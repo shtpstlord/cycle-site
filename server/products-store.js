@@ -431,6 +431,52 @@ export async function upsertProductsBySource(incomingProducts) {
   }
 }
 
+export async function pruneProductsBySourceKeys(sourceKeys, options = {}) {
+  const normalizedKeys = new Set(
+    [...(sourceKeys ?? [])]
+      .filter(Boolean)
+      .map((item) => String(item).trim().toLowerCase())
+      .filter(Boolean),
+  )
+
+  const channelFilterRaw = normalizeString(options.channel).toLowerCase()
+  const channelFilter = channelFilterRaw || null
+  const current = await readProducts()
+  const kept = []
+  let removed = 0
+
+  for (const product of current) {
+    const normalized = normalizeProduct(product, product.id)
+    const isTelegram = normalized.sourceType === SOURCE_TYPE_TELEGRAM
+    const channel = normalizeString(normalized.sourceChannel).toLowerCase()
+    const inScope = isTelegram && (!channelFilter || channel === channelFilter)
+
+    if (!inScope) {
+      kept.push(normalized)
+      continue
+    }
+
+    const sourceKey = buildSourceKey(normalized.sourceChannel, normalized.sourcePostId)?.toLowerCase()
+    if (!sourceKey || !normalizedKeys.has(sourceKey)) {
+      removed += 1
+      continue
+    }
+
+    kept.push(normalized)
+  }
+
+  if (removed > 0) {
+    await writeProducts(sortProducts(kept))
+  }
+
+  return {
+    total: current.length,
+    kept: kept.length,
+    removed,
+    changed: removed > 0,
+  }
+}
+
 export async function cleanupProductsStore(options = {}) {
   const keepOnlyTelegram = options.keepOnlyTelegram !== false
   const current = await readProducts()

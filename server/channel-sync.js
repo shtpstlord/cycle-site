@@ -1,5 +1,5 @@
 import { parseTelegramPost } from './post-parser.js'
-import { upsertProductsBySource } from './products-store.js'
+import { pruneProductsBySourceKeys, upsertProductsBySource } from './products-store.js'
 
 const DEFAULT_CHANNEL_USERNAME = 'cycle_showroom'
 const DEFAULT_SYNC_ENABLED = true
@@ -274,27 +274,23 @@ function removeOrderLine(text) {
     .trim()
 }
 
-function isLikelyProductPost(post, parsed, status) {
+function isStrictProductPost(post, parsed) {
   if (!post?.text || !Array.isArray(post.images) || post.images.length === 0) {
     return false
   }
 
-  if (Number(parsed?.price) > 0) {
-    return true
+  if (!parsed) {
+    return false
   }
 
-  if (status !== 'available') {
-    return true
-  }
-
-  return /(размер|цена|price|size|₽|руб|р\.)/i.test(post.text)
+  return Boolean(parsed.size && Number(parsed.price) > 0)
 }
 
 function postToProduct(post, defaultChannel) {
   const parsed = parseTelegramPost(post.text)
   const status = detectStatus(post.text)
 
-  if (!isLikelyProductPost(post, parsed, status)) {
+  if (!isStrictProductPost(post, parsed)) {
     return null
   }
 
@@ -439,6 +435,26 @@ export async function syncChannelOnce(overrides = {}) {
     .filter(Boolean)
 
   const upsertResult = await upsertProductsBySource(cards)
+  let pruneResult = null
+
+  if (config.fullSync) {
+    const sourceKeys = new Set(
+      cards
+        .map((card) => {
+          const channel = String(card.sourceChannel ?? '').trim().toLowerCase()
+          const postId = String(card.sourcePostId ?? '').trim()
+          if (!channel || !postId) {
+            return null
+          }
+          return `${channel}:${postId}`
+        })
+        .filter(Boolean),
+    )
+
+    pruneResult = await pruneProductsBySourceKeys(sourceKeys, {
+      channel: config.username,
+    })
+  }
 
   return {
     ok: true,
@@ -450,6 +466,8 @@ export async function syncChannelOnce(overrides = {}) {
     created: upsertResult.created,
     updated: upsertResult.updated,
     skippedItems: upsertResult.skipped,
+    removedByStrictFilter: pruneResult?.removed ?? 0,
+    totalAfterStrictFilter: pruneResult?.kept ?? null,
   }
 }
 
@@ -512,3 +530,4 @@ export async function startChannelSync(overrides = {}) {
     runNow: async () => run('manual'),
   }
 }
+
