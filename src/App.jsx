@@ -2,9 +2,8 @@
 import {
   Archive,
   ArrowDown,
+  ArrowUp,
   ChevronDown,
-  ChevronLeft,
-  ChevronRight,
   Ghost,
   House,
   Info,
@@ -69,6 +68,7 @@ const CATEGORY_LABELS = {
 }
 const SIZE_PRIORITY = ['XXXS', 'XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'ONE SIZE']
 const ORDER_LINE_REGEX = /для\s+заказа\s+к\s*@cycle_order/i
+const TELEGRAM_ORDER_USERNAME = 'shtpstlord'
 
 const SEED_PRODUCTS = [
   {
@@ -196,6 +196,13 @@ const FEATURED_REVIEWS = [
       'Удобно, что на карточках сразу указаны актуальные размеры и цены. Благодаря этому легко ориентироваться по ассортименту и быстро находить нужную вещь. Хороший сервис и честное состояние одежды.',
   },
 ]
+const FALLBACK_YANDEX_SUMMARY = {
+  title: 'Цикл',
+  ratingValue: 4.9,
+  ratingCount: 111,
+  reviewCount: 60,
+  photosCount: YANDEX_INTERIOR_PHOTOS.length,
+}
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '')
 const PRODUCT_STATUS_META = {
   available: {
@@ -220,6 +227,113 @@ function buildApiUrl(path) {
     return path
   }
   return `${API_BASE_URL}${path}`
+}
+
+function buildApiCandidateUrls(path) {
+  const candidates = [buildApiUrl(path)]
+  if (API_BASE_URL) {
+    candidates.push(path)
+  }
+  return [...new Set(candidates)]
+}
+
+async function fetchJsonWithApiFallback(path, options = {}) {
+  let lastError = null
+
+  for (const url of buildApiCandidateUrls(path)) {
+    try {
+      const response = await fetch(url, options)
+      if (!response.ok) {
+        lastError = new Error(`Request failed with status ${response.status} for ${url}`)
+        continue
+      }
+      return await response.json()
+    } catch (error) {
+      if (error?.name === 'AbortError') {
+        throw error
+      }
+      lastError = error
+    }
+  }
+
+  throw lastError ?? new Error(`Failed to fetch ${path}`)
+}
+
+function isTelegramCdnImageUrl(value) {
+  if (typeof value !== 'string' || !value.trim()) {
+    return false
+  }
+
+  try {
+    const parsed = new URL(value)
+    const host = parsed.hostname.toLowerCase()
+    return host === 'telesco.pe' || host.endsWith('.telesco.pe')
+  } catch {
+    return false
+  }
+}
+
+function buildImageProxyUrl(value) {
+  return buildApiUrl(`/api/image-proxy?url=${encodeURIComponent(value)}`)
+}
+
+function getDisplayImageSource(value) {
+  const source = String(value ?? '').trim()
+  if (!source) {
+    return {
+      src: cycleLogoOriginal,
+      fallbackSrc: '',
+    }
+  }
+
+  if (isTelegramCdnImageUrl(source)) {
+    return {
+      src: buildImageProxyUrl(source),
+      fallbackSrc: source,
+    }
+  }
+
+  return {
+    src: source,
+    fallbackSrc: '',
+  }
+}
+
+function handleDisplayImageError(event) {
+  const target = event.currentTarget
+  const fallbackSrc = target.dataset.fallbackSrc
+
+  if (fallbackSrc) {
+    target.dataset.fallbackSrc = ''
+    target.src = fallbackSrc
+    return
+  }
+
+  target.src = cycleLogoOriginal
+}
+
+function buildTelegramOrderMessage(items, totalAmount) {
+  const lines = [
+    'Здравствуйте! Хочу оформить заказ:',
+    '',
+  ]
+
+  items.forEach((item, index) => {
+    lines.push(
+      `${index + 1}. ${item.name}`,
+      `Размер: ${item.size}`,
+      `Цена: ${formatRub(item.price)}`,
+      `Ссылка: ${item.sourceUrl || 'нет'}`,
+      '',
+    )
+  })
+
+  lines.push(`Итого: ${formatRub(totalAmount)}`)
+  return lines.join('\n').trim()
+}
+
+function buildTelegramOrderUrl(message) {
+  return `https://t.me/${TELEGRAM_ORDER_USERNAME}?text=${encodeURIComponent(message)}`
 }
 
 function formatRub(price) {
@@ -382,7 +496,20 @@ export default function App() {
   const [zoomViewer, setZoomViewer] = useState(null)
   const [zoomScale, setZoomScale] = useState(1)
   const [zoomOffset, setZoomOffset] = useState({ x: 0, y: 0 })
+  const [showScrollTopButton, setShowScrollTopButton] = useState(false)
   const [products, setProducts] = useState(() => SEED_PRODUCTS.map((product) => normalizeProduct(product)))
+  const [yandexLiveData, setYandexLiveData] = useState(() => ({
+    summary: FALLBACK_YANDEX_SUMMARY,
+    photos: YANDEX_INTERIOR_PHOTOS,
+    reviews: FEATURED_REVIEWS.map((review) => ({
+      ...review,
+      dateLabel: review.date,
+      avatarUrl: null,
+      photos: [],
+    })),
+    updatedAt: null,
+  }))
+  const [yandexLiveError, setYandexLiveError] = useState('')
 
   const [cartItems, setCartItems] = useState([])
   const [flashCartNav, setFlashCartNav] = useState(false)
@@ -401,16 +528,23 @@ export default function App() {
   const cartFlashTimerRef = useRef(null)
   const mapTransitionTimerRef = useRef(null)
   const productGalleryRefs = useRef(new Map())
+  const productGallerySettleTimersRef = useRef(new Map())
   const activeProductGalleryRef = useRef(null)
+  const activeProductGallerySettleTimerRef = useRef(null)
   const interiorGalleryRef = useRef(null)
+  const interiorGallerySettleTimerRef = useRef(null)
   const zoomPointersRef = useRef(new Map())
   const zoomDragRef = useRef({ active: false, lastX: 0, lastY: 0 })
   const zoomPinchRef = useRef({ startDistance: 0, startScale: 1 })
   const galleryGestureRef = useRef({
     productId: null,
     pointerId: null,
+    pointerType: '',
+    total: 1,
     startX: 0,
     startY: 0,
+    deltaX: 0,
+    deltaY: 0,
     moved: false,
   })
   const suppressProductOpenRef = useRef(new Set())
@@ -424,6 +558,21 @@ export default function App() {
     [cartItems],
   )
   const cartProductIds = useMemo(() => new Set(cartItems.map((item) => item.id)), [cartItems])
+  const yandexPhotos =
+    Array.isArray(yandexLiveData.photos) && yandexLiveData.photos.length > 0
+      ? yandexLiveData.photos
+      : YANDEX_INTERIOR_PHOTOS
+  const yandexReviews =
+    Array.isArray(yandexLiveData.reviews) && yandexLiveData.reviews.length > 0
+      ? yandexLiveData.reviews
+      : FEATURED_REVIEWS
+  const yandexSummary = yandexLiveData.summary ?? FALLBACK_YANDEX_SUMMARY
+  const yandexUpdatedAtLabel = yandexLiveData.updatedAt
+    ? new Date(yandexLiveData.updatedAt).toLocaleTimeString('ru-RU', {
+        hour: '2-digit',
+        minute: '2-digit',
+      })
+    : ''
   const scopedProducts = useMemo(() => {
     if (catalogMode === 'archive') {
       return products.filter((product) => normalizeProductStatus(product.status) === 'sold')
@@ -512,23 +661,41 @@ export default function App() {
     const abortController = new AbortController()
 
     const loadProducts = async () => {
-      try {
-        const response = await fetch(buildApiUrl('/api/products'), {
-          signal: abortController.signal,
-        })
-        if (!response.ok) {
-          return
-        }
-
-        const payload = await response.json()
-        if (!Array.isArray(payload?.products)) {
-          return
+      const applyProductsPayload = (payload) => {
+        if (!Array.isArray(payload?.products) || payload.products.length === 0) {
+          return false
         }
 
         setProducts(payload.products.map((product) => normalizeProduct(product)))
+        return true
+      }
+
+      try {
+        const payload = await fetchJsonWithApiFallback('/api/products', {
+          signal: abortController.signal,
+        })
+        if (applyProductsPayload(payload)) {
+          return
+        }
       } catch (error) {
         if (error?.name !== 'AbortError') {
           console.error('Failed to load products from API:', error)
+        }
+      }
+
+      try {
+        const snapshotResponse = await fetch('/data/products.json', {
+          signal: abortController.signal,
+        })
+        if (!snapshotResponse.ok) {
+          return
+        }
+
+        const snapshotPayload = await snapshotResponse.json()
+        applyProductsPayload(snapshotPayload)
+      } catch (error) {
+        if (error?.name !== 'AbortError') {
+          console.error('Failed to load products from local snapshot:', error)
         }
       }
     }
@@ -541,6 +708,94 @@ export default function App() {
   }, [])
 
   useEffect(() => {
+    let pollingTimer = null
+    let requestInFlight = false
+    const abortController = new AbortController()
+
+    const applyYandexPayload = (payload) => {
+      if (!payload?.ok) {
+        return false
+      }
+
+      setYandexLiveData((prev) => ({
+        summary: payload.summary ?? prev.summary ?? FALLBACK_YANDEX_SUMMARY,
+        photos: Array.isArray(payload.photos) && payload.photos.length > 0 ? payload.photos : prev.photos,
+        reviews:
+          Array.isArray(payload.reviews) && payload.reviews.length > 0 ? payload.reviews : prev.reviews,
+        updatedAt: payload.updatedAt ?? prev.updatedAt ?? null,
+      }))
+      return true
+    }
+
+    const loadYandexLiveData = async () => {
+      if (requestInFlight) {
+        return
+      }
+
+      requestInFlight = true
+      let apiError = null
+
+      try {
+        try {
+          const payload = await fetchJsonWithApiFallback('/api/yandex-live', {
+            signal: abortController.signal,
+          })
+          if (applyYandexPayload(payload)) {
+            setYandexLiveError('')
+            return
+          }
+          apiError = new Error(payload?.error || 'Invalid Yandex payload')
+        } catch (error) {
+          if (error?.name === 'AbortError') {
+            return
+          }
+          apiError = error
+        }
+
+        try {
+          const snapshotPayload = await fetchJsonWithApiFallback('/data/yandex-snapshot.json', {
+            signal: abortController.signal,
+          })
+          if (applyYandexPayload(snapshotPayload)) {
+            setYandexLiveError('')
+            if (apiError) {
+              console.warn('Yandex API is unavailable, using stored snapshot:', apiError)
+            }
+            return
+          }
+        } catch (snapshotError) {
+          if (snapshotError?.name !== 'AbortError') {
+            console.warn('Failed to load Yandex snapshot fallback:', snapshotError)
+          }
+        }
+
+        if (apiError) {
+          console.error('Failed to load Yandex live data:', apiError)
+        }
+      } finally {
+        setYandexLiveError('')
+        requestInFlight = false
+      }
+    }
+
+    loadYandexLiveData()
+    pollingTimer = setInterval(loadYandexLiveData, 90_000)
+
+    return () => {
+      if (pollingTimer) {
+        clearInterval(pollingTimer)
+      }
+      abortController.abort()
+    }
+  }, [])
+
+  useEffect(() => {
+    setInteriorImageIndex((prev) => Math.min(prev, Math.max(yandexPhotos.length - 1, 0)))
+  }, [yandexPhotos.length])
+
+  useEffect(() => {
+    const productGallerySettleTimers = productGallerySettleTimersRef.current
+
     splashIntroTimerRef.current = setTimeout(() => {
       setShowSplashArrow(true)
     }, 1500)
@@ -567,6 +822,20 @@ export default function App() {
       if (mapTransitionTimerRef.current) {
         clearTimeout(mapTransitionTimerRef.current)
       }
+      const activeGalleryTimer = activeProductGallerySettleTimerRef.current
+      if (activeGalleryTimer) {
+        clearTimeout(activeGalleryTimer)
+      }
+      const interiorGalleryTimer = interiorGallerySettleTimerRef.current
+      if (interiorGalleryTimer) {
+        clearTimeout(interiorGalleryTimer)
+      }
+      activeProductGallerySettleTimerRef.current = null
+      interiorGallerySettleTimerRef.current = null
+      productGallerySettleTimers.forEach((timerId) => {
+        clearTimeout(timerId)
+      })
+      productGallerySettleTimers.clear()
     }
   }, [])
 
@@ -657,6 +926,7 @@ export default function App() {
 
     closeAllSheets()
     setIsBottomNavVisible(true)
+    setShowScrollTopButton(false)
     setCurrentScreen(target)
 
     requestAnimationFrame(() => {
@@ -728,13 +998,34 @@ export default function App() {
 
     if (currentTop < 20) {
       setIsBottomNavVisible(true)
+      setShowScrollTopButton(false)
     } else if (delta > 12 && currentTop > 80) {
       setIsBottomNavVisible(false)
     } else if (delta < -12) {
       setIsBottomNavVisible(true)
     }
 
+    if (currentTop <= 120) {
+      setShowScrollTopButton(false)
+    } else if (delta < -8 && currentTop > 220) {
+      setShowScrollTopButton(true)
+    } else if (delta > 14) {
+      setShowScrollTopButton(false)
+    }
+
     lastScreenScrollRef.current[screen] = currentTop
+  }
+
+  const scrollCurrentScreenToTop = () => {
+    const activeNode =
+      currentScreen === 'home'
+        ? homeScreenRef.current
+        : currentScreen === 'cart'
+          ? cartScreenRef.current
+          : aboutScreenRef.current
+
+    activeNode?.scrollTo({ top: 0, behavior: 'smooth' })
+    setShowScrollTopButton(false)
   }
 
   const isProductInCart = (productId) => cartProductIds.has(productId)
@@ -762,6 +1053,16 @@ export default function App() {
 
   const removeFromCart = (productId) => {
     setCartItems((prev) => prev.filter((item) => item.id !== productId))
+  }
+
+  const submitCartOrder = () => {
+    if (cartItems.length === 0 || typeof window === 'undefined') {
+      return
+    }
+
+    const message = buildTelegramOrderMessage(cartItems, cartTotal)
+    const orderUrl = buildTelegramOrderUrl(message)
+    window.open(orderUrl, '_blank', 'noopener,noreferrer')
   }
 
   const closeStory = () => {
@@ -822,12 +1123,16 @@ export default function App() {
     return true
   }
 
-  const handleGalleryPointerDown = (event, productId) => {
+  const handleGalleryPointerDown = (event, productId, total) => {
     galleryGestureRef.current = {
       productId,
       pointerId: event.pointerId,
+      pointerType: event.pointerType || '',
+      total,
       startX: event.clientX,
       startY: event.clientY,
+      deltaX: 0,
+      deltaY: 0,
       moved: false,
     }
   }
@@ -840,7 +1145,10 @@ export default function App() {
 
     const deltaX = event.clientX - gesture.startX
     const deltaY = event.clientY - gesture.startY
-    if (Math.abs(deltaX) > 12 && Math.abs(deltaX) > Math.abs(deltaY)) {
+    gesture.deltaX = deltaX
+    gesture.deltaY = deltaY
+
+    if (Math.abs(deltaX) > 18 && Math.abs(deltaX) > Math.abs(deltaY) * 1.35) {
       gesture.moved = true
     }
   }
@@ -853,13 +1161,22 @@ export default function App() {
 
     if (gesture.moved) {
       setSuppressProductOpen(productId)
+
+      if (gesture.pointerType === 'touch' && Math.abs(gesture.deltaX) > 40) {
+        const step = gesture.deltaX < 0 ? 1 : -1
+        navigateProductGallery(productId, step, gesture.total)
+      }
     }
 
     galleryGestureRef.current = {
       productId: null,
       pointerId: null,
+      pointerType: '',
+      total: 1,
       startX: 0,
       startY: 0,
+      deltaX: 0,
+      deltaY: 0,
       moved: false,
     }
   }
@@ -881,26 +1198,79 @@ export default function App() {
 
   const clampGalleryIndex = (value, total) => Math.max(0, Math.min(total - 1, value))
 
-  const getClosestGalleryIndex = (container) => {
+  const getGalleryIndexByScrollPosition = (container, total) => {
     const galleryItems = getGalleryItems(container)
     if (galleryItems.length === 0) {
       return 0
     }
 
-    const viewportCenter = container.scrollLeft + container.clientWidth / 2
+    const safeTotal = total > 0 ? total : galleryItems.length
+    const viewportStart = container.scrollLeft
     let closestIndex = 0
     let closestDistance = Number.POSITIVE_INFINITY
 
     galleryItems.forEach((item, index) => {
-      const itemCenter = item.offsetLeft + item.offsetWidth / 2
-      const distance = Math.abs(itemCenter - viewportCenter)
+      const distance = Math.abs(item.offsetLeft - viewportStart)
       if (distance < closestDistance) {
         closestDistance = distance
         closestIndex = index
       }
     })
 
+    return clampGalleryIndex(closestIndex, safeTotal)
+  }
+
+  const getSnappedGalleryIndex = (container, total) => {
+    const galleryItems = getGalleryItems(container)
+    if (galleryItems.length === 0) {
+      return 0
+    }
+
+    const closestIndex = getGalleryIndexByScrollPosition(container, total)
+    const targetItem = galleryItems[closestIndex]
+    if (!targetItem) {
+      return null
+    }
+
+    const snapTolerance = Math.max(3, Math.min(18, container.clientWidth * 0.035))
+    const distanceToSnap = Math.abs(container.scrollLeft - targetItem.offsetLeft)
+
+    if (distanceToSnap > snapTolerance) {
+      return null
+    }
+
     return closestIndex
+  }
+
+  const scheduleSingleGalleryIndexCommit = (timerRef, container, total, setIndex) => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current)
+    }
+
+    timerRef.current = setTimeout(() => {
+      timerRef.current = null
+      const snappedIndex = getSnappedGalleryIndex(container, total)
+      if (snappedIndex !== null) {
+        setIndex(snappedIndex)
+      }
+    }, 110)
+  }
+
+  const scheduleProductGalleryIndexCommit = (productId, container, total) => {
+    const prevTimer = productGallerySettleTimersRef.current.get(productId)
+    if (prevTimer) {
+      clearTimeout(prevTimer)
+    }
+
+    const timerId = setTimeout(() => {
+      productGallerySettleTimersRef.current.delete(productId)
+      const snappedIndex = getSnappedGalleryIndex(container, total)
+      if (snappedIndex !== null) {
+        setProductGalleryIndex(productId, snappedIndex)
+      }
+    }, 110)
+
+    productGallerySettleTimersRef.current.set(productId, timerId)
   }
 
   const scrollGalleryToIndex = (container, index) => {
@@ -922,6 +1292,11 @@ export default function App() {
       return
     }
     productGalleryRefs.current.delete(productId)
+    const settleTimer = productGallerySettleTimersRef.current.get(productId)
+    if (settleTimer) {
+      clearTimeout(settleTimer)
+      productGallerySettleTimersRef.current.delete(productId)
+    }
   }
 
   const setProductGalleryIndex = (productId, index) => {
@@ -933,14 +1308,11 @@ export default function App() {
     })
   }
 
-  const handleProductGalleryScroll = (productId, event) => {
-    const nextIndex = getClosestGalleryIndex(event.currentTarget)
-    setProductGalleryIndex(productId, nextIndex)
+  const handleProductGalleryScroll = (productId, total, event) => {
+    scheduleProductGalleryIndexCommit(productId, event.currentTarget, total)
   }
 
-  const handleProductGalleryNav = (event, productId, step, total) => {
-    event.preventDefault()
-    event.stopPropagation()
+  const navigateProductGallery = (productId, step, total) => {
     if (total < 2) {
       return
     }
@@ -950,16 +1322,26 @@ export default function App() {
       return
     }
 
-    const currentIndex = getClosestGalleryIndex(galleryNode)
+    const currentIndex = getGalleryIndexByScrollPosition(galleryNode, total)
     const nextIndex = clampGalleryIndex(currentIndex + step, total)
     scrollGalleryToIndex(galleryNode, nextIndex)
-    setProductGalleryIndex(productId, nextIndex)
+    scheduleProductGalleryIndexCommit(productId, galleryNode, total)
     setSuppressProductOpen(productId)
   }
 
-  const handleActiveProductGalleryScroll = (event) => {
-    const nextIndex = getClosestGalleryIndex(event.currentTarget)
-    setActiveProductImageIndex(nextIndex)
+  const handleProductGalleryNav = (event, productId, step, total) => {
+    event.preventDefault()
+    event.stopPropagation()
+    navigateProductGallery(productId, step, total)
+  }
+
+  const handleActiveProductGalleryScroll = (event, total) => {
+    scheduleSingleGalleryIndexCommit(
+      activeProductGallerySettleTimerRef,
+      event.currentTarget,
+      total,
+      setActiveProductImageIndex,
+    )
   }
 
   const handleActiveProductGalleryNav = (event, step, total) => {
@@ -969,15 +1351,24 @@ export default function App() {
       return
     }
 
-    const currentIndex = getClosestGalleryIndex(activeProductGalleryRef.current)
+    const currentIndex = getGalleryIndexByScrollPosition(activeProductGalleryRef.current, total)
     const nextIndex = clampGalleryIndex(currentIndex + step, total)
     scrollGalleryToIndex(activeProductGalleryRef.current, nextIndex)
-    setActiveProductImageIndex(nextIndex)
+    scheduleSingleGalleryIndexCommit(
+      activeProductGallerySettleTimerRef,
+      activeProductGalleryRef.current,
+      total,
+      setActiveProductImageIndex,
+    )
   }
 
-  const handleInteriorGalleryScroll = (event) => {
-    const nextIndex = getClosestGalleryIndex(event.currentTarget)
-    setInteriorImageIndex(nextIndex)
+  const handleInteriorGalleryScroll = (event, total) => {
+    scheduleSingleGalleryIndexCommit(
+      interiorGallerySettleTimerRef,
+      event.currentTarget,
+      total,
+      setInteriorImageIndex,
+    )
   }
 
   const handleInteriorGalleryNav = (event, step, total) => {
@@ -987,13 +1378,22 @@ export default function App() {
       return
     }
 
-    const currentIndex = getClosestGalleryIndex(interiorGalleryRef.current)
+    const currentIndex = getGalleryIndexByScrollPosition(interiorGalleryRef.current, total)
     const nextIndex = clampGalleryIndex(currentIndex + step, total)
     scrollGalleryToIndex(interiorGalleryRef.current, nextIndex)
-    setInteriorImageIndex(nextIndex)
+    scheduleSingleGalleryIndexCommit(
+      interiorGallerySettleTimerRef,
+      interiorGalleryRef.current,
+      total,
+      setInteriorImageIndex,
+    )
   }
 
   const closeProductPost = () => {
+    if (activeProductGallerySettleTimerRef.current) {
+      clearTimeout(activeProductGallerySettleTimerRef.current)
+      activeProductGallerySettleTimerRef.current = null
+    }
     setActiveProduct(null)
     setActiveProductImageIndex(0)
     if (activeProductGalleryRef.current) {
@@ -1004,6 +1404,10 @@ export default function App() {
   const openProductPost = (product) => {
     if (consumeSuppressProductOpen(product.id)) {
       return
+    }
+    if (activeProductGallerySettleTimerRef.current) {
+      clearTimeout(activeProductGallerySettleTimerRef.current)
+      activeProductGallerySettleTimerRef.current = null
     }
     setActiveProductImageIndex(0)
     if (activeProductGalleryRef.current) {
@@ -1048,8 +1452,8 @@ export default function App() {
     zoomPinchRef.current = { startDistance: 0, startScale: 1 }
   }
 
-  const openImageZoom = (src, alt) => {
-    setZoomViewer({ src, alt })
+  const openImageZoom = (src, alt, fallbackSrc = '') => {
+    setZoomViewer({ src, alt, fallbackSrc })
     setZoomScale(1)
     setZoomOffset({ x: 0, y: 0 })
     resetZoomRefs()
@@ -1400,56 +1804,70 @@ export default function App() {
                     <div
                       ref={(node) => setProductGalleryRef(product.id, node)}
                       className="product-gallery"
-                      onScroll={(event) => handleProductGalleryScroll(product.id, event)}
-                      onPointerDown={(event) => handleGalleryPointerDown(event, product.id)}
+                      onScroll={(event) =>
+                        handleProductGalleryScroll(product.id, productImages.length, event)
+                      }
+                      onPointerDown={(event) =>
+                        handleGalleryPointerDown(event, product.id, productImages.length)
+                      }
                       onPointerMove={(event) => handleGalleryPointerMove(event, product.id)}
                       onPointerUp={(event) => handleGalleryPointerEnd(event, product.id)}
                       onPointerCancel={(event) => handleGalleryPointerEnd(event, product.id)}
                       onPointerLeave={(event) => handleGalleryPointerEnd(event, product.id)}
                       onClick={(event) => handleGalleryClick(event, product.id)}
                     >
-                      {productImages.map((image, index) => (
-                        <div key={`${product.id}-${index}-${image}`} className="product-gallery-item">
-                          <img src={image} alt={`${product.name} • фото ${index + 1}`} loading="lazy" />
-                        </div>
-                      ))}
+                      {productImages.map((image, index) => {
+                        const { src, fallbackSrc } = getDisplayImageSource(image)
+
+                        return (
+                          <div key={`${product.id}-${index}-${image}`} className="product-gallery-item">
+                            <img
+                              src={src}
+                              data-fallback-src={fallbackSrc}
+                              onError={handleDisplayImageError}
+                              alt={`${product.name} • фото ${index + 1}`}
+                              loading="lazy"
+                            />
+                          </div>
+                        )
+                      })}
                     </div>
                     {productImages.length > 1 && (
                       <>
                         <button
                           type="button"
-                          className="brutal-box brutal-input absolute left-2 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center bg-white/90"
+                          className="gallery-tap-zone gallery-tap-zone-left"
                           aria-label="Предыдущее фото"
                           onClick={(event) =>
                             handleProductGalleryNav(event, product.id, -1, productImages.length)
                           }
-                        >
-                          <ChevronLeft className="h-4 w-4" />
-                        </button>
+                        />
                         <button
                           type="button"
-                          className="brutal-box brutal-input absolute right-2 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center bg-white/90"
+                          className="gallery-tap-zone gallery-tap-zone-right"
                           aria-label="Следующее фото"
                           onClick={(event) =>
                             handleProductGalleryNav(event, product.id, 1, productImages.length)
                           }
-                        >
-                          <ChevronRight className="h-4 w-4" />
-                        </button>
+                        />
+                      </>
+                    )}
+                    <div className="product-gallery-meta">
+                      <span className={`product-status-badge product-status-badge-overlay is-${productStatus}`}>
+                        {productStatusMeta.badge}
+                      </span>
+                      {productImages.length > 1 && (
                         <span className="product-gallery-counter">
                           {productImageIndex + 1}/{productImages.length}
                         </span>
-                      </>
-                    )}
+                      )}
+                    </div>
                   </div>
                   <div className="flex flex-1 flex-col p-2">
-                    <div className="mb-2 flex items-start justify-between gap-2">
+                    <div className="mb-2">
                       <h3 className="heading-font min-w-0 flex-1 text-[16px] leading-none uppercase">
                         {product.name}
                       </h3>
-                      <span className={`product-status-badge is-${productStatus}`}>
-                        {productStatusMeta.badge}
-                      </span>
                     </div>
                     <div className="mt-auto">
                       <div className="mb-1 inline-block border-[2px] border-black px-1 text-[10px] font-bold">
@@ -1506,7 +1924,7 @@ export default function App() {
           {cartItems.length === 0 ? (
             <div id="cart-empty" className="brutal-box border-dashed p-8 text-center text-lg font-bold">
               <Ghost className="mx-auto mb-2 h-10 w-10" />
-              ПУСТО. ВЫБЕРИТЕ ВЕЩЬ ИЗ АРХИВА.
+              ПУСТО.
             </div>
           ) : (
             <div id="cart-items" className="flex flex-col gap-3">
@@ -1537,7 +1955,13 @@ export default function App() {
                 {formatRub(cartTotal)}
               </span>
             </div>
-            <button className="brutal-btn heading-font w-full border-black bg-[var(--soviet-red)] py-4 text-2xl tracking-widest shadow-none active:transform-none">
+            <button
+              className={`brutal-btn heading-font w-full border-black py-4 text-2xl tracking-widest shadow-none active:transform-none ${
+                cartItems.length === 0 ? 'brutal-btn-disabled' : 'bg-[var(--soviet-red)]'
+              }`}
+              onClick={submitCartOrder}
+              disabled={cartItems.length === 0}
+            >
               ОФОРМИТЬ ЗАКАЗ
             </button>
           </div>
@@ -1592,52 +2016,55 @@ export default function App() {
                 ref={interiorGalleryRef}
                 className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2"
                 data-stories-track
-                onScroll={handleInteriorGalleryScroll}
+                onScroll={(event) => handleInteriorGalleryScroll(event, yandexPhotos.length)}
               >
-                {YANDEX_INTERIOR_PHOTOS.map((photo, index) => (
-                  <button
-                    type="button"
-                    key={photo}
-                    className="image-zoom-trigger relative h-72 w-[84%] shrink-0 snap-start overflow-hidden border-[3px] border-black"
-                    onClick={() =>
-                      openImageZoom(photo, `Интерьер ЦИКЛ — фото ${index + 1} из Яндекс Карт`)
-                    }
-                  >
-                    <img
-                      src={photo}
-                      alt={`Интерьер ЦИКЛ — фото ${index + 1} из Яндекс Карт`}
-                      className="h-full w-full object-cover"
-                      loading="lazy"
-                    />
-                  </button>
-                ))}
+                {yandexPhotos.map((photo, index) => {
+                  const { src, fallbackSrc } = getDisplayImageSource(photo)
+
+                  return (
+                    <button
+                      type="button"
+                      key={`${photo}-${index}`}
+                      className="image-zoom-trigger relative h-72 w-[84%] shrink-0 snap-start overflow-hidden border-[3px] border-black"
+                      onClick={() =>
+                        openImageZoom(src, `Интерьер ЦИКЛ — фото ${index + 1} из Яндекс Карт`, fallbackSrc)
+                      }
+                    >
+                      <img
+                        src={src}
+                        data-fallback-src={fallbackSrc}
+                        onError={handleDisplayImageError}
+                        alt={`Интерьер ЦИКЛ — фото ${index + 1} из Яндекс Карт`}
+                        className="h-full w-full object-cover"
+                        loading="lazy"
+                      />
+                    </button>
+                  )
+                })}
               </div>
-              {YANDEX_INTERIOR_PHOTOS.length > 1 && (
+              {yandexPhotos.length > 1 && (
                 <>
                   <button
                     type="button"
-                    className="brutal-box brutal-input absolute left-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center bg-white/90"
+                    className="gallery-tap-zone gallery-tap-zone-left"
                     aria-label="Предыдущее фото интерьера"
                     onClick={(event) =>
-                      handleInteriorGalleryNav(event, -1, YANDEX_INTERIOR_PHOTOS.length)
+                      handleInteriorGalleryNav(event, -1, yandexPhotos.length)
                     }
-                  >
-                    <ChevronLeft className="h-5 w-5" />
-                  </button>
+                  />
                   <button
                     type="button"
-                    className="brutal-box brutal-input absolute right-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center bg-white/90"
+                    className="gallery-tap-zone gallery-tap-zone-right"
                     aria-label="Следующее фото интерьера"
                     onClick={(event) =>
-                      handleInteriorGalleryNav(event, 1, YANDEX_INTERIOR_PHOTOS.length)
+                      handleInteriorGalleryNav(event, 1, yandexPhotos.length)
                     }
-                  >
-                    <ChevronRight className="h-5 w-5" />
-                  </button>
-                  <span className="product-gallery-counter">
-                    {clampGalleryIndex(interiorImageIndex, YANDEX_INTERIOR_PHOTOS.length) + 1}/
-                    {YANDEX_INTERIOR_PHOTOS.length}
-                  </span>
+                  />
+                  <div className="product-gallery-meta product-gallery-meta-counter-only">
+                    <span className="product-gallery-counter">
+                      {clampGalleryIndex(interiorImageIndex, yandexPhotos.length) + 1}/{yandexPhotos.length}
+                    </span>
+                  </div>
                 </>
               )}
             </div>
@@ -1675,10 +2102,17 @@ export default function App() {
           <div className="brutal-box mb-3 bg-white p-3">
             <div className="flex items-start justify-between gap-2 border-b-[3px] border-black pb-2">
               <div>
-                <p className="heading-font text-4xl leading-none">4.9</p>
-                <p className="text-[10px] font-bold uppercase text-black/70">
-                  Яндекс Карты • 59 отзывов • 111 оценок
+                <p className="heading-font text-4xl leading-none">
+                  {Number(yandexSummary.ratingValue || 0).toFixed(1)}
                 </p>
+                <p className="text-[10px] font-bold uppercase text-black/70">
+                  Яндекс Карты • {yandexSummary.reviewCount} отзывов • {yandexSummary.ratingCount} оценок
+                </p>
+                {yandexUpdatedAtLabel && (
+                  <p className="mt-1 text-[9px] font-bold uppercase text-black/50">
+                    обновлено {yandexUpdatedAtLabel}
+                  </p>
+                )}
               </div>
               <a
                 href={YANDEX_ORG_URL}
@@ -1724,28 +2158,66 @@ export default function App() {
             </div>
 
             <div className="reviews-feed max-h-[520px] overflow-y-auto pr-1">
-              {FEATURED_REVIEWS.map((review) => (
+              {yandexReviews.map((review, index) => (
                 <article key={review.id} className="brutal-box mb-3 bg-[var(--bg-paper)] p-3 last:mb-0">
                   <div className="flex gap-3">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center border-[3px] border-black bg-black text-lg font-bold text-white">
-                      {review.name.charAt(0)}
-                    </div>
+                    {review.avatarUrl ? (
+                      <img
+                        src={review.avatarUrl}
+                        alt={review.name}
+                        className="h-11 w-11 shrink-0 border-[3px] border-black object-cover"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center border-[3px] border-black bg-black text-lg font-bold text-white">
+                        {review.name.charAt(0)}
+                      </div>
+                    )}
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-start justify-between gap-x-2 gap-y-1">
                         <p className="heading-font text-xl leading-none uppercase">{review.name}</p>
-                        <p className="text-[10px] font-bold uppercase text-black/70">{review.date}</p>
+                        <p className="text-[10px] font-bold uppercase text-black/70">
+                          {review.dateLabel || review.date || ''}
+                        </p>
                       </div>
                       <p className="mt-1 text-[14px] leading-none tracking-[0.15em] text-[var(--soviet-red)]">
-                        {'★'.repeat(review.rating)}
+                        {'★'.repeat(Math.max(1, Number(review.rating) || 0))}
                       </p>
                       <p className="mt-2 border-l-[3px] border-black bg-[#e7e2db] p-2 text-[12px] font-bold leading-snug">
                         {review.text}
                       </p>
+                      {Array.isArray(review.photos) && review.photos.length > 0 && (
+                        <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
+                          {review.photos.map((photo) => (
+                            <button
+                              type="button"
+                              key={`${review.id}-${photo}`}
+                              className="image-zoom-trigger h-16 w-16 shrink-0 overflow-hidden border-[2px] border-black"
+                              onClick={() =>
+                                openImageZoom(
+                                  photo,
+                                  `${review.name} — фото отзыва ${index + 1}`,
+                                )
+                              }
+                            >
+                              <img
+                                src={photo}
+                                alt={`${review.name} — фото отзыва`}
+                                className="h-full w-full object-cover"
+                                loading="lazy"
+                              />
+                            </button>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </article>
               ))}
             </div>
+            {yandexLiveError && (
+              <p className="mt-2 text-[10px] font-bold uppercase text-[var(--soviet-red)]">{yandexLiveError}</p>
+            )}
           </div>
 
           <footer className="brutal-box adm-footer mt-6 mb-16 bg-white p-4">
@@ -1823,9 +2295,6 @@ export default function App() {
                 <p className="heading-font text-[18px] leading-none tracking-wide">КАРТОЧКА ТОВАРА</p>
                 <p className="truncate text-[10px] font-bold tracking-wide text-white/80">ЦИКЛ / АРХИВ ШОУРУМА</p>
               </div>
-              <span className={`product-status-badge is-${activeProductStatus}`}>
-                {activeProductStatusMeta.badge}
-              </span>
               <button
                 className="flex h-8 w-8 items-center justify-center border-2 border-white bg-black text-white"
                 onClick={closeProductPost}
@@ -1840,56 +2309,66 @@ export default function App() {
                 ref={activeProductGalleryRef}
                 className="flex snap-x snap-mandatory overflow-x-auto"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-                onScroll={handleActiveProductGalleryScroll}
+                onScroll={(event) => handleActiveProductGalleryScroll(event, activeProductImages.length)}
               >
-                {activeProductImages.map((image, index) => (
-                  <button
-                    type="button"
-                    key={`${activeProduct.id}-modal-${index}-${image}`}
-                    className="image-zoom-trigger relative block w-full shrink-0 snap-start"
-                    onClick={() =>
-                      openImageZoom(
-                        image,
-                        `${activeProduct.name} • фото ${index + 1}/${activeProductImages.length}`,
-                      )
-                    }
-                  >
-                    <img
-                      src={image}
-                      alt={`${activeProduct.name} • фото ${index + 1}`}
-                      className="aspect-[3/4] w-full object-cover"
-                    />
-                  </button>
-                ))}
+                {activeProductImages.map((image, index) => {
+                  const { src, fallbackSrc } = getDisplayImageSource(image)
+
+                  return (
+                    <button
+                      type="button"
+                      key={`${activeProduct.id}-modal-${index}-${image}`}
+                      className="image-zoom-trigger relative block w-full shrink-0 snap-start"
+                      onClick={() =>
+                        openImageZoom(
+                          src,
+                          `${activeProduct.name} • фото ${index + 1}/${activeProductImages.length}`,
+                          fallbackSrc,
+                        )
+                      }
+                    >
+                      <img
+                        src={src}
+                        data-fallback-src={fallbackSrc}
+                        onError={handleDisplayImageError}
+                        alt={`${activeProduct.name} • фото ${index + 1}`}
+                        className="aspect-[3/4] w-full object-cover"
+                      />
+                    </button>
+                  )
+                })}
               </div>
               {activeProductImages.length > 1 && (
                 <>
                   <button
                     type="button"
-                    className="brutal-box brutal-input absolute left-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center bg-white/90"
+                    className="gallery-tap-zone gallery-tap-zone-left"
                     aria-label="Предыдущее фото товара"
                     onClick={(event) =>
                       handleActiveProductGalleryNav(event, -1, activeProductImages.length)
                     }
-                  >
-                    <ChevronLeft className="h-5 w-5" />
-                  </button>
+                  />
                   <button
                     type="button"
-                    className="brutal-box brutal-input absolute right-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center bg-white/90"
+                    className="gallery-tap-zone gallery-tap-zone-right"
                     aria-label="Следующее фото товара"
                     onClick={(event) =>
                       handleActiveProductGalleryNav(event, 1, activeProductImages.length)
                     }
-                  >
-                    <ChevronRight className="h-5 w-5" />
-                  </button>
+                  />
+                </>
+              )}
+              <div className="product-gallery-meta">
+                <span className={`product-status-badge product-status-badge-overlay is-${activeProductStatus}`}>
+                  {activeProductStatusMeta.badge}
+                </span>
+                {activeProductImages.length > 1 && (
                   <span className="product-gallery-counter">
                     {clampGalleryIndex(activeProductImageIndex, activeProductImages.length) + 1}/
                     {activeProductImages.length}
                   </span>
-                </>
-              )}
+                )}
+              </div>
             </div>
 
             <div className="bg-[var(--bg-paper)] p-4">
@@ -2006,6 +2485,8 @@ export default function App() {
           >
             <img
               src={zoomViewer.src}
+              data-fallback-src={zoomViewer.fallbackSrc || ''}
+              onError={handleDisplayImageError}
               alt={zoomViewer.alt}
               className="image-zoom-image"
               draggable="false"
@@ -2016,6 +2497,21 @@ export default function App() {
           </div>
         </div>
       )}
+
+      <button
+        type="button"
+        className={`scroll-top-fab brutal-btn brutal-btn-hot fixed right-4 z-[115] flex h-12 w-12 items-center justify-center transition-all duration-300 ${
+          showScrollTopButton
+            ? isBottomNavVisible
+              ? 'pointer-events-auto bottom-24 translate-y-0 opacity-100'
+              : 'pointer-events-auto bottom-8 translate-y-0 opacity-100'
+            : 'pointer-events-none bottom-6 translate-y-4 opacity-0'
+        }`}
+        onClick={scrollCurrentScreenToTop}
+        aria-label="Наверх"
+      >
+        <ArrowUp className="h-5 w-5" />
+      </button>
 
       <nav
         className={`fixed bottom-5 left-4 right-4 z-[100] flex justify-center transition-all duration-300 ${

@@ -3,7 +3,7 @@ import { pruneProductsBySourceKeys, upsertProductsBySource } from './products-st
 
 const DEFAULT_CHANNEL_USERNAME = 'cycle_showroom'
 const DEFAULT_SYNC_ENABLED = true
-const DEFAULT_INTERVAL_MS = 5 * 60 * 1000
+const DEFAULT_INTERVAL_MS = 30 * 60 * 1000
 const DEFAULT_POST_LIMIT = 40
 const DEFAULT_REQUEST_TIMEOUT_MS = 15000
 const DEFAULT_MAX_PAGES = 6
@@ -53,7 +53,11 @@ function resolveSyncConfig(overrides = {}) {
   const username = normalizeChannelUsername(overrides.username ?? process.env.TG_CHANNEL_USERNAME)
   const enabled = parseBoolean(overrides.enabled ?? process.env.TG_CHANNEL_SYNC_ENABLED, DEFAULT_SYNC_ENABLED)
   const fullSync = parseBoolean(overrides.fullSync ?? process.env.TG_CHANNEL_SYNC_FULL, DEFAULT_FULL_SYNC_ENABLED)
-  const intervalMs = parseNumber(overrides.intervalMs ?? process.env.TG_CHANNEL_SYNC_INTERVAL_MS, DEFAULT_INTERVAL_MS, 10000)
+  const intervalMs = parseNumber(
+    overrides.intervalMs ?? process.env.TG_CHANNEL_SYNC_INTERVAL_MS,
+    DEFAULT_INTERVAL_MS,
+    DEFAULT_INTERVAL_MS,
+  )
   const postsLimit = parseNumber(overrides.postsLimit ?? process.env.TG_CHANNEL_SYNC_LIMIT, DEFAULT_POST_LIMIT, 1)
   const maxPages = parseNumber(overrides.maxPages ?? process.env.TG_CHANNEL_SYNC_MAX_PAGES, DEFAULT_MAX_PAGES, 1)
   const requestTimeoutMs = parseNumber(

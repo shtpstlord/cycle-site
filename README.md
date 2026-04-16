@@ -85,7 +85,7 @@ Environment variables:
 
 - `TG_CHANNEL_SYNC_ENABLED=true` - enable/disable sync loop
 - `TG_CHANNEL_USERNAME=cycle_showroom` - channel username or URL
-- `TG_CHANNEL_SYNC_INTERVAL_MS=300000` - polling interval
+- `TG_CHANNEL_SYNC_INTERVAL_MS=1800000` - polling interval (30 minutes)
 - `TG_CHANNEL_SYNC_LIMIT=40` - max posts to process per sync run
 - `TG_CHANNEL_SYNC_MAX_PAGES=6` - how many feed pages (`?before=`) to scan
 - `TG_CHANNEL_SYNC_FULL=false` - if true, a sync run scans the whole available feed

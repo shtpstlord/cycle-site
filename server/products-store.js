@@ -8,7 +8,6 @@ const __dirname = path.dirname(__filename)
 
 const DATA_DIR = path.resolve(__dirname, '../data')
 const PRODUCTS_PATH = path.resolve(DATA_DIR, 'products.json')
-const DEFAULT_IMAGE = 'https://placehold.co/640x840/f4f0eb/111?text=CYCLE'
 const DEFAULT_NAME = 'No title'
 const DEFAULT_STATUS = 'available'
 const SOURCE_TYPE_TELEGRAM = 'telegram'
@@ -100,7 +99,7 @@ function sanitizeImageList(value) {
 
 function normalizeImages(value) {
   const cleaned = sanitizeImageList(value)
-  return cleaned.length > 0 ? cleaned : [DEFAULT_IMAGE]
+  return cleaned
 }
 
 function formatPostTime(date = new Date()) {

@@ -6,6 +6,8 @@ import express from 'express'
 import { createProduct, readProducts } from './products-store.js'
 import { startTelegramBot } from './telegram-bot.js'
 import { startChannelSync } from './channel-sync.js'
+import { getYandexLiveSnapshot } from '../lib/yandex-live.js'
+import { fetchImageViaProxy, ImageProxyError } from '../lib/image-proxy.js'
 
 dotenv.config()
 
@@ -16,12 +18,14 @@ const PORT = Number(process.env.PORT) || 3001
 const PUBLIC_BASE_URL = (process.env.PUBLIC_BASE_URL || '').replace(/\/$/, '')
 const UPLOADS_DIR = path.resolve(__dirname, '../uploads')
 const DIST_DIR = path.resolve(__dirname, '../dist')
+const DATA_DIR = path.resolve(__dirname, '../data')
 
 const app = express()
 let channelSyncController = null
 
 app.use(express.json({ limit: '10mb' }))
 app.use('/uploads', express.static(UPLOADS_DIR))
+app.use('/data', express.static(DATA_DIR))
 
 function checkApiKey(req, res, next) {
   const configuredKey = process.env.API_KEY
@@ -50,6 +54,38 @@ app.get('/api/products', async (_req, res) => {
   } catch (error) {
     console.error('[api] read products error:', error)
     res.status(500).json({ error: 'Failed to load products' })
+  }
+})
+
+app.get('/api/yandex-live', async (_req, res) => {
+  try {
+    const snapshot = await getYandexLiveSnapshot()
+    res.set('Cache-Control', 'public, max-age=45, stale-while-revalidate=120')
+    res.json(snapshot)
+  } catch (error) {
+    console.error('[api] yandex-live error:', error)
+    res.status(502).json({
+      ok: false,
+      error: 'Failed to load Yandex live data',
+      details: String(error?.message ?? error),
+    })
+  }
+})
+
+app.get('/api/image-proxy', async (req, res) => {
+  try {
+    const payload = await fetchImageViaProxy(req.query.url)
+    res.set('Content-Type', payload.contentType)
+    res.set('Cache-Control', payload.cacheControl)
+    res.send(payload.body)
+  } catch (error) {
+    const statusCode = error instanceof ImageProxyError ? error.statusCode : 502
+    console.error('[api] image-proxy error:', error)
+    res.status(statusCode).json({
+      ok: false,
+      error: 'Failed to load image',
+      details: String(error?.message ?? error),
+    })
   }
 })
 
