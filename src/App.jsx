@@ -21,6 +21,7 @@ import {
 } from 'lucide-react'
 import admLogo from './assets/adm.jpg'
 import cycleLogoOriginal from './assets/logo.jpg'
+import yandexSnapshotSeed from '../data/yandex-snapshot.json'
 
 const STORIES = [
   {
@@ -203,6 +204,16 @@ const FALLBACK_YANDEX_SUMMARY = {
   reviewCount: 60,
   photosCount: YANDEX_INTERIOR_PHOTOS.length,
 }
+const BUNDLED_YANDEX_SNAPSHOT =
+  yandexSnapshotSeed && typeof yandexSnapshotSeed === 'object'
+    ? {
+        ok: true,
+        summary: yandexSnapshotSeed.summary ?? FALLBACK_YANDEX_SUMMARY,
+        photos: Array.isArray(yandexSnapshotSeed.photos) ? yandexSnapshotSeed.photos : YANDEX_INTERIOR_PHOTOS,
+        reviews: Array.isArray(yandexSnapshotSeed.reviews) ? yandexSnapshotSeed.reviews : FEATURED_REVIEWS,
+        updatedAt: yandexSnapshotSeed.updatedAt ?? null,
+      }
+    : null
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '')
 const PRODUCT_STATUS_META = {
   available: {
@@ -767,6 +778,14 @@ export default function App() {
           if (snapshotError?.name !== 'AbortError') {
             console.warn('Failed to load Yandex snapshot fallback:', snapshotError)
           }
+        }
+
+        if (applyYandexPayload(BUNDLED_YANDEX_SNAPSHOT)) {
+          setYandexLiveError('')
+          if (apiError) {
+            console.warn('Yandex API is unavailable, using bundled snapshot fallback:', apiError)
+          }
+          return
         }
 
         if (apiError) {
