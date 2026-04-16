@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=PT+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=PT+Mono&family=Russo+One&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -43,6 +43,83 @@ body {
 .heading-font {
   font-family: 'Anton', sans-serif;
   letter-spacing: 0.05em;
+}
+
+.cycle-wordmark-font {
+  font-family: 'Russo One', 'Anton', sans-serif;
+}
+
+.cycle-header-shell {
+  background:
+    linear-gradient(180deg, rgba(248, 246, 242, 0.98) 0%, rgba(235, 230, 222, 0.98) 100%),
+    linear-gradient(140deg, rgba(13, 12, 12, 0.08), rgba(13, 12, 12, 0));
+}
+
+.cycle-header-chip {
+  display: flex;
+  max-width: 100%;
+  align-items: center;
+  gap: 6px;
+  border: 2px solid #000;
+  background: #000;
+  color: #f6f2ec;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.cycle-header-chip-hours {
+  background: #122e26;
+  color: #effff8;
+}
+
+.cycle-social-strip {
+  background: #000;
+}
+
+.cycle-social-link {
+  display: flex;
+  min-height: 52px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border: 2px solid #000;
+  color: #fff;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  transition: filter 0.12s ease, transform 0.12s ease;
+}
+
+.cycle-social-link:hover {
+  filter: brightness(1.06);
+}
+
+.cycle-social-link:active {
+  animation: none;
+  transform: translateY(1px) scale(0.985);
+}
+
+.cycle-social-phone {
+  background: #151515;
+}
+
+.cycle-social-telegram {
+  background: #239ed8;
+}
+
+.cycle-social-vk {
+  background: #0077ff;
+}
+
+.cycle-social-whatsapp {
+  background: #25d366;
 }
 
 .bg-carpet {
@@ -520,6 +597,63 @@ a:active,
   color: var(--soda-yellow);
 }
 
+.cart-island {
+  transform: translate(-50%, 18px) scale(0.94);
+}
+
+.cart-island-show {
+  animation: cart-island-bounce 0.52s cubic-bezier(0.18, 0.95, 0.28, 1.25);
+  transform: translate(-50%, 0) scale(1);
+}
+
+.cart-island-hide {
+  transform: translate(-50%, 18px) scale(0.94);
+}
+
+.cart-nav-pop {
+  animation: cart-nav-pop 0.46s cubic-bezier(0.2, 0.86, 0.33, 1.3);
+}
+
+.cart-total-pop {
+  animation: cart-total-pop 0.46s cubic-bezier(0.2, 0.86, 0.33, 1.3);
+}
+
+@keyframes cart-nav-pop {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  42% {
+    transform: translateY(-5px) scale(1.06);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes cart-total-pop {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  38% {
+    transform: translateY(-4px) scale(1.11);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes cart-island-bounce {
+  0% {
+    transform: translate(-50%, 20px) scale(0.94);
+  }
+  46% {
+    transform: translate(-50%, -6px) scale(1.02);
+  }
+  100% {
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
 .product-focus-shell {
   box-shadow:
     10px 10px 0 var(--soda-black),
@@ -750,7 +884,7 @@ a:active,
 }
 
 .reviews-feed {
-  overscroll-behavior: contain;
+  overscroll-behavior: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }
@@ -763,11 +897,13 @@ a:active,
 
 .reviews-feed-frozen {
   overflow-y: hidden;
-  touch-action: auto;
+  overscroll-behavior: auto;
+  touch-action: pan-y;
 }
 
 .reviews-feed-scrollable {
   overflow-y: auto;
+  overscroll-behavior: contain;
   touch-action: pan-y;
 }
 
@@ -793,5 +929,15 @@ a:active,
 @media (max-width: 768px) {
   .gallery-tap-zone {
     display: none;
+  }
+
+  .cycle-header-chip {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+
+  .cycle-social-link {
+    min-height: 48px;
+    font-size: 7px;
   }
 }

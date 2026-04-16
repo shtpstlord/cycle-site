@@ -4,21 +4,24 @@ import {
   ArrowDown,
   ArrowUp,
   ChevronDown,
+  Clock3,
+  Footprints,
   Ghost,
+  HatGlasses,
   House,
   Info,
   Minus,
   MapPin,
-  MessageCircle,
-  Phone,
   Plus,
   Ruler,
-  Send,
+  ScanLine,
   Shirt,
   ShoppingBag,
+  Tag,
   Trash2,
   X,
 } from 'lucide-react'
+import { FaPhoneAlt, FaTelegramPlane, FaVk, FaWhatsapp } from 'react-icons/fa'
 import admLogo from './assets/adm.jpg'
 import cycleLogoOriginal from './assets/logo.jpg'
 import yandexSnapshotSeed from '../data/yandex-snapshot.json'
@@ -58,15 +61,49 @@ const SORT_OPTIONS = [
   { id: 'price-desc', label: 'СОРТ: ЦЕНА ↓' },
   { id: 'discount', label: 'СОРТ: СО СКИДКОЙ' },
 ]
-const CATEGORY_LABELS = {
-  tops: 'ФУТБОЛКИ / ПОЛО',
-  pants: 'ШТАНЫ / ДЖИНСЫ',
-  outerwear: 'ВЕРХНЯЯ ОДЕЖДА',
-  shoes: 'ОБУВЬ',
-  accessories: 'АКСЕССУАРЫ',
-  knitwear: 'ТРИКОТАЖ',
-  denim: 'ДЕНИМ',
+const CATEGORY_DEFINITIONS = {
+  tops: {
+    label: 'ФУТБОЛКИ • РУБАШКИ • ДЖЕРСИ',
+    shortLabel: 'ВЕРХ',
+    Icon: Shirt,
+  },
+  knitwear: {
+    label: 'СВИТЕРЫ И ТРИКОТАЖ',
+    shortLabel: 'ТРИКОТАЖ',
+    Icon: ScanLine,
+  },
+  pants: {
+    label: 'ДЖИНСЫ И БРЮКИ',
+    shortLabel: 'НИЗ',
+    Icon: Ruler,
+  },
+  outerwear: {
+    label: 'БОМБЕРЫ • ДЖИНСОВКИ • КУРТКИ',
+    shortLabel: 'ВЕРХНЯЯ',
+    Icon: Archive,
+  },
+  shoes: {
+    label: 'ОБУВЬ',
+    shortLabel: 'ОБУВЬ',
+    Icon: Footprints,
+  },
+  caps: {
+    label: 'КЕПКИ И ГОЛОВНЫЕ',
+    shortLabel: 'КЕПКИ',
+    Icon: HatGlasses,
+  },
+  accessories: {
+    label: 'АКСЕССУАРЫ',
+    shortLabel: 'АКСЕССУАРЫ',
+    Icon: ShoppingBag,
+  },
+  other: {
+    label: 'ДРУГОЕ',
+    shortLabel: 'ДРУГОЕ',
+    Icon: Tag,
+  },
 }
+const CATEGORY_ORDER = ['tops', 'knitwear', 'pants', 'outerwear', 'shoes', 'caps', 'accessories', 'other']
 const SIZE_PRIORITY = ['XXXS', 'XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'ONE SIZE']
 const ORDER_LINE_REGEX = /для\s+заказа\s+к\s*@cycle_order/i
 const TELEGRAM_ORDER_USERNAME = 'shtpstlord'
@@ -351,6 +388,97 @@ function formatRub(price) {
   return `${new Intl.NumberFormat('ru-RU').format(price)} ₽`
 }
 
+function formatReviewMeta(review) {
+  const isoValue = String(review?.dateIso ?? '').trim()
+  if (isoValue) {
+    const parsed = new Date(isoValue)
+    if (!Number.isNaN(parsed.getTime())) {
+      const datePart = parsed.toLocaleDateString('ru-RU', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      })
+      const timePart = parsed.toLocaleTimeString('ru-RU', {
+        hour: '2-digit',
+        minute: '2-digit',
+      })
+      return `${datePart} • ${timePart}`
+    }
+  }
+
+  return String(review?.dateLabel ?? review?.date ?? '').trim()
+}
+
+function normalizeCategoryToken(value) {
+  return String(value ?? '')
+    .trim()
+    .toLowerCase()
+    .replace(/ё/g, 'е')
+    .replace(/[_-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function resolveCanonicalCategory(category) {
+  const normalized = normalizeCategoryToken(category)
+  if (!normalized) {
+    return 'other'
+  }
+
+  if (CATEGORY_DEFINITIONS[normalized]) {
+    return normalized
+  }
+
+  const contains = (...tokens) => tokens.some((token) => normalized.includes(token))
+
+  if (contains('обув', 'shoe', 'sneaker', 'кроссов')) {
+    return 'shoes'
+  }
+
+  if (contains('кеп', 'cap', 'панам', 'hat')) {
+    return 'caps'
+  }
+
+  if (contains('аксесс', 'accessor', 'ремен', 'belt', 'bag', 'сумк', 'кошелек', 'wallet')) {
+    return 'accessories'
+  }
+
+  if (
+    contains(
+      'бомбер',
+      'джинсовк',
+      'куртк',
+      'ветров',
+      'парка',
+      'пухов',
+      'outerwear',
+      'jacket',
+      'coat',
+      'hoodie',
+    )
+  ) {
+    return 'outerwear'
+  }
+
+  if (contains('свитер', 'трикот', 'knit', 'sweater', 'cardigan')) {
+    return 'knitwear'
+  }
+
+  if (contains('джинс', 'брюк', 'pants', 'trouser', 'chino', 'slack', 'denim', 'short')) {
+    return 'pants'
+  }
+
+  if (contains('рубаш', 'футбол', 'джерси', 'shirt', 'jersey', 'tee', 't-shirt', 'polo', 'tops')) {
+    return 'tops'
+  }
+
+  if (contains('другое', 'misc', 'other')) {
+    return 'other'
+  }
+
+  return 'other'
+}
+
 function normalizeProductStatus(status) {
   const value = String(status ?? '')
     .trim()
@@ -364,40 +492,15 @@ function normalizeProductStatus(status) {
 }
 
 function normalizeCategoryId(category) {
-  return String(category ?? '')
-    .trim()
-    .toLowerCase()
+  return resolveCanonicalCategory(category)
 }
 
 function formatCategoryLabel(categoryId) {
-  if (!categoryId) {
-    return 'БЕЗ КАТЕГОРИИ'
-  }
-  return (
-    CATEGORY_LABELS[categoryId] ??
-    categoryId
-      .replace(/[_-]+/g, ' ')
-      .trim()
-      .toUpperCase()
-  )
+  return CATEGORY_DEFINITIONS[categoryId]?.label ?? CATEGORY_DEFINITIONS.other.label
 }
 
 function getCategoryIcon(categoryId) {
-  const normalized = normalizeCategoryId(categoryId)
-
-  if (normalized === 'pants' || normalized === 'denim') {
-    return Ruler
-  }
-
-  if (normalized === 'shoes' || normalized === 'accessories') {
-    return ShoppingBag
-  }
-
-  if (normalized === 'outerwear') {
-    return Archive
-  }
-
-  return Shirt
+  return CATEGORY_DEFINITIONS[normalizeCategoryId(categoryId)]?.Icon ?? CATEGORY_DEFINITIONS.other.Icon
 }
 
 function sanitizeProductText(value) {
@@ -525,6 +628,8 @@ export default function App() {
 
   const [cartItems, setCartItems] = useState([])
   const [flashCartNav, setFlashCartNav] = useState(false)
+  const [cartPricePulse, setCartPricePulse] = useState(false)
+  const [cartIslandNotice, setCartIslandNotice] = useState(null)
 
   const [glitchStoryId, setGlitchStoryId] = useState(null)
 
@@ -538,6 +643,8 @@ export default function App() {
   const storyAutoCloseTimerRef = useRef(null)
   const storyGlitchTimerRef = useRef(null)
   const cartFlashTimerRef = useRef(null)
+  const cartPulseTimerRef = useRef(null)
+  const cartIslandTimerRef = useRef(null)
   const mapTransitionTimerRef = useRef(null)
   const productGalleryRefs = useRef(new Map())
   const productGallerySettleTimersRef = useRef(new Map())
@@ -560,6 +667,7 @@ export default function App() {
     moved: false,
   })
   const suppressProductOpenRef = useRef(new Set())
+  const reviewsTouchYRef = useRef(null)
 
   const homeScreenRef = useRef(null)
   const cartScreenRef = useRef(null)
@@ -593,21 +701,29 @@ export default function App() {
   }, [products, catalogMode])
 
   const categoryOptions = useMemo(() => {
-    const seen = new Set()
+    const counts = new Map()
     scopedProducts.forEach((product) => {
       const categoryId = normalizeCategoryId(product.category)
-      if (categoryId) {
-        seen.add(categoryId)
-      }
+      counts.set(categoryId, (counts.get(categoryId) ?? 0) + 1)
     })
 
+    const grouped = CATEGORY_ORDER.map((categoryId) => ({
+      id: categoryId,
+      label: formatCategoryLabel(categoryId),
+      shortLabel: CATEGORY_DEFINITIONS[categoryId]?.shortLabel ?? categoryId.toUpperCase(),
+      Icon: getCategoryIcon(categoryId),
+      count: counts.get(categoryId) ?? 0,
+    }))
+
     return [
-      { id: 'all', label: 'ВСЕ КАТЕГОРИИ', Icon: Shirt },
-      ...[...seen].sort((left, right) => left.localeCompare(right, 'ru-RU')).map((categoryId) => ({
-        id: categoryId,
-        label: formatCategoryLabel(categoryId),
-        Icon: getCategoryIcon(categoryId),
-      })),
+      {
+        id: 'all',
+        label: 'ВСЕ КАТЕГОРИИ',
+        shortLabel: 'ВСЕ',
+        Icon: Shirt,
+        count: scopedProducts.length,
+      },
+      ...grouped,
     ]
   }, [scopedProducts])
 
@@ -854,6 +970,12 @@ export default function App() {
       if (cartFlashTimerRef.current) {
         clearTimeout(cartFlashTimerRef.current)
       }
+      if (cartPulseTimerRef.current) {
+        clearTimeout(cartPulseTimerRef.current)
+      }
+      if (cartIslandTimerRef.current) {
+        clearTimeout(cartIslandTimerRef.current)
+      }
       if (mapTransitionTimerRef.current) {
         clearTimeout(mapTransitionTimerRef.current)
       }
@@ -871,6 +993,7 @@ export default function App() {
         clearTimeout(timerId)
       })
       productGallerySettleTimers.clear()
+      reviewsTouchYRef.current = null
     }
   }, [])
 
@@ -1075,14 +1198,33 @@ export default function App() {
       exists ? prev.filter((item) => item.id !== product.id) : [...prev, product],
     )
 
-    if (!exists && currentScreen !== 'cart') {
+    if (!exists) {
       setFlashCartNav(true)
+      setCartPricePulse(true)
+      setCartIslandNotice({
+        productName: product.name,
+        price: Number(product.price) || 0,
+      })
+
       if (cartFlashTimerRef.current) {
         clearTimeout(cartFlashTimerRef.current)
       }
+      if (cartPulseTimerRef.current) {
+        clearTimeout(cartPulseTimerRef.current)
+      }
+      if (cartIslandTimerRef.current) {
+        clearTimeout(cartIslandTimerRef.current)
+      }
+
       cartFlashTimerRef.current = setTimeout(() => {
         setFlashCartNav(false)
-      }, 220)
+      }, 360)
+      cartPulseTimerRef.current = setTimeout(() => {
+        setCartPricePulse(false)
+      }, 560)
+      cartIslandTimerRef.current = setTimeout(() => {
+        setCartIslandNotice(null)
+      }, 1850)
     }
   }
 
@@ -1636,6 +1778,63 @@ export default function App() {
     lockMap()
   }
 
+  const scrollAboutScreenBy = (deltaY) => {
+    const aboutScreenNode = aboutScreenRef.current
+    if (!aboutScreenNode || !Number.isFinite(deltaY) || deltaY === 0) {
+      return
+    }
+    aboutScreenNode.scrollTop += deltaY
+  }
+
+  const handleFrozenReviewsWheel = (event) => {
+    if (isReviewsExpanded) {
+      return
+    }
+    event.preventDefault()
+    scrollAboutScreenBy(event.deltaY)
+  }
+
+  const handleFrozenReviewsTouchStart = (event) => {
+    if (isReviewsExpanded) {
+      reviewsTouchYRef.current = null
+      return
+    }
+
+    const touch = event.touches?.[0]
+    reviewsTouchYRef.current = touch ? touch.clientY : null
+  }
+
+  const handleFrozenReviewsTouchMove = (event) => {
+    if (isReviewsExpanded) {
+      return
+    }
+
+    const touch = event.touches?.[0]
+    if (!touch) {
+      return
+    }
+
+    const currentY = touch.clientY
+    const previousY = reviewsTouchYRef.current
+    if (typeof previousY !== 'number') {
+      reviewsTouchYRef.current = currentY
+      return
+    }
+
+    const deltaY = previousY - currentY
+    if (Math.abs(deltaY) < 0.8) {
+      return
+    }
+
+    event.preventDefault()
+    scrollAboutScreenBy(deltaY)
+    reviewsTouchYRef.current = currentY
+  }
+
+  const clearFrozenReviewsTouch = () => {
+    reviewsTouchYRef.current = null
+  }
+
   const activeProductStatus = normalizeProductStatus(activeProduct?.status)
   const activeProductStatusMeta = getStatusMeta(activeProduct?.status)
   const canPurchaseActiveProduct = activeProductStatus === 'available'
@@ -1645,62 +1844,68 @@ export default function App() {
   const activeProductQuote = activeProduct?.quote || ''
 
   const renderHeader = () => (
-    <header className="pointer-events-none flex items-stretch justify-between gap-2">
+    <header className="pointer-events-none space-y-2">
       <button
         type="button"
-        className="brutal-box brutal-input pointer-events-auto flex h-24 flex-1 cursor-pointer items-start gap-3 p-3 text-left"
+        className="cycle-header-shell brutal-box brutal-input pointer-events-auto flex w-full cursor-pointer items-center gap-3 p-3 text-left"
         onClick={() => navigate('home')}
       >
         <img
           src={cycleLogoOriginal}
           alt="Логотип ЦИКЛ"
-          className="h-[66px] w-[66px] shrink-0 rounded-sm border-2 border-black object-cover"
+          className="h-[72px] w-[72px] shrink-0 rounded-sm border-2 border-black object-cover"
         />
-        <div className="flex h-[66px] min-w-0 flex-1 flex-col">
-          <span className="heading-font text-5xl leading-[0.82] tracking-[0.03em]">ЦИКЛ</span>
-          <span className="mt-1 inline-flex w-max max-w-full items-center bg-black px-1 text-[12px] font-bold leading-tight text-white">
-            <MapPin className="mr-1 h-3 w-3" /> ВОРОНЕЖ, Ф.ЭНГЕЛЬСА, 35
+        <div className="min-w-0 flex-1">
+          <span className="cycle-wordmark-font block text-[48px] leading-[0.78] tracking-[0.02em] sm:text-[56px]">ЦИКЛ</span>
+          <span className="cycle-header-chip mt-1 w-full sm:w-max">
+            <MapPin className="h-3.5 w-3.5 shrink-0" />
+            ВОРОНЕЖ, Ф. ЭНГЕЛЬСА, 35
           </span>
-          <span className="mt-auto inline-flex w-max max-w-full bg-black px-1 text-[10px] font-bold leading-tight text-white">
-            • Работаем с 12:00 до 21:00
+          <span className="cycle-header-chip cycle-header-chip-hours mt-1 w-full sm:w-max">
+            <Clock3 className="h-3.5 w-3.5 shrink-0" />
+            ЕЖЕДНЕВНО 12:00-21:00
           </span>
         </div>
       </button>
 
-      <div className="brutal-box pointer-events-auto grid h-24 w-24 shrink-0 grid-cols-2 grid-rows-2 overflow-hidden bg-[#E0E0E0]">
+      <div className="cycle-social-strip brutal-box pointer-events-auto grid grid-cols-4 gap-[2px] bg-black p-[2px]">
         <a
           href="tel:+79081332760"
-          className="flex items-center justify-center border-b-[3px] border-r-[3px] border-black active:bg-black active:text-white"
-          aria-label="Phone"
+          className="cycle-social-link cycle-social-phone"
+          aria-label="Позвонить"
         >
-          <Phone className="h-5 w-5" />
+          <FaPhoneAlt className="h-[15px] w-[15px]" />
+          <span>ЗВОНОК</span>
         </a>
         <a
           href="https://t.me/cycle_showroom"
           target="_blank"
           rel="noreferrer"
-          className="flex items-center justify-center border-b-[3px] border-black active:bg-black active:text-white"
+          className="cycle-social-link cycle-social-telegram"
           aria-label="Telegram"
         >
-          <Send className="h-5 w-5" />
+          <FaTelegramPlane className="h-[15px] w-[15px]" />
+          <span>TELEGRAM</span>
         </a>
         <a
           href="https://vk.com/cycle_showroom"
           target="_blank"
           rel="noreferrer"
-          className="heading-font flex items-center justify-center border-r-[3px] border-black text-[18px] active:bg-black active:text-white"
+          className="cycle-social-link cycle-social-vk"
           aria-label="VK"
         >
-          vk
+          <FaVk className="h-[15px] w-[15px]" />
+          <span>VK</span>
         </a>
         <a
-          href="https://wa.me/+79081332760"
+          href="https://wa.me/79081332760"
           target="_blank"
           rel="noreferrer"
-          className="flex items-center justify-center active:bg-black active:text-white"
+          className="cycle-social-link cycle-social-whatsapp"
           aria-label="WhatsApp"
         >
-          <MessageCircle className="h-5 w-5" />
+          <FaWhatsapp className="h-[15px] w-[15px]" />
+          <span>WHATSAPP</span>
         </a>
       </div>
     </header>
@@ -1765,7 +1970,10 @@ export default function App() {
                   className="brutal-box brutal-input flex flex-1 items-center justify-center py-2 text-[11px] font-bold"
                   onClick={() => toggleSheet('category')}
                 >
-                  <SelectedCategoryIcon className="mr-2 h-4 w-4" /> КАТЕГОРИИ
+                  <SelectedCategoryIcon className="mr-2 h-4 w-4" />
+                  <span className="max-w-[82%] truncate">
+                    {`КАТЕГОРИЯ: ${selectedCategoryOption?.shortLabel ?? 'ВСЕ'}`}
+                  </span>
                 </button>
                 <button
                   className="brutal-box brutal-input flex flex-1 items-center justify-center py-2 text-[11px] font-bold"
@@ -2199,6 +2407,11 @@ export default function App() {
               className={`reviews-feed h-[440px] sm:h-[520px] pr-1 ${
                 isReviewsExpanded ? 'reviews-feed-scrollable' : 'reviews-feed-frozen'
               }`}
+              onWheel={handleFrozenReviewsWheel}
+              onTouchStart={handleFrozenReviewsTouchStart}
+              onTouchMove={handleFrozenReviewsTouchMove}
+              onTouchEnd={clearFrozenReviewsTouch}
+              onTouchCancel={clearFrozenReviewsTouch}
             >
               {yandexReviews.map((review, index) => (
                 <article key={review.id} className="brutal-box mb-3 bg-[var(--bg-paper)] p-3 last:mb-0">
@@ -2216,12 +2429,12 @@ export default function App() {
                       </div>
                     )}
                     <div className="min-w-0 flex-1">
-                      <div className="flex flex-wrap items-start justify-between gap-x-2 gap-y-1">
+                      <div className="flex flex-wrap items-start gap-x-2 gap-y-1">
                         <p className="heading-font text-xl leading-none uppercase">{review.name}</p>
-                        <p className="text-[10px] font-bold uppercase text-black/70">
-                          {review.dateLabel || review.date || ''}
-                        </p>
                       </div>
+                      <p className="mt-0.5 text-[10px] font-bold uppercase text-black/65">
+                        {formatReviewMeta(review)}
+                      </p>
                       <p className="mt-1 text-[14px] leading-none tracking-[0.15em] text-[var(--soviet-red)]">
                         {'★'.repeat(Math.max(1, Number(review.rating) || 0))}
                       </p>
@@ -2562,6 +2775,20 @@ export default function App() {
         <ArrowUp className="h-5 w-5" />
       </button>
 
+      <div
+        className={`cart-island fixed left-1/2 z-[108] flex items-center gap-2 border-[3px] border-black bg-[var(--bg-paper)] px-3 py-2 shadow-[6px_6px_0px_#000] transition-all duration-300 ${
+          isBottomNavVisible ? 'bottom-24' : 'bottom-8'
+        } ${cartIslandNotice ? 'pointer-events-none opacity-100 cart-island-show' : 'pointer-events-none opacity-0 cart-island-hide'}`}
+      >
+        <ShoppingBag className="h-4 w-4" />
+        <div className="leading-none">
+          <p className="text-[10px] font-bold uppercase">Добавлено в корзину</p>
+          <p className="text-[10px] font-bold uppercase text-[var(--soviet-red)]">
+            +{formatRub(cartIslandNotice?.price ?? 0)} • Итого {formatRub(cartTotal)}
+          </p>
+        </div>
+      </div>
+
       <nav
         className={`fixed bottom-5 left-4 right-4 z-[100] flex justify-center transition-all duration-300 ${
           isBottomNavVisible
@@ -2585,12 +2812,16 @@ export default function App() {
           <button
             className={`nav-btn flex h-12 items-center justify-center border-2 px-4 font-bold transition-all duration-300 ${
               currentScreen === 'cart' || flashCartNav ? 'active-nav' : 'border-transparent'
-            }`}
+            } ${flashCartNav ? 'cart-nav-pop' : ''}`}
             onClick={() => navigate('cart')}
           >
             <ShoppingBag className="h-7 w-7" />
             {cartTotal > 0 && (
-              <span className="ml-2 whitespace-nowrap border-2 border-black bg-[var(--soviet-red)] px-2 py-1 text-[10px] font-bold text-white shadow-[2px_2px_0px_#000]">
+              <span
+                className={`ml-2 whitespace-nowrap border-2 border-black bg-[var(--soviet-red)] px-2 py-1 text-[10px] font-bold text-white shadow-[2px_2px_0px_#000] ${
+                  cartPricePulse ? 'cart-total-pop' : ''
+                }`}
+              >
                 {formatRub(cartTotal)}
               </span>
             )}
@@ -2683,21 +2914,39 @@ export default function App() {
           </button>
         </div>
         <div className="flex flex-col gap-3">
-          {categoryOptions.map((category) => (
-            <button
-              key={category.id}
-              className={`brutal-box brutal-input flex items-center bg-white p-3 text-left text-sm font-bold ${
-                normalizedSelectedCategory === category.id ? 'filter-option-selected' : ''
-              }`}
-              onClick={() => {
-                setSelectedCategory(category.id)
-                closeAllSheets()
-              }}
-            >
-              <category.Icon className="mr-3 h-6 w-6 border-r-2 border-black pr-2" />
-              {category.label}
-            </button>
-          ))}
+          {categoryOptions.map((category) => {
+            const isDisabled = category.id !== 'all' && category.count === 0
+
+            return (
+              <button
+                key={category.id}
+                disabled={isDisabled}
+                className={`brutal-box brutal-input flex items-center bg-white p-3 text-left text-sm font-bold ${
+                  normalizedSelectedCategory === category.id ? 'filter-option-selected' : ''
+                } ${isDisabled ? 'cursor-not-allowed opacity-45' : ''}`}
+                onClick={() => {
+                  if (isDisabled) {
+                    return
+                  }
+                  setSelectedCategory(category.id)
+                  closeAllSheets()
+                }}
+              >
+                <category.Icon className="mr-3 h-6 w-6 border-r-2 border-black pr-2" />
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate">{category.label}</span>
+                  {category.id !== 'all' && (
+                    <span className="mt-0.5 block text-[10px] uppercase text-black/60">
+                      {category.shortLabel}
+                    </span>
+                  )}
+                </span>
+                <span className="ml-2 border-2 border-black bg-[#E0E0E0] px-2 py-0.5 text-[10px] leading-none">
+                  {category.count}
+                </span>
+              </button>
+            )
+          })}
         </div>
       </div>
 
