@@ -507,6 +507,7 @@ export default function App() {
   const [zoomViewer, setZoomViewer] = useState(null)
   const [zoomScale, setZoomScale] = useState(1)
   const [zoomOffset, setZoomOffset] = useState({ x: 0, y: 0 })
+  const [isReviewsExpanded, setIsReviewsExpanded] = useState(false)
   const [showScrollTopButton, setShowScrollTopButton] = useState(false)
   const [products, setProducts] = useState(() => SEED_PRODUCTS.map((product) => normalizeProduct(product)))
   const [yandexLiveData, setYandexLiveData] = useState(() => ({
@@ -655,8 +656,23 @@ export default function App() {
       next.sort((a, b) => Number(Boolean(b.oldPrice)) - Number(Boolean(a.oldPrice)))
     } else {
       next.sort((a, b) => {
-        const left = Number(a.id) || Date.parse(a.createdAt ?? '') || 0
-        const right = Number(b.id) || Date.parse(b.createdAt ?? '') || 0
+        const leftPostId = Number.parseInt(String(a.sourcePostId ?? ''), 10)
+        const rightPostId = Number.parseInt(String(b.sourcePostId ?? ''), 10)
+        const leftHasPostId = Number.isFinite(leftPostId)
+        const rightHasPostId = Number.isFinite(rightPostId)
+
+        if (leftHasPostId && rightHasPostId && leftPostId !== rightPostId) {
+          return rightPostId - leftPostId
+        }
+        if (rightHasPostId && !leftHasPostId) {
+          return 1
+        }
+        if (leftHasPostId && !rightHasPostId) {
+          return -1
+        }
+
+        const left = Date.parse(a.sourceDateTime ?? a.createdAt ?? '') || Number(a.id) || 0
+        const right = Date.parse(b.sourceDateTime ?? b.createdAt ?? '') || Number(b.id) || 0
         return right - left
       })
     }
@@ -1632,7 +1648,7 @@ export default function App() {
     <header className="pointer-events-none flex items-stretch justify-between gap-2">
       <button
         type="button"
-        className="brutal-box brutal-input pointer-events-auto flex h-24 flex-1 cursor-pointer items-center gap-3 p-3 text-left"
+        className="brutal-box brutal-input pointer-events-auto flex h-24 flex-1 cursor-pointer items-start gap-3 p-3 text-left"
         onClick={() => navigate('home')}
       >
         <img
@@ -1640,10 +1656,13 @@ export default function App() {
           alt="Логотип ЦИКЛ"
           className="h-[66px] w-[66px] shrink-0 rounded-sm border-2 border-black object-cover"
         />
-        <div className="flex min-w-0 flex-col justify-center">
+        <div className="flex h-[66px] min-w-0 flex-1 flex-col">
           <span className="heading-font text-5xl leading-[0.82] tracking-[0.03em]">ЦИКЛ</span>
           <span className="mt-1 inline-flex w-max max-w-full items-center bg-black px-1 text-[12px] font-bold leading-tight text-white">
             <MapPin className="mr-1 h-3 w-3" /> ВОРОНЕЖ, Ф.ЭНГЕЛЬСА, 35
+          </span>
+          <span className="mt-auto inline-flex w-max max-w-full bg-black px-1 text-[10px] font-bold leading-tight text-white">
+            • Работаем с 12:00 до 21:00
           </span>
         </div>
       </button>
@@ -2176,7 +2195,11 @@ export default function App() {
               </a>
             </div>
 
-            <div className="reviews-feed max-h-[520px] overflow-y-auto pr-1">
+            <div
+              className={`reviews-feed h-[440px] sm:h-[520px] pr-1 ${
+                isReviewsExpanded ? 'reviews-feed-scrollable' : 'reviews-feed-frozen'
+              }`}
+            >
               {yandexReviews.map((review, index) => (
                 <article key={review.id} className="brutal-box mb-3 bg-[var(--bg-paper)] p-3 last:mb-0">
                   <div className="flex gap-3">
@@ -2234,6 +2257,13 @@ export default function App() {
                 </article>
               ))}
             </div>
+            <button
+              type="button"
+              className="brutal-box brutal-input mt-2 w-full bg-[#E0E0E0] py-2 text-[11px] font-bold uppercase"
+              onClick={() => setIsReviewsExpanded((prev) => !prev)}
+            >
+              {isReviewsExpanded ? 'Скрыть' : 'Еще'}
+            </button>
             {yandexLiveError && (
               <p className="mt-2 text-[10px] font-bold uppercase text-[var(--soviet-red)]">{yandexLiveError}</p>
             )}

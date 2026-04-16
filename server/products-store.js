@@ -161,6 +161,21 @@ function buildFallbackDedupKey(product) {
 
 function sortProducts(products) {
   return [...products].sort((left, right) => {
+    const leftPostId = Number.parseInt(String(left?.sourcePostId ?? ''), 10)
+    const rightPostId = Number.parseInt(String(right?.sourcePostId ?? ''), 10)
+    const leftHasPostId = Number.isFinite(leftPostId)
+    const rightHasPostId = Number.isFinite(rightPostId)
+
+    if (leftHasPostId && rightHasPostId && leftPostId !== rightPostId) {
+      return rightPostId - leftPostId
+    }
+    if (rightHasPostId && !leftHasPostId) {
+      return 1
+    }
+    if (leftHasPostId && !rightHasPostId) {
+      return -1
+    }
+
     const leftTs = Date.parse(left?.sourceDateTime || left?.createdAt || '')
     const rightTs = Date.parse(right?.sourceDateTime || right?.createdAt || '')
 

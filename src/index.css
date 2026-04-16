@@ -750,22 +750,25 @@ a:active,
 }
 
 .reviews-feed {
-  scrollbar-width: thin;
-  scrollbar-color: var(--soda-black) #d9cfb8;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
 
 .reviews-feed::-webkit-scrollbar {
-  display: block;
-  width: 8px;
+  display: none;
+  width: 0;
+  height: 0;
 }
 
-.reviews-feed::-webkit-scrollbar-track {
-  background: #d9cfb8;
+.reviews-feed-frozen {
+  overflow-y: hidden;
+  touch-action: auto;
 }
 
-.reviews-feed::-webkit-scrollbar-thumb {
-  background: var(--soda-black);
-  border: 1px solid #d9cfb8;
+.reviews-feed-scrollable {
+  overflow-y: auto;
+  touch-action: pan-y;
 }
 
 .scroll-top-fab {
