@@ -104,3 +104,10 @@ Maintenance scripts:
 - `npm run products:clean` - remove non-telegram cards and deduplicate cards
 - `npm run sync:channel:full` - full import of all available channel pages via `?before=`
 - `npm run sync:channel:refresh` - clean -> full import -> clean
+- `npm run yandex:snapshot:refresh` - refresh `data/yandex-snapshot.json` from live Yandex data
+
+Automated refresh in GitHub:
+
+- Workflow `.github/workflows/refresh-data.yml` runs every 30 minutes (`*/30 * * * *`)
+- It refreshes `data/products.json` from Telegram and `data/yandex-snapshot.json` from Yandex
+- When data changes, workflow commits and pushes updates to `main`

@@ -1,16 +1,15 @@
 {
-  "ok": true,
   "source": {
     "orgId": "62631138735",
-    "orgUrl": "https://yandex.com/maps/org/tsikl/62631138735/",
-    "reviewsUrl": "https://yandex.com/maps/org/tsikl/62631138735/reviews/",
-    "galleryUrl": "https://yandex.com/maps/org/tsikl/62631138735/gallery/",
+    "orgUrl": "https://yandex.ru/maps/org/tsikl/62631138735/",
+    "reviewsUrl": "https://yandex.ru/maps/org/tsikl/62631138735/reviews/",
+    "galleryUrl": "https://yandex.ru/maps/org/tsikl/62631138735/gallery/",
     "reviewPagesFetched": 2
   },
   "summary": {
     "title": "Cycle",
     "ratingValue": 4.900000095367432,
-    "ratingCount": 111,
+    "ratingCount": 112,
     "reviewCount": 60,
     "photosCount": 50
   },
@@ -386,16 +385,6 @@
       "photos": []
     },
     {
-      "id": "bu5AyWdOc7hlNGfn6ZwTuZ9bSXQvMaeMn",
-      "name": "Инкогнито 9458",
-      "text": "Супер магазин",
-      "rating": 5,
-      "dateIso": "2026-04-14T17:07:43.790Z",
-      "dateLabel": "14 апреля 2026 г.",
-      "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/68143/0k-4/orig",
-      "photos": []
-    },
-    {
       "id": "Dv6el5p0k73cqhKaY4RFhgvfdt_waX",
       "name": "Екатерина О.",
       "text": "Очень классный магазин!\nВинтажные вещи,бренды и просто качественная одежда,приду ещё!)",
@@ -453,6 +442,16 @@
       "dateIso": "2025-06-08T10:52:59.811Z",
       "dateLabel": "8 июня 2025 г.",
       "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/39249/njw9mBQ7QVFczpCsGBL3f5RMMs-1571002518/orig",
+      "photos": []
+    },
+    {
+      "id": "bu5AyWdOc7hlNGfn6ZwTuZ9bSXQvMaeMn",
+      "name": "Инкогнито 9458",
+      "text": "Супер магазин",
+      "rating": 5,
+      "dateIso": "2026-04-14T17:07:43.790Z",
+      "dateLabel": "14 апреля 2026 г.",
+      "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/68143/0k-4/orig",
       "photos": []
     },
     {
@@ -648,5 +647,5 @@
       "photos": []
     }
   ],
-  "updatedAt": "2026-04-16T05:20:43.447Z"
+  "updatedAt": "2026-04-16T21:26:56.340Z"
 }

@@ -1,0 +1,45 @@
+name: Refresh Data
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Refresh Telegram products snapshot
+        run: npm run sync:channel:refresh
+
+      - name: Refresh Yandex snapshot
+        run: npm run yandex:snapshot:refresh
+
+      - name: Commit refreshed data
+        run: |
+          if [[ -z "$(git status --porcelain data/products.json data/yandex-snapshot.json)" ]]; then
+            echo "No data changes to commit"
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/products.json data/yandex-snapshot.json
+          git commit -m "chore: refresh telegram and yandex data"
+          git push

@@ -11,6 +11,7 @@
     "products:clean": "node server/clean-products.js",
     "sync:channel:full": "node server/sync-channel-full.js",
     "sync:channel:refresh": "npm run products:clean && npm run sync:channel:full && npm run products:clean",
+    "yandex:snapshot:refresh": "node scripts/refresh-yandex-snapshot.js",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
