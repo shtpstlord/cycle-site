@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=PT+Mono&family=Russo+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -31,7 +31,7 @@ body,
 }
 
 body {
-  font-family: 'PT Mono', monospace;
+  font-family: 'Russo One', sans-serif;
   background-color: var(--soda-red-deep);
   background-image:
     radial-gradient(circle at 50% -14%, rgba(236, 205, 19, 0.24) 0%, rgba(236, 205, 19, 0) 52%),
@@ -41,12 +41,12 @@ body {
 }
 
 .heading-font {
-  font-family: 'Anton', sans-serif;
-  letter-spacing: 0.05em;
+  font-family: 'Russo One', sans-serif;
+  letter-spacing: 0.03em;
 }
 
 .cycle-wordmark-font {
-  font-family: 'Russo One', 'Anton', sans-serif;
+  font-family: 'Russo One', sans-serif;
 }
 
 .cycle-header-shell {
@@ -71,6 +71,9 @@ body {
   line-height: 1.1;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .cycle-header-chip-hours {
@@ -78,11 +81,27 @@ body {
   color: #effff8;
 }
 
-.review-lines {
+.cycle-header-stack {
+  height: 72px;
   display: grid;
-  width: 100%;
   grid-template-rows: auto auto auto;
-  row-gap: 4px;
+  align-content: space-between;
+}
+
+.cycle-brand-title {
+  margin: 0;
+  font-size: clamp(42px, 8.2vw, 56px);
+  line-height: 0.74;
+  letter-spacing: 0.025em;
+}
+
+.review-lines {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 44px;
+  height: 44px;
 }
 
 .review-author {
@@ -95,7 +114,9 @@ body {
 
 .review-meta {
   margin: 0;
-  min-height: 12px;
+  min-height: 11px;
+  font-size: 10px;
+  font-weight: 700;
   line-height: 1;
   display: flex;
   align-items: center;
@@ -103,7 +124,9 @@ body {
 
 .review-stars {
   margin: 0;
-  min-height: 14px;
+  min-height: 13px;
+  font-size: 14px;
+  letter-spacing: 0.15em;
   line-height: 1;
   display: flex;
   align-items: center;
@@ -952,8 +975,12 @@ a:active,
     display: none;
   }
 
+  .cycle-brand-title {
+    font-size: 42px;
+  }
+
   .cycle-header-chip {
-    font-size: 10px;
-    padding: 2px 6px;
+    font-size: 9px;
+    padding: 2px 5px;
   }
 }

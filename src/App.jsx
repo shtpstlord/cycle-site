@@ -1855,8 +1855,8 @@ export default function App() {
           alt="Логотип ЦИКЛ"
           className="h-[72px] w-[72px] shrink-0 rounded-sm border-2 border-black object-cover"
         />
-        <div className="min-w-0 flex-1">
-          <span className="cycle-wordmark-font block text-[48px] leading-[0.78] tracking-[0.02em] sm:text-[56px]">ЦИКЛ</span>
+        <div className="cycle-header-stack min-w-0 flex-1">
+          <span className="cycle-wordmark-font cycle-brand-title">ЦИКЛ</span>
           <span className="cycle-header-chip mt-1">
             <MapPin className="h-3.5 w-3.5 shrink-0" />
             ВОРОНЕЖ, Ф. ЭНГЕЛЬСА, 35
@@ -2426,10 +2426,10 @@ export default function App() {
                     )}
                     <div className="review-lines min-w-0 flex-1">
                       <p className="review-author heading-font text-xl uppercase">{review.name}</p>
-                      <p className="review-meta text-[10px] font-bold uppercase text-black/65">
+                      <p className="review-meta uppercase text-black/65">
                         {formatReviewMeta(review)}
                       </p>
-                      <p className="review-stars text-[14px] tracking-[0.15em] text-[var(--soviet-red)]">
+                      <p className="review-stars text-[var(--soviet-red)]">
                         {'★'.repeat(Math.max(1, Number(review.rating) || 0))}
                       </p>
                       <p className="mt-2 border-l-[3px] border-black bg-[#e7e2db] p-2 text-[12px] font-bold leading-snug">
