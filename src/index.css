@@ -76,52 +76,6 @@ body {
   color: #effff8;
 }
 
-.cycle-social-strip {
-  background: #000;
-}
-
-.cycle-social-link {
-  display: flex;
-  min-height: 52px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  border: 2px solid #000;
-  color: #fff;
-  text-decoration: none;
-  text-transform: uppercase;
-  font-size: 8px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  transition: filter 0.12s ease, transform 0.12s ease;
-}
-
-.cycle-social-link:hover {
-  filter: brightness(1.06);
-}
-
-.cycle-social-link:active {
-  animation: none;
-  transform: translateY(1px) scale(0.985);
-}
-
-.cycle-social-phone {
-  background: #151515;
-}
-
-.cycle-social-telegram {
-  background: #239ed8;
-}
-
-.cycle-social-vk {
-  background: #0077ff;
-}
-
-.cycle-social-whatsapp {
-  background: #25d366;
-}
-
 .bg-carpet {
   background-color: #7d2b1e;
   background-image:
@@ -886,25 +840,59 @@ a:active,
 .reviews-feed {
   overscroll-behavior: auto;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-
-.reviews-feed::-webkit-scrollbar {
-  display: none;
-  width: 0;
-  height: 0;
 }
 
 .reviews-feed-frozen {
   overflow-y: hidden;
   overscroll-behavior: auto;
   touch-action: pan-y;
+  scrollbar-width: none;
+}
+
+.reviews-feed-frozen::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 .reviews-feed-scrollable {
   overflow-y: auto;
   overscroll-behavior: contain;
   touch-action: pan-y;
+  scrollbar-width: thin;
+  scrollbar-color: #111 #d9cfb8;
+}
+
+.reviews-feed-scrollable::-webkit-scrollbar {
+  width: 9px;
+}
+
+.reviews-feed-scrollable::-webkit-scrollbar-track {
+  background: #d9cfb8;
+  border-left: 1px solid #8c816d;
+}
+
+.reviews-feed-scrollable::-webkit-scrollbar-thumb {
+  background:
+    repeating-linear-gradient(
+      180deg,
+      #111 0,
+      #111 4px,
+      #2b2b2b 4px,
+      #2b2b2b 8px
+    );
+  border: 1px solid #000;
+}
+
+.reviews-feed-scrollable::-webkit-scrollbar-thumb:hover {
+  background:
+    repeating-linear-gradient(
+      180deg,
+      #3a3a3a 0,
+      #3a3a3a 4px,
+      #1b1b1b 4px,
+      #1b1b1b 8px
+    );
 }
 
 .scroll-top-fab {
@@ -934,10 +922,5 @@ a:active,
   .cycle-header-chip {
     font-size: 10px;
     padding: 2px 6px;
-  }
-
-  .cycle-social-link {
-    min-height: 48px;
-    font-size: 7px;
   }
 }

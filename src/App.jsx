@@ -1844,10 +1844,10 @@ export default function App() {
   const activeProductQuote = activeProduct?.quote || ''
 
   const renderHeader = () => (
-    <header className="pointer-events-none space-y-2">
+    <header className="pointer-events-none flex items-stretch justify-between gap-2">
       <button
         type="button"
-        className="cycle-header-shell brutal-box brutal-input pointer-events-auto flex w-full cursor-pointer items-center gap-3 p-3 text-left"
+        className="cycle-header-shell brutal-box brutal-input pointer-events-auto flex h-24 flex-1 cursor-pointer items-center gap-3 p-3 text-left"
         onClick={() => navigate('home')}
       >
         <img
@@ -1868,44 +1868,40 @@ export default function App() {
         </div>
       </button>
 
-      <div className="cycle-social-strip brutal-box pointer-events-auto grid grid-cols-4 gap-[2px] bg-black p-[2px]">
+      <div className="brutal-box pointer-events-auto grid h-24 w-24 shrink-0 grid-cols-2 grid-rows-2 overflow-hidden bg-[#E0E0E0]">
         <a
           href="tel:+79081332760"
-          className="cycle-social-link cycle-social-phone"
+          className="flex items-center justify-center border-b-[3px] border-r-[3px] border-black active:bg-black active:text-white"
           aria-label="Позвонить"
         >
-          <FaPhoneAlt className="h-[15px] w-[15px]" />
-          <span>ЗВОНОК</span>
+          <FaPhoneAlt className="h-[18px] w-[18px]" />
         </a>
         <a
           href="https://t.me/cycle_showroom"
           target="_blank"
           rel="noreferrer"
-          className="cycle-social-link cycle-social-telegram"
+          className="flex items-center justify-center border-b-[3px] border-black active:bg-black active:text-white"
           aria-label="Telegram"
         >
-          <FaTelegramPlane className="h-[15px] w-[15px]" />
-          <span>TELEGRAM</span>
+          <FaTelegramPlane className="h-[18px] w-[18px]" />
         </a>
         <a
           href="https://vk.com/cycle_showroom"
           target="_blank"
           rel="noreferrer"
-          className="cycle-social-link cycle-social-vk"
+          className="flex items-center justify-center border-r-[3px] border-black active:bg-black active:text-white"
           aria-label="VK"
         >
-          <FaVk className="h-[15px] w-[15px]" />
-          <span>VK</span>
+          <FaVk className="h-[18px] w-[18px]" />
         </a>
         <a
           href="https://wa.me/79081332760"
           target="_blank"
           rel="noreferrer"
-          className="cycle-social-link cycle-social-whatsapp"
+          className="flex items-center justify-center active:bg-black active:text-white"
           aria-label="WhatsApp"
         >
-          <FaWhatsapp className="h-[15px] w-[15px]" />
-          <span>WHATSAPP</span>
+          <FaWhatsapp className="h-[18px] w-[18px]" />
         </a>
       </div>
     </header>
