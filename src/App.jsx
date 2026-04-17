@@ -2409,60 +2409,66 @@ export default function App() {
               onTouchEnd={clearFrozenReviewsTouch}
               onTouchCancel={clearFrozenReviewsTouch}
             >
-              {yandexReviews.map((review, index) => (
-                <article key={review.id} className="brutal-box mb-3 bg-[var(--bg-paper)] p-3 last:mb-0">
-                  <div className="flex gap-3">
-                    {review.avatarUrl ? (
-                      <img
-                        src={review.avatarUrl}
-                        alt={review.name}
-                        className="h-11 w-11 shrink-0 border-[3px] border-black object-cover"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center border-[3px] border-black bg-black text-lg font-bold text-white">
-                        {review.name.charAt(0)}
-                      </div>
-                    )}
-                    <div className="review-lines min-w-0 flex-1">
-                      <p className="review-author heading-font text-xl uppercase">{review.name}</p>
-                      <p className="review-meta uppercase text-black/65">
-                        {formatReviewMeta(review)}
-                      </p>
-                      <p className="review-stars text-[var(--soviet-red)]">
-                        {'★'.repeat(Math.max(1, Number(review.rating) || 0))}
-                      </p>
-                      <p className="mt-2 border-l-[3px] border-black bg-[#e7e2db] p-2 text-[12px] font-bold leading-snug">
-                        {review.text}
-                      </p>
-                      {Array.isArray(review.photos) && review.photos.length > 0 && (
-                        <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
-                          {review.photos.map((photo) => (
-                            <button
-                              type="button"
-                              key={`${review.id}-${photo}`}
-                              className="image-zoom-trigger h-16 w-16 shrink-0 overflow-hidden border-[2px] border-black"
-                              onClick={() =>
-                                openImageZoom(
-                                  photo,
-                                  `${review.name} — фото отзыва ${index + 1}`,
-                                )
-                              }
-                            >
-                              <img
-                                src={photo}
-                                alt={`${review.name} — фото отзыва`}
-                                className="h-full w-full object-cover"
-                                loading="lazy"
-                              />
-                            </button>
-                          ))}
+              {yandexReviews.map((review, index) => {
+                const reviewAuthor = String(review?.name ?? '').trim() || 'Пользователь Яндекс Карт'
+                const reviewAuthorInitial = reviewAuthor.charAt(0).toUpperCase()
+                const reviewText = String(review?.text ?? '').trim()
+
+                return (
+                  <article key={review.id} className="brutal-box mb-3 bg-[var(--bg-paper)] p-3 last:mb-0">
+                    <div className="flex items-stretch gap-3">
+                      {review.avatarUrl ? (
+                        <img
+                          src={review.avatarUrl}
+                          alt={reviewAuthor}
+                          className="h-11 w-11 shrink-0 border-[3px] border-black object-cover"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center border-[3px] border-black bg-black text-lg font-bold text-white">
+                          {reviewAuthorInitial}
                         </div>
                       )}
+                      <div className="review-lines min-w-0 flex-1">
+                        <p className="review-author heading-font text-[19px] uppercase">{reviewAuthor}</p>
+                        <p className="review-meta uppercase text-black/65">{formatReviewMeta(review)}</p>
+                        <p className="review-stars text-[var(--soviet-red)]">
+                          {'★'.repeat(Math.max(1, Number(review.rating) || 0))}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </article>
-              ))}
+                    {reviewText && (
+                      <p className="review-text mt-2 border-l-[3px] border-black bg-[#e7e2db] p-2 text-[12px] font-semibold leading-snug">
+                        {reviewText}
+                      </p>
+                    )}
+                    {Array.isArray(review.photos) && review.photos.length > 0 && (
+                      <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
+                        {review.photos.map((photo) => (
+                          <button
+                            type="button"
+                            key={`${review.id}-${photo}`}
+                            className="image-zoom-trigger h-16 w-16 shrink-0 overflow-hidden border-[2px] border-black"
+                            onClick={() =>
+                              openImageZoom(
+                                photo,
+                                `${reviewAuthor} — фото отзыва ${index + 1}`,
+                              )
+                            }
+                          >
+                            <img
+                              src={photo}
+                              alt={`${reviewAuthor} — фото отзыва`}
+                              className="h-full w-full object-cover"
+                              loading="lazy"
+                            />
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </article>
+                )
+              })}
             </div>
             <button
               type="button"
