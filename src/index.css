@@ -57,8 +57,10 @@ body {
 
 .cycle-header-chip {
   display: flex;
+  width: 100%;
   max-width: 100%;
   align-items: center;
+  justify-content: flex-start;
   gap: 6px;
   border: 2px solid #000;
   background: #000;
@@ -74,6 +76,37 @@ body {
 .cycle-header-chip-hours {
   background: #122e26;
   color: #effff8;
+}
+
+.review-lines {
+  display: grid;
+  width: 100%;
+  grid-template-rows: auto auto auto;
+  row-gap: 4px;
+}
+
+.review-author {
+  margin: 0;
+  line-height: 0.95;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.review-meta {
+  margin: 0;
+  min-height: 12px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+}
+
+.review-stars {
+  margin: 0;
+  min-height: 14px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
 }
 
 .bg-carpet {

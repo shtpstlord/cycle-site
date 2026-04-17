@@ -1857,11 +1857,11 @@ export default function App() {
         />
         <div className="min-w-0 flex-1">
           <span className="cycle-wordmark-font block text-[48px] leading-[0.78] tracking-[0.02em] sm:text-[56px]">ЦИКЛ</span>
-          <span className="cycle-header-chip mt-1 w-full sm:w-max">
+          <span className="cycle-header-chip mt-1">
             <MapPin className="h-3.5 w-3.5 shrink-0" />
             ВОРОНЕЖ, Ф. ЭНГЕЛЬСА, 35
           </span>
-          <span className="cycle-header-chip cycle-header-chip-hours mt-1 w-full sm:w-max">
+          <span className="cycle-header-chip cycle-header-chip-hours mt-1">
             <Clock3 className="h-3.5 w-3.5 shrink-0" />
             ЕЖЕДНЕВНО 12:00-21:00
           </span>
@@ -2424,14 +2424,12 @@ export default function App() {
                         {review.name.charAt(0)}
                       </div>
                     )}
-                    <div className="min-w-0 flex-1">
-                      <div className="flex flex-wrap items-start gap-x-2 gap-y-1">
-                        <p className="heading-font text-xl leading-none uppercase">{review.name}</p>
-                      </div>
-                      <p className="mt-0.5 text-[10px] font-bold uppercase text-black/65">
+                    <div className="review-lines min-w-0 flex-1">
+                      <p className="review-author heading-font text-xl uppercase">{review.name}</p>
+                      <p className="review-meta text-[10px] font-bold uppercase text-black/65">
                         {formatReviewMeta(review)}
                       </p>
-                      <p className="mt-1 text-[14px] leading-none tracking-[0.15em] text-[var(--soviet-red)]">
+                      <p className="review-stars text-[14px] tracking-[0.15em] text-[var(--soviet-red)]">
                         {'★'.repeat(Math.max(1, Number(review.rating) || 0))}
                       </p>
                       <p className="mt-2 border-l-[3px] border-black bg-[#e7e2db] p-2 text-[12px] font-bold leading-snug">
