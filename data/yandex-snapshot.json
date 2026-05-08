@@ -24,8 +24,8 @@
     "https://avatars.mds.yandex.net/get-altay/11551715/2a0000018fbf9d6e9c555ee9ca751d6f0d67/orig",
     "https://avatars.mds.yandex.net/get-altay/9830591/2a0000018fbfa4c05eeef72e06a02853f66a/orig",
     "https://avatars.mds.yandex.net/get-altay/13286098/2a0000018fbfa97c142e9d1a4127a6285add/orig",
-    "https://avatars.mds.yandex.net/get-altay/1344805/2a000001853fc3b518e2cd46a121d95d663e/orig",
     "https://avatars.mds.yandex.net/get-altay/9717139/2a00000188f3a9ebadf568fcc5ab35b587f5/orig",
+    "https://avatars.mds.yandex.net/get-altay/1344805/2a000001853fc3b518e2cd46a121d95d663e/orig",
     "https://avatars.mds.yandex.net/get-altay/6195924/2a0000018fbf9dae1866c923041c8e41f651/orig",
     "https://avatars.mds.yandex.net/get-altay/7730113/2a0000018fbfa96a74989e100d0ec2c13823/orig",
     "https://avatars.mds.yandex.net/get-altay/13668123/2a00000195d818a05f31788d9c79ea742d54/orig",
@@ -156,7 +156,7 @@
       "text": "Клевый магазин! Когда приезжаю из Москвы, обязательно захожу сюда посмотреть новинки. Одежда стильная, со вкусом. Много олдскульных и брендовых вещей, например, Levi’s, polo, Dickies. Что ещё нравится, так это качество одежды: все в хорошем состоянии. Думаю, больше всего оценят любители баскетбола и университетской тематики - часто видела в ассортименте майки баскетбольных команд, бейсболки, толстовки.",
       "rating": 5,
       "dateIso": "2022-10-31T22:04:16.735Z",
-      "dateLabel": "1 ноября 2022 г.",
+      "dateLabel": "31 октября 2022 г.",
       "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/53031/enc-d1b3c80103ba5c90238181b0cf429f0fb10e223d5fde5c52e0dc0b9d389688c5/orig",
       "photos": []
     },
@@ -226,7 +226,7 @@
       "text": "Бываю проездом в Воронеже в поиске одежды, впервые посетив ЦИКЛ больше не хочется объезжать весь город. Теперь выбираю только этот магазин, эксклюзивная одежда, есть размеры и выбор, от футболок до верхней одежды на любой сезон. Однозначно рекомендую всем посетить, вежливый и дружелюбный персонал, который живет своим делом-не мало важная составляющая!",
       "rating": 5,
       "dateIso": "2023-01-17T21:16:58.072Z",
-      "dateLabel": "18 января 2023 г.",
+      "dateLabel": "17 января 2023 г.",
       "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/59871/0y-5/orig",
       "photos": [
         "https://avatars.mds.yandex.net/get-altay/176734/2a00000185c19795332f27538e81674e77b0/orig"
@@ -425,16 +425,6 @@
       "photos": []
     },
     {
-      "id": "MYzNsGskebqqsUDoOudHCKuz2jY8KB4f3",
-      "name": "Юрий Глушков",
-      "text": "Классный стильный магазин",
-      "rating": 5,
-      "dateIso": "2026-01-31T11:46:14.327Z",
-      "dateLabel": "31 января 2026 г.",
-      "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/58107/dFO1Whhr6UGmxODXQCU6qnGUI-1/orig",
-      "photos": []
-    },
-    {
       "id": "xF99BW0YeOd0U7Gict7NZ4A55cPUUFvt",
       "name": "Данил Трубников",
       "text": "Классное место с винтажными вещами",
@@ -442,6 +432,16 @@
       "dateIso": "2025-06-08T10:52:59.811Z",
       "dateLabel": "8 июня 2025 г.",
       "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/39249/njw9mBQ7QVFczpCsGBL3f5RMMs-1571002518/orig",
+      "photos": []
+    },
+    {
+      "id": "MYzNsGskebqqsUDoOudHCKuz2jY8KB4f3",
+      "name": "Юрий Глушков",
+      "text": "Классный стильный магазин",
+      "rating": 5,
+      "dateIso": "2026-01-31T11:46:14.327Z",
+      "dateLabel": "31 января 2026 г.",
+      "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/58107/dFO1Whhr6UGmxODXQCU6qnGUI-1/orig",
       "photos": []
     },
     {
@@ -647,5 +647,5 @@
       "photos": []
     }
   ],
-  "updatedAt": "2026-04-16T21:26:56.340Z"
+  "updatedAt": "2026-05-08T16:59:10.053Z"
 }
