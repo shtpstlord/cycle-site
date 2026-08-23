@@ -1,6 +1,32 @@
 {
   "products": [
     {
+      "id": 13415,
+      "name": "Футболка Polo Ralph Lauren",
+      "category": "tops",
+      "size": "XL",
+      "price": 3500,
+      "oldPrice": null,
+      "images": [
+        "https://cdn4.telesco.pe/file/hgPbICyE66-HtBv7491_wTdlXlxc1yIVPMq5baiYCPmGsonMjzymVw_3mOE7Ztbkk5--gU1d79X5GLkIpgsqokuQICxjWs5DgSdJFc8ypN0oGXqzdkUd_CE1BPwWQlI-nb-AzYif7g-OPevZdxJiQ6jCIQLzJidfDLeD9xqPTWis8eQGeoS3n1crx5Q32Xoi-sbrThbDyneGBBHmmUhlYqSJdfmUJ8ucymlgb-G2SrztWXb6ZPQFa7hIE0Xm7Xosu5d50dduyFf4bRtavRp37QlNy3ctuy0BzdgrH7J_bGUtExJ81zXi69r2FxzOFlDaQJOuSRzxiCMySzg4CH2XNw.jpg",
+        "https://cdn4.telesco.pe/file/InJuVHCThQD6pobsi6NNQyhvOxXKlMkrC01BI7HFoUVQClRPaWfytFjfcvnMTnUssJqV1oxNC3AUU2MRihqJTrCuA6HGI3ymnFe_r42MghaPAZMO3Xdl1hm9S7xz2ro9mjzskXfCEsNh5hj9gJxLYqcdrRPrRYQs07SitgIHskjXXwMINdowlYStomNcQenhXRSIJYyzhIU_Szdep1e1Ae9i0p6WRed8yVIjZP3QpYsZfeQLZvKUahq3qLLX7gWHFYctp09lozbzyqgY1hG3GFBksU3SnqCZY1ScGhuxJ-uUQEk5goRKI2fw4DYNp_b03a-ea-24dy9gNtdZNZGjgQ.jpg",
+        "https://cdn4.telesco.pe/file/f1DhhRr0ionrKmo-0GMVIFqVJg-bhIBjmM37UWWbQwU0lUz9ltjm6UQv37V55VgKnTwKhqtABLQ76Onic97caBxYDeXGLXKi8GRaHJW6Kksblgp1vr8bdd4nypLWAMRD01PywGu50GZCLCW8Ur6R_rWulV-hzK5cohrfDVdyCkjEx1-51S2pDn5lw6aaH4YH1Sd4pdKlyn3ZNbca1QbvDum_TI6b5FmnIQ2TO2b7nbJeFUHHdhYVvyFgIakd1S1cEBoXl45dpokNkkQn4QLrkPi7RXjNIAiAR7rt5c8UbmdoRidySQWiucD43E2GBmUqhltvp8hstCdX7qtQu4JO5w.jpg"
+      ],
+      "subtitle": "100% хлопок, classic fit, новая вещь с навесной биркой",
+      "quote": "",
+      "postViews": 74,
+      "postTime": "10:30",
+      "status": "available",
+      "sourceType": "telegram",
+      "sourceChannel": "cycle_showroom",
+      "sourcePostId": "27857",
+      "sourceUrl": "https://t.me/cycle_showroom/27857",
+      "sourceDateTime": "2026-08-23T10:30:26.000Z",
+      "sourceText": "Футболка Polo Ralph Lauren\n100% хлопок, classic fit, новая вещь с навесной биркой\n- Размер: XL\n- Цена: 3500₽",
+      "syncedAt": "2026-08-23T11:01:06.380Z",
+      "createdAt": "2026-08-23T10:30:26.000Z"
+    },
+    {
       "id": 13414,
       "name": "Худи Nike",
       "category": "tops",
@@ -12,7 +38,7 @@
       ],
       "subtitle": "80% хлопок, 20% полиэстер",
       "quote": "",
-      "postViews": 73,
+      "postViews": 135,
       "postTime": "10:02",
       "status": "available",
       "sourceType": "telegram",
@@ -21,7 +47,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27856",
       "sourceDateTime": "2026-08-23T10:02:05.000Z",
       "sourceText": "Худи Nike\n80% хлопок, 20% полиэстер\n- Размер: XL\n- Цена: 1000₽",
-      "syncedAt": "2026-08-23T10:33:34.148Z",
+      "syncedAt": "2026-08-23T11:01:06.394Z",
       "createdAt": "2026-08-23T10:02:05.000Z"
     },
     {
@@ -38,7 +64,7 @@
       ],
       "subtitle": "Made in USA 🇺🇸 , 100% хлопок",
       "quote": "",
-      "postViews": 343,
+      "postViews": 370,
       "postTime": "15:01",
       "status": "available",
       "sourceType": "telegram",
@@ -47,7 +73,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27853",
       "sourceDateTime": "2026-08-22T15:01:23.000Z",
       "sourceText": "Винтажные шорты Wrangler\nMade in USA 🇺🇸 , 100% хлопок\n- Размер: W34\n- Цена: 3800₽",
-      "syncedAt": "2026-08-23T10:33:34.162Z",
+      "syncedAt": "2026-08-23T11:01:06.394Z",
       "createdAt": "2026-08-22T15:01:23.000Z"
     },
     {
@@ -64,7 +90,7 @@
       ],
       "subtitle": "Официальный мерч",
       "quote": "",
-      "postViews": 401,
+      "postViews": 420,
       "postTime": "14:32",
       "status": "reserved",
       "sourceType": "telegram",
@@ -73,7 +99,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27850",
       "sourceDateTime": "2026-08-22T14:32:11.000Z",
       "sourceText": "Футболка Jägermeister\nОфициальный мерч\n- Размер: XL\n- Цена: 2500₽ (БРОНЬ)",
-      "syncedAt": "2026-08-23T10:33:34.162Z",
+      "syncedAt": "2026-08-23T11:01:06.394Z",
       "createdAt": "2026-08-22T14:32:11.000Z"
     },
     {
@@ -89,7 +115,7 @@
       ],
       "subtitle": "100% вискоза",
       "quote": "",
-      "postViews": 365,
+      "postViews": 379,
       "postTime": "14:04",
       "status": "available",
       "sourceType": "telegram",
@@ -98,7 +124,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27848",
       "sourceDateTime": "2026-08-22T14:04:22.000Z",
       "sourceText": "Гавайская рубашка\n100% вискоза\n- Размер: XL\n- Цена: 2000₽",
-      "syncedAt": "2026-08-23T10:33:34.162Z",
+      "syncedAt": "2026-08-23T11:01:06.395Z",
       "createdAt": "2026-08-22T14:04:22.000Z"
     },
     {
@@ -114,7 +140,7 @@
       ],
       "subtitle": "Производство Nike, сезон 2013/14",
       "quote": "",
-      "postViews": 374,
+      "postViews": 385,
       "postTime": "13:30",
       "status": "available",
       "sourceType": "telegram",
@@ -123,7 +149,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27846",
       "sourceDateTime": "2026-08-22T13:30:57.000Z",
       "sourceText": "Джерси Manchester City\nПроизводство Nike, сезон 2013/14\n- Размер: M\n- Цена: 3500₽",
-      "syncedAt": "2026-08-23T10:33:34.163Z",
+      "syncedAt": "2026-08-23T11:01:06.395Z",
       "createdAt": "2026-08-22T13:30:57.000Z"
     },
     {
@@ -138,7 +164,7 @@
       ],
       "subtitle": "100% хлопок",
       "quote": "",
-      "postViews": 382,
+      "postViews": 394,
       "postTime": "13:02",
       "status": "available",
       "sourceType": "telegram",
@@ -147,7 +173,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27845",
       "sourceDateTime": "2026-08-22T13:02:12.000Z",
       "sourceText": "Поло с длинным рукавом Polo Ralph Lauren\n100% хлопок\n– Размер: XL\n– Цена: 2000₽",
-      "syncedAt": "2026-08-23T10:33:34.163Z",
+      "syncedAt": "2026-08-23T11:01:06.395Z",
       "createdAt": "2026-08-22T13:02:12.000Z"
     },
     {
@@ -163,7 +189,7 @@
       ],
       "subtitle": "100% хлопок",
       "quote": "",
-      "postViews": 377,
+      "postViews": 386,
       "postTime": "12:33",
       "status": "available",
       "sourceType": "telegram",
@@ -172,7 +198,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27843",
       "sourceDateTime": "2026-08-22T12:33:54.000Z",
       "sourceText": "Рубашка Ralph Lauren\n100% хлопок\n- Размер: L\n- Цена: 6000₽",
-      "syncedAt": "2026-08-23T10:33:34.163Z",
+      "syncedAt": "2026-08-23T11:01:06.395Z",
       "createdAt": "2026-08-22T12:33:54.000Z"
     },
     {
@@ -187,7 +213,7 @@
       ],
       "subtitle": "100% хлопок",
       "quote": "",
-      "postViews": 389,
+      "postViews": 398,
       "postTime": "12:02",
       "status": "available",
       "sourceType": "telegram",
@@ -196,7 +222,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27842",
       "sourceDateTime": "2026-08-22T12:02:30.000Z",
       "sourceText": "Лонгслив Columbia\n100% хлопок\n- Размер: XL\n- Цена: 1000₽",
-      "syncedAt": "2026-08-23T10:33:34.163Z",
+      "syncedAt": "2026-08-23T11:01:06.395Z",
       "createdAt": "2026-08-22T12:02:30.000Z"
     },
     {
@@ -213,7 +239,7 @@
       ],
       "subtitle": "100% хлопок, фурнитура YKK",
       "quote": "",
-      "postViews": 394,
+      "postViews": 401,
       "postTime": "11:32",
       "status": "available",
       "sourceType": "telegram",
@@ -222,7 +248,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27839",
       "sourceDateTime": "2026-08-22T11:32:46.000Z",
       "sourceText": "Джинсы Carhartt WIP Double Knee Pant\n100% хлопок, фурнитура YKK\n- Размер: 32/32\n- Цена: 7900₽",
-      "syncedAt": "2026-08-23T10:33:34.163Z",
+      "syncedAt": "2026-08-23T11:01:06.396Z",
       "createdAt": "2026-08-22T11:32:46.000Z"
     },
     {
@@ -237,7 +263,7 @@
       ],
       "subtitle": "100% хлопок",
       "quote": "",
-      "postViews": 417,
+      "postViews": 423,
       "postTime": "11:03",
       "status": "available",
       "sourceType": "telegram",
@@ -246,7 +272,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27838",
       "sourceDateTime": "2026-08-22T11:03:38.000Z",
       "sourceText": "Футболка Polo Ralph Lauren\n100% хлопок\n- Размер: XL\n- Цена: 1000₽",
-      "syncedAt": "2026-08-23T10:33:34.163Z",
+      "syncedAt": "2026-08-23T11:01:06.396Z",
       "createdAt": "2026-08-22T11:03:38.000Z"
     },
     {
@@ -257,12 +283,12 @@
       "price": 6000,
       "oldPrice": null,
       "images": [
-        "https://cdn4.telesco.pe/file/P9AQ7SA8QBuAhyaP7LSAeZUdfTb1Z97xA1Re7cn8aCov5Sa_1BcOFNLpDVvmdgrO_C03C2G1vgYSWHjYo5k7KIxbjiOGXcrBeyMsQ5JLzwU2-iLgrs3uSmVye4V2LqFxdaNpO-nJC4sWCQFDPIr-uhDrYwZYza50i-Kb0KS0tbgZTDBogmRI0u0dJsibcvrFnnUvuZM5frY-0keh3zLWNqM81UpnjKPZ7IsMwyPKsDZRh-gbHaG9lkK97CCvRYYxA95Ei4v7YefclvwOibIZpwnDSsIQV6XyyBge0j_WGCwdN5dnTRuDJqBc3EmQ4Y_wIxxQlCeR0r9IhG30Yl3NJg.jpg",
-        "https://cdn4.telesco.pe/file/f1FbZqzohkqvn-Kxw3LiFsxlENYTeMLbfAhWO7ixLTG2QncbD1wk2xCpDPZeU5loJ4koJ3oi9JjUzsQHHvaEftNV1NUWtDL7OvlnDEPe_C7WboL2c_9Fb3vzet17PrCAqjrs71g_J0Cr6fJk6XwCxVRmm8lNfIMw4LzeDD3T0enugpS89pvpkfEc5WFYM6tUNMwVVaF9WF0wOdPHmF_qA0ulO3VqA1HqQ4Hfn-V-9yWToMElDwe96OaAk0emBgVwA5p8-pF5zxYoLAIhWm_3CM5Y5Ls-2d_YqKPTEbyu3DYukNYQPRPj4SxcGhuABmeNbDidbZx5HSTl8NaTQY5Upg.jpg"
+        "https://cdn4.telesco.pe/file/PC8TDN1IG6Gf2h1wz5RjfrjBTMlrlxkGbnNOg3xpcC7TTx21lHGdCeR8cvNYuahrIr7HJO6TBFDmUaFRlyDFm6hKeoN3pvsGcCEKmxY3VruD_1er3MZZrT9lHKKpEu_QDsvOPm3TW6qN8KV36kYSk0HAWaMLemOydSA6q4MqvHLdE1wHuLWvRJ8FZr7euBLI0_SzWdU4WJPeFkELQe-nNgQwxHDlqWgYNsDaw6TV22gjQp3bVdwtRtbrQhFNHT7wvKu67lhfSPwd4-Or_lirRKTOxHhfttKtuPpdVEP4O0O3XZZJGTh2oM0dALBJuql8BfTfXKZJsVu0Kh6LjUkRAw.jpg",
+        "https://cdn4.telesco.pe/file/j9__nD1838rWAuR1XTjapsrS1xkDuLxh5_G-Urml90cX0mYP-c6Dj3erUUEwTOqtFttTg1qFCMkjHlecPM-TULV8BrRpZFWz5OHZiwS3xIvylLLAUcSwdBUk3ZNdMue4UNLoZIzgX4n6TL-dRnSvHEeVzG1jNuPcpHT0kP50-dLHpuI4itP1b41GqCVoC1QDtoEKm_u1FMUL1ehvstnqdYC8jeA-H1Jv3tGtgJQO6GQJqtf48g9D992PbyNtcLanm7BKDROV8A0V-9U0W_uVIRTCOVezrsNHeQiS1Gl0gAnd0BAQAYZuQBRNramJXAuJtrEcNDP7yjFDuptZ3NTMMg.jpg"
       ],
       "subtitle": "Made Portugal 🇵🇹 , 100% натуральная замша",
       "quote": "",
-      "postViews": 445,
+      "postViews": 450,
       "postTime": "10:30",
       "status": "available",
       "sourceType": "telegram",
@@ -271,7 +297,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27836",
       "sourceDateTime": "2026-08-22T10:30:01.000Z",
       "sourceText": "Замшевые криперы Fred Perry Linden Suede\nMade Portugal 🇵🇹 , 100% натуральная замша\n- Размер: 44EU, 10.5US\n- Цена: 6000₽",
-      "syncedAt": "2026-08-23T10:33:34.164Z",
+      "syncedAt": "2026-08-23T11:01:06.396Z",
       "createdAt": "2026-08-22T10:30:01.000Z"
     },
     {
@@ -287,7 +313,7 @@
       ],
       "subtitle": "100% хлопок, loose fit",
       "quote": "",
-      "postViews": 535,
+      "postViews": 539,
       "postTime": "14:01",
       "status": "available",
       "sourceType": "telegram",
@@ -296,7 +322,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27831",
       "sourceDateTime": "2026-08-21T14:01:48.000Z",
       "sourceText": "Шорты Levi’s 569\n100% хлопок, loose fit\n- Размер: W38\n- Цена: 3500₽",
-      "syncedAt": "2026-08-23T10:33:34.164Z",
+      "syncedAt": "2026-08-23T11:01:06.396Z",
       "createdAt": "2026-08-21T14:01:48.000Z"
     },
     {
@@ -311,7 +337,7 @@
       ],
       "subtitle": "100% лён",
       "quote": "",
-      "postViews": 514,
+      "postViews": 516,
       "postTime": "13:00",
       "status": "available",
       "sourceType": "telegram",
@@ -320,7 +346,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27830",
       "sourceDateTime": "2026-08-21T13:00:51.000Z",
       "sourceText": "Рубашка Ralph Lauren\n100% лён\nЕсть нюанс\n- Размер: М\n- Цена: 1000₽",
-      "syncedAt": "2026-08-23T10:33:34.164Z",
+      "syncedAt": "2026-08-23T11:01:06.396Z",
       "createdAt": "2026-08-21T13:00:51.000Z"
     },
     {
@@ -337,7 +363,7 @@
       ],
       "subtitle": "100% хлопок, classic fit, новая вещь с навесной биркой",
       "quote": "",
-      "postViews": 511,
+      "postViews": 513,
       "postTime": "12:33",
       "status": "available",
       "sourceType": "telegram",
@@ -346,7 +372,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27827",
       "sourceDateTime": "2026-08-21T12:33:41.000Z",
       "sourceText": "Футболка Polo Ralph Lauren\n100% хлопок, classic fit, новая вещь с навесной биркой\n- Размер: S, XL\n- Цена: 3500₽",
-      "syncedAt": "2026-08-23T10:33:34.164Z",
+      "syncedAt": "2026-08-23T11:01:06.397Z",
       "createdAt": "2026-08-21T12:33:41.000Z"
     },
     {
@@ -361,7 +387,7 @@
       ],
       "subtitle": "100% хлопок",
       "quote": "",
-      "postViews": 515,
+      "postViews": 517,
       "postTime": "12:03",
       "status": "available",
       "sourceType": "telegram",
@@ -370,7 +396,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27826",
       "sourceDateTime": "2026-08-21T12:03:48.000Z",
       "sourceText": "Лонгслив Russel Athletic\n100% хлопок\n- Размер: L\n- Цена: 1000₽",
-      "syncedAt": "2026-08-23T10:33:34.164Z",
+      "syncedAt": "2026-08-23T11:01:06.397Z",
       "createdAt": "2026-08-21T12:03:48.000Z"
     },
     {
@@ -386,7 +412,7 @@
       ],
       "subtitle": "100% хлопок",
       "quote": "",
-      "postViews": 531,
+      "postViews": 533,
       "postTime": "11:30",
       "status": "available",
       "sourceType": "telegram",
@@ -395,7 +421,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27824",
       "sourceDateTime": "2026-08-21T11:30:55.000Z",
       "sourceText": "Винтажная рубашка Polo by Ralph Lauren\n100% хлопок\n- Размер: M (жен)\n- Цена: 4500₽",
-      "syncedAt": "2026-08-23T10:33:34.165Z",
+      "syncedAt": "2026-08-23T11:01:06.397Z",
       "createdAt": "2026-08-21T11:30:55.000Z"
     },
     {
@@ -410,7 +436,7 @@
       ],
       "subtitle": "Made in Cambodia 🇰🇭",
       "quote": "",
-      "postViews": 517,
+      "postViews": 518,
       "postTime": "10:04",
       "status": "available",
       "sourceType": "telegram",
@@ -419,7 +445,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27820",
       "sourceDateTime": "2026-08-21T10:04:56.000Z",
       "sourceText": "Футболка Nike\nMade in Cambodia 🇰🇭\n- Размер: XL\n- Цена: 1000₽",
-      "syncedAt": "2026-08-23T10:33:34.165Z",
+      "syncedAt": "2026-08-23T11:01:06.397Z",
       "createdAt": "2026-08-21T10:04:56.000Z"
     },
     {
@@ -437,7 +463,7 @@
       ],
       "subtitle": "Made in Italy 🇮🇹 , 100% хлопок, фурнитура OPTI",
       "quote": "Dirk Bikkembergs — это известный международный бренд одежды, обуви и аксессуаров, основанный в 1986 году бельгийским дизайнером. Марка прославилась тем, что первой соединила высокую моду и мир профессионального спорта, создав стиль спорт-кажур.",
-      "postViews": 547,
+      "postViews": 548,
       "postTime": "09:31",
       "status": "available",
       "sourceType": "telegram",
@@ -446,7 +472,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27816",
       "sourceDateTime": "2026-08-21T09:31:53.000Z",
       "sourceText": "Джинсы Dirk Bikkembergs\nMade in Italy 🇮🇹 , 100% хлопок, фурнитура OPTI\nDirk Bikkembergs — это известный международный бренд одежды, обуви и аксессуаров, основанный в 1986 году бельгийским дизайнером. Марка прославилась тем, что первой соединила высокую моду и мир профессионального спорта, создав стиль спорт-кажур.\n- Размер: W31\n- Цена: 4800₽",
-      "syncedAt": "2026-08-23T10:33:34.166Z",
+      "syncedAt": "2026-08-23T11:01:06.399Z",
       "createdAt": "2026-08-21T09:31:53.000Z"
     },
     {
@@ -461,7 +487,7 @@
       ],
       "subtitle": "100% хлопок",
       "quote": "",
-      "postViews": 551,
+      "postViews": 554,
       "postTime": "09:04",
       "status": "available",
       "sourceType": "telegram",
@@ -470,7 +496,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27815",
       "sourceDateTime": "2026-08-21T09:04:15.000Z",
       "sourceText": "Поло с длинным рукавом Lacoste\n100% хлопок\nЕсть нюанс\n- Размер: XL+\n- Цена: 2000₽",
-      "syncedAt": "2026-08-23T10:33:34.166Z",
+      "syncedAt": "2026-08-23T11:01:06.399Z",
       "createdAt": "2026-08-21T09:04:15.000Z"
     },
     {
@@ -557,10 +583,10 @@
       "price": 2200,
       "oldPrice": null,
       "images": [
-        "https://cdn4.telesco.pe/file/KRQDfKNWcKw0L0GEaIPo0cCx-y54s8P0MPaNp4PNK64LrJcpNzLugew_8RtvTK37VyDcqbvCsC9MYOpktny3Cgvqba2RX-0NChur5Cey4_cR8sqWLdEZLhdAfhWt-uDI0455oSm-SOOvDdjucMza1HtDElJ201r8KJ0fjPXVxRY67VWyhS5qXLxYvsAyDSUh6WycFCzOhU2V2GbOG5C4Uy3Xk1Pjf8bZk3-AYQwXl-jCtcwUcVN4UOf2JGK3Gv9QIYx6wjC2NtKjYou6QTMBnMk-vBVoG6Tub7LBDx7BTUUA7sg3C2ng-fOkWW6XE2fPcTH_FmcFkAH-9FqmpWtuhw.jpg",
-        "https://cdn4.telesco.pe/file/IMX25UgbGUIdhcT1nrA13c0XR30FDDCWGhuTxGIYcgADqdkW6QDJAk0PqKLi3a5g5IuCeV5ra61FKyF1Bpy2MgSNA_vbiVJxk3ZkqpHLkj_tCs7SaEMiBbe9Y9X3yzd9UfMRJr5E8jWepi3n6LSlflmSTLF_CrwXjvCQf2IFPqRJZlFWLUixr4Ilrg2YLdOL_P6ShiqKhmVzKvMi6mOq3IO8ERlZYdw5jmHpCS_1SA7wUJM6r1HX8ZtpLolN_O-45PP_nDlKtTxwk85ai5BJfk0ikZ_sqHtlxExihy8lTnx7axg5m88xc60AbVvPysxqDWoKpfWePKbVXOf3GN2Bgg.jpg",
-        "https://cdn4.telesco.pe/file/al30GbfJZg9-qDgDN7ya-IeDyyDp1X3gZMK0Nt4E8SyCae3-TVblaU0ne9VEIFpv67auPPnf9I_3R8j9TuIKyXw0e2vMAvlKXjsVJXsE1Zlz15v_f8SBm33RI41yeKWZZOn28YdwyfHgXLdhz6WYWJ-0CJAaujv0TR-8qbXSFGxnzagb5Zte2y0fP5RzByk_0fjMraPeChtch6cyv12dimBCypiskUN22aeqVDbCiZoaNbQljyOwEkDQpH1NRt9j9INmrJhbrm8N7Wc0X-Yhp-3xnaJ9DizHkZOOfXL0N_tDzzAv46kq1vjD5_ZB8C6PKhJBeA70K7fnidTDeqvkNw.jpg",
-        "https://cdn4.telesco.pe/file/my0RIyOqoxSe7nfmjIFQ-u-HR3ECIEL5wJdwEqjbzsDnARroxKrZB3ZWfS_ENwWrJSDdirk9kfr8PE6zmGYsjlQ60-voBjp9HrcNVyki5zBqh0P7NktyVrU-r-zW7uvYYOcoSyrrTd8hbGBJu2jwb8RXKckGHeHLHPZSfjfkzP9Lpcn52uY-VqXgr-VjrQ5Ai6-q2XU0IQP3cf2n-VCeTwgnIhDeI2kXZl7lakn_g2AtBI5Px_f_QoZlB4xo0QQbGZmwUF0XjmfELQDlAtlChknK7BJyQMjb-WBvH_wL5gwVPnc6LmgBA6vMGLXTFqF7_1PoyvKw40wkqBasIYV8wQ.jpg"
+        "https://cdn4.telesco.pe/file/tJdwdAeamsE-DOzlZg3yaDAaZfS2D9GsPW66WNGWvu8ZI7s5W_mcqyXoK_iEJJMoqeOXqvBHIT9jSglAK9Q5wWLtK6c5I4RDjqAforGxjpnn93qLqyGsrFcMJTzGPbxa3PYkdMA9wqHe7jcuQUHrWaPsH8pgt42vAAHjPqL8p9QwB7uhE2nyHq-OgGPr2dFRAx-y4Daiuzy8y4TljQL9_8Ol9I7g2D4MMdCtttjcIyxihK3_Vhnr3iYTDx_ekusoaEbvDkUEo2c2pe_mfJH1XDf6qN95Sdy4o9lq6gcnDdR-OP5CXjGXxafGLA3NrhqqhnmeY5U3CNAGrA0TLt0wcw.jpg",
+        "https://cdn4.telesco.pe/file/W-RcZ5YWZ_9jUWAIGyaAd1eNEaMrHZ-18U4kDlwkz5-6VOgTuja8QJWTdGFVdL3-WlIfeRqaKfw0c72SfymtjQAE7yPtrhAayaBG40nvi6hNXw46Pj-0qn-2r26p7weytzUP0_abUCPnRiZKlrBSaDDOl2joJTwBvg-FWrdaZrekFcJ_Wpe5tTX0K7kpDIjstd6hLOiOuurfAGf4pU4QOyBmI4dBmXQPb2iiflNCDuLWY-_AvqkbxnJlCKNBJLyp30KonSzGa_BRtVllUaUx6LULEbCZEN1U2lXx-P2rdf3KPDfrH2ZivEvkQaSMmp85VEqChlwq0MHaaCkFJes4-w.jpg",
+        "https://cdn4.telesco.pe/file/CgeC_zS6mrKHuIc0VRABGE-O9LyKDjzn5JVMqEGn0wn8FJhTSl_V_sWrGu0TdrocEF3ZY8qWPQHDkOtzfLAddMMlXRdrHK4FNsGI0hFN15Sc_iR_LcVnRy_U5LbivzoqaepWb0539ijDvo89X3JJWNhwd9SHcY4xtdjXaPKN-X12rQdKHDzND_8Y0y11vT91NiAeYk5KjTwC5qREp9-3iGLnkA65GjIWR2ozznYOJegs1sP29veKSHUYH-GgSNB60-RM96B9gzLltnKzfWjaky98jNUaQaUVzR4Xn_JMgMpS_Voz-C20kL-gFJVb7AQ2TJVmNabRJI1Rvt2skIOEWQ.jpg",
+        "https://cdn4.telesco.pe/file/IWOyVdDn9wYLDNd39RfDfUvqcZNVP4aHyXqN2e5iAHrulHFJzqtBSMtBObkV5amLDSDDxUDSR5Sidr01Ql2pDHXq5qTI6SJ6ZNtF020Z-Yya9TmzjJIzmPlE_k2oEIrTkE5JrRtLK7iLURxC8xdTQFSNdOL7_IaTTWPZqp_EXpnhmWQUG-hotbdOmaC1gEeekOAdRRrOi25X9lG1L2YtOMCGkmbSN4U8HZWVdQG7mG1ZxKt9ongHQHaDg9odYmR09uXCM6QvfEYqrdF3trehGZMnnqtZXvjCgVaEoKE7MnBYkSevkMQrUqtMb2LC4moAU7r9IeVsux06V7zn4Vd2nw.jpg"
       ],
       "subtitle": "100% хлопок, ширинка на пуговицах",
       "quote": "",
@@ -573,7 +599,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27801",
       "sourceDateTime": "2026-08-20T11:03:37.000Z",
       "sourceText": "Винтажные брюки Dockers\n100% хлопок, ширинка на пуговицах\n- Размер: S-M\n- Цена: 2200₽",
-      "syncedAt": "2026-08-23T10:33:34.167Z",
+      "syncedAt": "2026-08-23T11:01:06.399Z",
       "createdAt": "2026-08-20T11:03:37.000Z"
     },
     {
@@ -589,7 +615,7 @@
       ],
       "subtitle": "Made in Cambodia 🇰🇭 , 100% хлопок, classic fit, новая вещь с навесной биркой",
       "quote": "",
-      "postViews": 580,
+      "postViews": 581,
       "postTime": "10:01",
       "status": "available",
       "sourceType": "telegram",
@@ -598,7 +624,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27797",
       "sourceDateTime": "2026-08-20T10:01:36.000Z",
       "sourceText": "Polo Ralph Lauren\nMade in Cambodia 🇰🇭 , 100% хлопок, classic fit, новая вещь с навесной биркой\n- Размер: XL\n- Цена: 4500₽",
-      "syncedAt": "2026-08-23T10:33:34.167Z",
+      "syncedAt": "2026-08-23T11:01:06.400Z",
       "createdAt": "2026-08-20T10:01:36.000Z"
     },
     {
@@ -615,7 +641,7 @@
       ],
       "subtitle": "Основная часть выполнена из мягкой натуральной замши, новая вещь с навесной биркой",
       "quote": "",
-      "postViews": 610,
+      "postViews": 612,
       "postTime": "09:00",
       "status": "available",
       "sourceType": "telegram",
@@ -624,7 +650,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27793",
       "sourceDateTime": "2026-08-20T09:00:15.000Z",
       "sourceText": "Кроссовки New Balance 997H Cordura\nОсновная часть выполнена из мягкой натуральной замши, новая вещь с навесной биркой\n- Размер: 41,5 EUR, 26 см, 44 EUR, 28 см\n- Цена: 9900₽",
-      "syncedAt": "2026-08-23T10:33:34.167Z",
+      "syncedAt": "2026-08-23T11:01:06.400Z",
       "createdAt": "2026-08-20T09:00:15.000Z"
     },
     {
@@ -663,7 +689,7 @@
       ],
       "subtitle": "70% хлопок, 30% полиэстер",
       "quote": "",
-      "postViews": 632,
+      "postViews": 633,
       "postTime": "14:32",
       "status": "available",
       "sourceType": "telegram",
@@ -672,7 +698,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27785",
       "sourceDateTime": "2026-08-19T14:32:23.000Z",
       "sourceText": "Худи Adidas\n70% хлопок, 30% полиэстер\n- Размер: М (жен)\n- Цена: 2000₽",
-      "syncedAt": "2026-08-23T10:33:34.168Z",
+      "syncedAt": "2026-08-23T11:01:06.400Z",
       "createdAt": "2026-08-19T14:32:23.000Z"
     },
     {
@@ -689,7 +715,7 @@
       ],
       "subtitle": "Made in USA 🇺🇸 , новая вещь с навесной биркой",
       "quote": "",
-      "postViews": 606,
+      "postViews": 607,
       "postTime": "13:33",
       "status": "available",
       "sourceType": "telegram",
@@ -698,7 +724,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27780",
       "sourceDateTime": "2026-08-19T13:33:48.000Z",
       "sourceText": "Кроссовки New Balance 990V6\nMade in USA 🇺🇸 , новая вещь с навесной биркой\n- Размер: 40,5 EUR, 26 см\n- Цена: 12500₽",
-      "syncedAt": "2026-08-23T10:33:34.168Z",
+      "syncedAt": "2026-08-23T11:01:06.400Z",
       "createdAt": "2026-08-19T13:33:48.000Z"
     },
     {
@@ -740,7 +766,7 @@
       ],
       "subtitle": "Made in Mexico 🇲🇽 , 100% хлопок, фурнитура YKK, 2002 год",
       "quote": "",
-      "postViews": 594,
+      "postViews": 595,
       "postTime": "11:32",
       "status": "available",
       "sourceType": "telegram",
@@ -749,7 +775,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27771",
       "sourceDateTime": "2026-08-19T11:32:09.000Z",
       "sourceText": "Винтажные джинсы Levi’s 901\nMade in Mexico 🇲🇽 , 100% хлопок, фурнитура YKK, 2002 год\n- Размер: 32/32\n- Цена: 6000₽",
-      "syncedAt": "2026-08-23T10:33:34.168Z",
+      "syncedAt": "2026-08-23T11:01:06.400Z",
       "createdAt": "2026-08-19T11:32:09.000Z"
     },
     {
@@ -760,12 +786,12 @@
       "price": 4500,
       "oldPrice": null,
       "images": [
-        "https://cdn4.telesco.pe/file/TWKjTIZep0X1LdKLrRA2m9wtl0IxRlG4BTDRRso5yf1uJOhvlwArBMIMwstLxxIs0wMyCO5LSsefN9J962RmzwiqMzuCP3Kkdjj_CCmNwhmk834-M45THB01xtyVeICck7Ap1c5RXvUUADfYV5oQ2e3IKJEMIRRp2DYmj9awp1KY0qMwbaO54SbAEnU70sb7nsbFW3L86aBQn2PHvsrx3kt6XCWK1wiCtL84eBYLbYF8PkM_w4xqfvmW5-fvlADDzy3ezBjkGgJg7OD6bCbqGoF4THq3CvTrAmbzsiPthQJZowQ21V_Qkv75x2rU9_tQCm_CDDXcunulgK6EzTId7w.jpg",
-        "https://cdn4.telesco.pe/file/R8ljp1QWY1ZRjb6P_eRkiNPw7DMqEYELelu60Zm01WWoUpV99Zk8Tre40eNwhomuqWzTDUUTSix4ofBitjf1Xdxjl0bttqbGrLkRoP6_5JrkyZrtDcGh2rVg-LHEny7jKNPLCPcjk6zs8ermy5pwBBR_3KrjEmuJqqG8HHvDyoRkWDyRyV0KV1qy4g22NbCidbtdEQx9usf4a3QJqexY9gifnrIX8v_xHn4xWZfj0zEZASppu_Ng6QYLB6NsLwl0FbwFdj9enkS31T8QTfY56kaajGVxXhUN4hSCyiiDuZKo-O_WhBaigzRxFxOjinFVwECVNWaB6fw5EKaArsFaHw.jpg"
+        "https://cdn4.telesco.pe/file/ncsK7rV29-8WyaDgSrfrh-FG-mjUytpgqVASLMpNrefavcI36dfmMZBQgN78CCx-KODiC9lnGojwiHpUPdSGKoXEoHuvPzPHazR2khuaXMtN2faIv1LVs8JZyUe9tPqpiaH2fQ9PK-WhP8jJ1ee2-A5lgcLJLkA7XYhp6XBQfOw9_HUPqT3WXZcFTVkB-0cAlDkaBa66Pkp-kQuXDVogGmlbCo8NL1K-xe5miM1UMXG0_H_6xL9nG0NUPUGh65FKvrkRGUKZlASOz4mFH5nrNBbemVnfOSuQhMc4DyMnhCojfvz2ofp2R3-MirJGk5FK4oDNAIO_wB4LEN8stpcMzA.jpg",
+        "https://cdn4.telesco.pe/file/HmCozLjThiUNVeY_5p-JzvHx4UvQOAHq_9FBPtyB3iyOme8yyVZPfu3OhekfAprJXXniWptewS6edbWkcgePwEcb51ntrTvQ77h3yFOpOY16BYnqmhy-AJD0IT2wvL8RlOLg5RdvDH25h7EYgjv3UhjVFYKJTVjaNj5EF8CSqMar0OvTe50zxgf65dpzp8IO2sRMBWdw4EWVbklFhY2E-n6svk6JNxSKjCO81-kP6lEHNHnVLc7swk5Z2lXxgTeDEuA-Gf8I3OKf-S8BxjkxU2PwO3PHYoT6EYbTna002SkaQWofPm-SnBkIj2I8w3BS2NsGl7Fh8FKJDyFC_aoDZw.jpg"
       ],
       "subtitle": "65% полиэстер, 35% хлопок, новая вещь с навесной биркой",
       "quote": "",
-      "postViews": 610,
+      "postViews": 611,
       "postTime": "11:03",
       "status": "reserved",
       "sourceType": "telegram",
@@ -774,7 +800,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27769",
       "sourceDateTime": "2026-08-19T11:03:49.000Z",
       "sourceText": "Рубашка с коротким рукавом Dickies\n65% полиэстер, 35% хлопок, новая вещь с навесной биркой\n- Размер: XL\n- Цена: 4500₽ (БРОНЬ)",
-      "syncedAt": "2026-08-23T10:33:34.168Z",
+      "syncedAt": "2026-08-23T11:01:06.401Z",
       "createdAt": "2026-08-19T11:03:49.000Z"
     },
     {
@@ -789,7 +815,7 @@
       ],
       "subtitle": "100% хлопок, classic fit, новая вещь с навесными бирками",
       "quote": "",
-      "postViews": 633,
+      "postViews": 634,
       "postTime": "10:34",
       "status": "available",
       "sourceType": "telegram",
@@ -798,7 +824,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27768",
       "sourceDateTime": "2026-08-19T10:34:30.000Z",
       "sourceText": "Футболка Polo Ralph Lauren\n100% хлопок, classic fit, новая вещь с навесными бирками\n- Размер: S\n- Цена: 3500₽",
-      "syncedAt": "2026-08-23T10:33:34.169Z",
+      "syncedAt": "2026-08-23T11:01:06.401Z",
       "createdAt": "2026-08-19T10:34:30.000Z"
     },
     {
@@ -909,8 +935,8 @@
       "price": 7900,
       "oldPrice": null,
       "images": [
-        "https://cdn4.telesco.pe/file/T1odDQuKFPpDbO4-qTQNhJlyWNXqxAVi7MmbN1GPQi4cirDLXyywNUi3H2O3hup9RGsEfRCuOxdwoRBxVKaJxV0YLAJRwd4CxW4D7_NxgSbMUF6j1gqA6grQ-sVsO898JmpRVD39V2ih6j9I14jFIZIdPwAEgrP72lMEyBECL29ApETKYccwIVrGnPylrV9_KzMyBopqWxyZVt4bnrYjxrbwqXxlcZrz2W2Cby0yeFguerKcgHVVW4ijyEXCeg6JsjCAHNaGHxsjc0moOr8kJYl_Fll-DNR8Az37cDCUaTgF_TbfEti4PejKmdRb7j54221HBo5vRVhiyqq6dkk-EQ.jpg",
-        "https://cdn4.telesco.pe/file/vE-v7KExrhoJv5PqPmJOzlKvez6Qzt9zBKOf1Fco548jRrePmDTxlRA-nhWPWuJhIyeSZhVlaz1kFqXN-HZMU1rWy2zu_RxkKFu4jd1T35tN1auJLxJax0zprmQsX1N_ZdvIbHBWe-l9LvbZQARMhGUA2v9qe607V4G7TC2JVpO-kesXABzlmSzV0fJV1QkX2PvJMqMs5zJA6lEP1YX2uaqz2U19fb_220mFxT4-pkWbTjVQv3rd7MryrhfTulUFu5mlWnb_wRTpo2gg-IydzGUxgKeHgfqDMceciAB1klhj6Bm1S6ReiayekJIzhUjIuJBAv97AvoQeF4niON_IBw.jpg"
+        "https://cdn4.telesco.pe/file/ZNIa5lwOr65IHGPWAo9vW9hDfTnMoqzvPwpa8j2PlUrq-tgbO92ReZKPaU7wG8mTmq5Pa6n52pHIDbOZOp1H7wZB8HI6vMEFfCnHvijcnmuWY5vsgcVXbcRsU0agWU0nx6RWJMh47k1fUlQ6Ashu9m13i1adNn-rm0ra5foweYo9UEYLpw35EBxqxDUMg248Rv616D-u0qdOl5Yoe0DZNtDEswXReN78ufxqjTgSTeLPGF3tDvi-Im7BgRxvbc5uds6j-chzHwmctec7aULeWVsya84hvyi0a_1_-uiunNoSxjCxqzT8ywXa2hcQO7S0t6Cb2pTvILc4F2HoEhzTSA.jpg",
+        "https://cdn4.telesco.pe/file/Ia4Rjkoe0fiTArDsLX6303bLpGzDzGXkFySTy9KFqfDLMs51rOXef3ZVKhR_t57yYAPcFRf1IRk6WPUaoSpIpqXWSN1WPaLotJlKj-8GCmyJFQ_jfEV5mXNQk7-gn3iPU3cRLvTraWG5OlFVwryyY6EDt4azDClo6ugCfFgWfBjS8QyRRksYc8AU-v215afcsWjoz3jLt-wloHdfhs2iHP2Vb7qJ1JxR5qGkzsWrCo1GzVg_R3hrdGY0ZovWla5q7OnrA-SaZRcjJzDjsH4KOIIlf6wCDHxJ2F4meyIQgshtf-uh1q3EfZA2DVMY97zf2n1BD7-eAl6dxixhcJ_iLg.jpg"
       ],
       "subtitle": "",
       "quote": "",
@@ -923,7 +949,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27750",
       "sourceDateTime": "2026-08-18T11:01:10.000Z",
       "sourceText": "Винтажные джинсы Majestic 100% плотный хлопок, шикарный широкий фит, вышитые лого команд MLB\n- Размер: 30/32\n- Цена: 7900₽",
-      "syncedAt": "2026-08-23T10:33:34.169Z",
+      "syncedAt": "2026-08-23T11:01:06.401Z",
       "createdAt": "2026-08-18T11:01:10.000Z"
     },
     {
@@ -939,7 +965,7 @@
       ],
       "subtitle": "100% хлопок, New с навесной биркой",
       "quote": "",
-      "postViews": 640,
+      "postViews": 641,
       "postTime": "10:33",
       "status": "available",
       "sourceType": "telegram",
@@ -948,7 +974,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27748",
       "sourceDateTime": "2026-08-18T10:33:20.000Z",
       "sourceText": "Худи Polo Ralph Lauren\n100% хлопок, New с навесной биркой\n- Размер: XL\n- Цена: 6000₽",
-      "syncedAt": "2026-08-23T10:33:34.169Z",
+      "syncedAt": "2026-08-23T11:01:06.401Z",
       "createdAt": "2026-08-18T10:33:20.000Z"
     },
     {
@@ -963,7 +989,7 @@
       ],
       "subtitle": "100% полиэстер",
       "quote": "",
-      "postViews": 663,
+      "postViews": 664,
       "postTime": "10:02",
       "status": "available",
       "sourceType": "telegram",
@@ -972,7 +998,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27747",
       "sourceDateTime": "2026-08-18T10:02:33.000Z",
       "sourceText": "Байкерская рубашка Choppers Urban Life\n100% полиэстер\n- Размер: XL (по бирке), XXL (по факту)\n- Цена: 2000₽",
-      "syncedAt": "2026-08-23T10:33:34.170Z",
+      "syncedAt": "2026-08-23T11:01:06.401Z",
       "createdAt": "2026-08-18T10:02:33.000Z"
     },
     {
@@ -988,7 +1014,7 @@
       ],
       "subtitle": "100% хлопок",
       "quote": "",
-      "postViews": 651,
+      "postViews": 652,
       "postTime": "09:33",
       "status": "available",
       "sourceType": "telegram",
@@ -997,7 +1023,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27745",
       "sourceDateTime": "2026-08-18T09:33:20.000Z",
       "sourceText": "Джинсы Karl Kani\n100% хлопок\n- Размер: S\n- Цена: 1000₽",
-      "syncedAt": "2026-08-23T10:33:34.170Z",
+      "syncedAt": "2026-08-23T11:01:06.402Z",
       "createdAt": "2026-08-18T09:33:20.000Z"
     },
     {
@@ -1014,7 +1040,7 @@
       ],
       "subtitle": "New, с навесной биркой, classic fit",
       "quote": "",
-      "postViews": 696,
+      "postViews": 698,
       "postTime": "08:55",
       "status": "available",
       "sourceType": "telegram",
@@ -1023,7 +1049,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27741",
       "sourceDateTime": "2026-08-18T08:55:17.000Z",
       "sourceText": "Футболка Polo Ralph Lauren\nNew, с навесной биркой, classic fit\n- Размер: S\n- Цена: 3500₽",
-      "syncedAt": "2026-08-23T10:33:34.170Z",
+      "syncedAt": "2026-08-23T11:01:06.402Z",
       "createdAt": "2026-08-18T08:55:17.000Z"
     },
     {
@@ -1038,7 +1064,7 @@
       ],
       "subtitle": "",
       "quote": "",
-      "postViews": 709,
+      "postViews": 710,
       "postTime": "14:02",
       "status": "available",
       "sourceType": "telegram",
@@ -1047,7 +1073,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27735",
       "sourceDateTime": "2026-08-17T14:02:07.000Z",
       "sourceText": "Худи Tommy Sport\n- Размер: М\n- Цена: 2000₽",
-      "syncedAt": "2026-08-23T10:33:34.170Z",
+      "syncedAt": "2026-08-23T11:01:06.402Z",
       "createdAt": "2026-08-17T14:02:07.000Z"
     },
     {
@@ -1063,7 +1089,7 @@
       ],
       "subtitle": "Slim fit",
       "quote": "Поло Ralph Lauren",
-      "postViews": 684,
+      "postViews": 685,
       "postTime": "13:35",
       "status": "sold",
       "sourceType": "telegram",
@@ -1072,7 +1098,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27733",
       "sourceDateTime": "2026-08-17T13:35:12.000Z",
       "sourceText": "Поло Ralph Lauren\nSlim fit\n- Размер: L\n- Цена: ПРОДАНО\nПоло Ralph Lauren\n- Размер: L\n- Цена: 3000₽",
-      "syncedAt": "2026-08-23T10:33:34.170Z",
+      "syncedAt": "2026-08-23T11:01:06.402Z",
       "createdAt": "2026-08-17T13:35:12.000Z"
     },
     {
@@ -1090,7 +1116,7 @@
       ],
       "subtitle": "100% хлопок, фурнитура YKK",
       "quote": "",
-      "postViews": 657,
+      "postViews": 658,
       "postTime": "12:00",
       "status": "available",
       "sourceType": "telegram",
@@ -1099,7 +1125,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27727",
       "sourceDateTime": "2026-08-17T12:00:50.000Z",
       "sourceText": "Брюки Diesel\n100% хлопок, фурнитура YKK\n- Размер: 33/32\n- Цена: 2000₽",
-      "syncedAt": "2026-08-23T10:33:34.170Z",
+      "syncedAt": "2026-08-23T11:01:06.402Z",
       "createdAt": "2026-08-17T12:00:50.000Z"
     },
     {
@@ -1110,12 +1136,12 @@
       "price": 3700,
       "oldPrice": null,
       "images": [
-        "https://cdn4.telesco.pe/file/cV0dBEoY6kUzqvvTmZALJRaH6LuCRQeSO3WFe_RZJfwLJ4Zj88U9Y6OQ2YYprQrnibGAbMK6Z8u8Q2olmZow5tlbj_aV1clRZIVjBw_db7uu203Vu5DcuwddYeKldF3KTn9uppihLZXwaP-_LhYV7hi30ZcoZXITcrVg-pXSG7tfSG5HIW1G-kqd13-Udatz58FEiugHlER61c7-icv5vnvR6II9QtPxRF67muU-QseCOgPYCaarepU-i_2cYiZoZORlDlS-91k6POGMuX_f50aWso5fyGczTAxZHFpicEWn63kO2CtMBZxH6lWUN4Ye6hYItBb5wb2CqJJ8-Z9RtA.jpg",
-        "https://cdn4.telesco.pe/file/n4iJof24-C1jMQSUyrKk0emwBH-5WyXZ4JU2zTsvWrkyFp-8PHPMGOUb16Y0qVkFMkwbMiWkGBXMv_clOSCmWzoAIjJO0Ga2ODwD3ogjVc0LJFt0YfUyLdDO-XJIeXjoP6-CsrUrxT7dSp9ukCyREfJNoBaS3O0_1U04_97NW0la6PqZ6E0jYgykC1uLsZxVU2mvQFkhaCdAu_8eqMOn8Ef9H7GA2QJ1gmadSn_AHgNd9epmALLGphu45mMeQO2X41rwhPn1_viC0q479i1-WBxfwJwWLVKWjcvOjhsaSJx5meoid2S-PWJK9l49QkTJGV77glrwPU7SINf31cvAkg.jpg"
+        "https://cdn4.telesco.pe/file/NHIcSAyVtPQiE0xbOH2g19rdW1srJ8MAdiJVdvm1QcogwfifRJ3PPIFtiyDPJk9Or8ipYm7O-wBYKYdfOt5T66SouIx_SGytYvAgG4kvTdWb3xlIheaDR2gt9NRqBdWeraYQe33Ahxf568eqOQeI18iGD-cBtYmARCrhm9Kzgb4A9PM6-79LB0B3otP3la-gxzF82LTfmRxBj6eXX-mtwx78C9TaqKsJtM0a8yXtlyNPj6SjGGmImokcXJzUKUzTTYXnvFt1FJTxvQAWLJGMrbqwi_-faIdRehkeOguGlU__9PJWKO2auLVEgoj0XsrLR9mB-qUCevkqPeY_4uncBQ.jpg",
+        "https://cdn4.telesco.pe/file/RtNQcStUZCKcYQMkUhZhUC8MUKc0Q5al_nmVj4cSmed-Ne5VlAylVXI_9vqS0IOd2VMh3LiBaeCTQlb0wf3rY20ZHfskOkcgaGqhu_TZV92wurfywhR2-rX4BwshCMj7Z6z-hKcAJEP4pgQHFnzvixh1xya376mcAFObI_j3LHbRViFq1OoIhSEYvE9XMowcPJ4XIGqV6jvLEheBEj_5UjMhkiVzEALWLrvGary8e1_aVIHkBhraaZ1FqerudjYCEWcIzpLDJ_ZlfJtR66QLQPo1E0kas6UJx_NkPIKAea5c3XPfgkgehhksU4jvkROpkMnSoF8UIXPaAA6J9-3nWQ.jpg"
       ],
       "subtitle": "",
       "quote": "",
-      "postViews": 650,
+      "postViews": 651,
       "postTime": "11:30",
       "status": "available",
       "sourceType": "telegram",
@@ -1124,7 +1150,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27725",
       "sourceDateTime": "2026-08-17T11:30:56.000Z",
       "sourceText": "Джерси Huf\n- Размер: S\n- Цена: 3700₽",
-      "syncedAt": "2026-08-23T10:33:34.170Z",
+      "syncedAt": "2026-08-23T11:01:06.402Z",
       "createdAt": "2026-08-17T11:30:56.000Z"
     },
     {
@@ -1140,7 +1166,7 @@
       ],
       "subtitle": "Vintage, made in Dominican Republic 🇩🇴",
       "quote": "",
-      "postViews": 664,
+      "postViews": 665,
       "postTime": "10:15",
       "status": "available",
       "sourceType": "telegram",
@@ -1149,7 +1175,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27721",
       "sourceDateTime": "2026-08-17T10:15:10.000Z",
       "sourceText": "Брюки-чинос Chaps Ralph Lauren\nVintage, made in Dominican Republic 🇩🇴\n- Размер: 38/30\n- Цена: 4500₽",
-      "syncedAt": "2026-08-23T10:33:34.171Z",
+      "syncedAt": "2026-08-23T11:01:06.404Z",
       "createdAt": "2026-08-17T10:15:10.000Z"
     },
     {
@@ -1165,7 +1191,7 @@
       ],
       "subtitle": "100% хлопок",
       "quote": "",
-      "postViews": 699,
+      "postViews": 700,
       "postTime": "09:41",
       "status": "available",
       "sourceType": "telegram",
@@ -1174,7 +1200,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27717",
       "sourceDateTime": "2026-08-17T09:41:05.000Z",
       "sourceText": "Лонгслив Polo Ralph Lauren\n100% хлопок\n- Размер: XL\n- Цена: 3900₽",
-      "syncedAt": "2026-08-23T10:33:34.171Z",
+      "syncedAt": "2026-08-23T11:01:06.404Z",
       "createdAt": "2026-08-17T09:41:05.000Z"
     },
     {
@@ -1190,7 +1216,7 @@
       ],
       "subtitle": "Made in Mexico 🇲🇽 , 99% хлопок, 1% полиэстер, фурнитура YKK.",
       "quote": "В поясе помимо шлевок предусмотрена еще и резинка, что позволяет носить джинсы без ремня",
-      "postViews": 681,
+      "postViews": 682,
       "postTime": "13:04",
       "status": "available",
       "sourceType": "telegram",
@@ -1199,7 +1225,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27714",
       "sourceDateTime": "2026-08-16T13:04:40.000Z",
       "sourceText": "Винтажные джинсы-бананы Lee\nMade in Mexico 🇲🇽 , 99% хлопок, 1% полиэстер, фурнитура YKK.\nВ поясе помимо шлевок предусмотрена еще и резинка, что позволяет носить джинсы без ремня\n- Размер: ~ 32\n- Цена: 1000₽",
-      "syncedAt": "2026-08-23T10:33:34.172Z",
+      "syncedAt": "2026-08-23T11:01:06.404Z",
       "createdAt": "2026-08-16T13:04:40.000Z"
     },
     {
@@ -1215,7 +1241,7 @@
       ],
       "subtitle": "Made in Honduras 🇭🇳 , 65% полиэстер, 35% хлопок",
       "quote": "",
-      "postViews": 679,
+      "postViews": 680,
       "postTime": "12:31",
       "status": "available",
       "sourceType": "telegram",
@@ -1224,7 +1250,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27712",
       "sourceDateTime": "2026-08-16T12:31:19.000Z",
       "sourceText": "Брюки Dickies\nMade in Honduras 🇭🇳 , 65% полиэстер, 35% хлопок\n- Размер: 36/30\n- Цена: 2000₽",
-      "syncedAt": "2026-08-22T21:58:34.606Z",
+      "syncedAt": "2026-08-23T11:01:06.404Z",
       "createdAt": "2026-08-16T12:31:19.000Z"
     },
     {
@@ -1240,7 +1266,7 @@
       ],
       "subtitle": "100% хлопок, stock",
       "quote": "",
-      "postViews": 656,
+      "postViews": 657,
       "postTime": "12:02",
       "status": "available",
       "sourceType": "telegram",
@@ -1249,7 +1275,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27710",
       "sourceDateTime": "2026-08-16T12:02:21.000Z",
       "sourceText": "Футболка Harley Davidson\n100% хлопок, stock\n- Размер: XL\n- Цена: 3000₽",
-      "syncedAt": "2026-08-22T21:58:34.606Z",
+      "syncedAt": "2026-08-23T11:01:06.404Z",
       "createdAt": "2026-08-16T12:02:21.000Z"
     },
     {
@@ -1260,8 +1286,8 @@
       "price": 1000,
       "oldPrice": null,
       "images": [
-        "https://cdn4.telesco.pe/file/cd1KiNxm0LdRJ8U4n4myEbvVAYcFNYNW1RIxsfUXOmb_TeM6B8RlVaHUcMvWSwKUIHrDOagfZJCjRKUIp_NzmXLybcgqdHXTAMVzMEBjrXqsZdBEJDQy5brev08ohd7k07YfnXd-qVTBRpdr641XFSbqQ9Vc8LQeAyUmHxFzfV2CjAtNkBYZANt0_556HPzeXXo1MfIsWQbzlhRyk2UVXNq95clakqCf7pA29rZ0Uy5ocx5a6LaRVBLAq_iE_oxV7gy0vpZqr6DBpuE06bbbd-3p9nxrMY5rz5mOkCSouQsVw5hyyzgc2TOQILKCs-i8W6CiO0oRq5gn7J0m_bXjBg.jpg",
-        "https://cdn4.telesco.pe/file/dirG5R7WS9jd5B37NVnvnxHrePIrFa-Ginx3ZvS26S3p11-zcj1PmSzQTTdspgsPPXGBcRz7c9wKpigu9JzErJGNl_GqoxDoQzfx92dAepLUidCwTecqjY1eoFzVTaAnqYTSkoJ14NyhXPrwlwvXmkcU2Xschhyes8oBkkvWYg0Bc4QLaVhIxdbYfVaALi_XWdnZtNk6R--KXJhYlG5a6IcsuMNugbvVFCGelj5wBUIo6djDhM7DaXpIoaeiU4EYZIJuJVY57Ack5e0lcRfUmf5cArvO9x6cUf6Msp9TQjsu6-QywAsoeRw6gCHrcIHo5dfQfjGVMofEjUcaqrNcNA.jpg"
+        "https://cdn4.telesco.pe/file/TNx_A98PG5di4c7mvUstneQjEW0CETX_rrbg9K7IwD_ZsqdNLOGbEpUJt4pA3ekibOv2WN0dpNNLIIDMxSJf7ep0e_dubqsu4XVSmbFszg_Fcp3qnpq7aEFbPengZ1Py_8_nQ1_eDc0mnWb_e3bMVesHvVCr20BXhX2iJQHHLOQhsrjtrVsDcl0FClbJX41NPECG7gwmhn96-L6KLxWgZbMPp0MolIRsAJYxWA6J8SxZxH7CnZQPHZwR_RIAlyTBbqI4m_IfVHbdu6Tyv81h3dWY2GyxTa5j2Xu4qhSZNDz7an-g4VuCzGuvl1zQeu0fsD9-9Axv0tAXwZ21kV_q3g.jpg",
+        "https://cdn4.telesco.pe/file/K-vt-D6B9lLaLbby_bsIinfW5NTHdULSWSnmtVSvzaMKQyLYgV_FkuCQdmVco7JBYY408Ru7oXvMpIq8Spwc-U6Raa9FO_qdOWScwyL02RDY1PnnG7Lk5fZRj88zM_HI_gsn4nmhxIuB5vYxmnK1UgRyTGErXeMOu6vwQz6mUfn5t87ES057MEtZ2Zoi4iwrfSCoOrUlT8YW1HVuXiVvg4FpZXalZSV5RdLwuJ5YUJCLMZpcjdoISkGehSVi3xjMvituj2l6CO2LdVCTCdJCndSn6VeOnTZBS_ZGfgQTBDafuKogNBeYFyetpl0Ec5goEz4YEYEo4HBLHiNJ1esBBA.jpg"
       ],
       "subtitle": "Made in Greece 🇬🇷 , 80% хлопок, 20% полиэстер",
       "quote": "",
@@ -1274,7 +1300,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27705",
       "sourceDateTime": "2026-08-16T11:04:14.000Z",
       "sourceText": "Лонгслив Reebok\nMade in Greece 🇬🇷 , 80% хлопок, 20% полиэстер\n- Размер: М\n- Цена: 1000₽",
-      "syncedAt": "2026-08-22T20:29:55.970Z",
+      "syncedAt": "2026-08-23T11:01:06.404Z",
       "createdAt": "2026-08-16T11:04:14.000Z"
     },
     {
@@ -1512,12 +1538,12 @@
       "price": 3700,
       "oldPrice": null,
       "images": [
-        "https://cdn4.telesco.pe/file/bTy0RWilh50sx-hRtsbXfcSba-nRxO5sqej_cE97M8zxnr022glDorebTgeE7vcUicSEpeXvfli-Fc3NcAzZwzfeSqIHlxBUvbAhzT-Dnvu1N7fwwRwg-uW_GJevSdLRfvKruo7Gm6PP93YGDzlC-6PJfN-z-MaG8Fd_1LqdIWdNNnVPjQuehTpDX-A8h4U1f1VNl-5ifiGnO9sVWHRFQAGNDLpVgTQZHAxxBZnYEl22oQe7NYNVH7N2f020gHbSN_XesDdpEwRjkhcIHRy5JupvvPdY6S2Hyen0JzK6JZAX06k08k7Hgk2tCTx0LTO1qVEuVR5YKXdxo36RQNP0Nw.jpg",
-        "https://cdn4.telesco.pe/file/lqYIeojvUm9HOVFTd0pMIx9WqOZAwyRNaLIuJMB7Jmt4eXZMF4vLjuuVGos89eLw10FvpsZsS5nz34wBOlmHRzootvYKWVD53nEJOMwaXMy021GlWpvX3Nu23BCa7wmDG6VVz8j13SzTOg_eSQHJ6QA3C5NJJJbDdIR-_p2Jdx6s4EtnMcWYAlOhLH5SRmKypSKR5hmfFromohqZOuGTg4hxcOQ1rr0zrz6R8fVrozcLbmVSWn8QcDm4d5hOWCsFyfNvjmLroJW9oCevRpW9tGvBcjM7hYyhbxNOHSWOzi9JEc-FIvx5HiZwsFxT5CthOD_UXQFY7sdq71_iUEBKjg.jpg",
-        "https://cdn4.telesco.pe/file/TKf28zcVYqBA3L__p5ai5R2Fcn3sMck-1iP5LW1kZxU7XM-njwc2gPxWv3O9JcWUy4alPPfr0tUu0cFykQ24qTtYxAI8EbTtdJaXg8T6mIiqQ00soJF9W5-u6XS2-JG_4lDUr2sUZCPAPU1fLq2Pf-bU2vXkjwuY0vYwZXXc-QhXiK5hfd7zAAzE1z466UaoWtghzrvnumiwG5Qqntg-5va-qC_ech_F8Ffzhap0iG622dvnIbCGeyFhXQzMrKafkvtv5x1r7eA7DWXFupmk5WcPll4wNsONMIL93OR1QkZ5JzofhivgD_1hgmbbm0OD8gKWmQxQWUYa8FQ6Gficdw.jpg",
-        "https://cdn4.telesco.pe/file/kdWCfdn8O5QSyqD5dlr4KEDTG42yi0bdYS5rKEryPGEZnQ6K0TiA5MSXWiZwvYVyEVvDgUmOmNexHVolLyFjNMREb1qE6AsbTQFlqrQSmPkeazhkLq5WevbaI9SPNID2jyaPHKDDt9Us0ufnh0FkF6a-aEsyZSLyl5_gv9_VC0jumAeLiqB6u_t16QiIZiAcyrpYg_tiyaxQO_XuHzaLiffcxjfxYXDlWhFH3bXvW3m82Qr9_Ogll_xZKdms8LikM7LWqJEYAa_l1NhL49navVLteSaEXEiGGf1d8gtwx2GkSG1dz6wXmRB8fkqlYAdkXYLbRFwL7oFCItypDG9GzQ.jpg",
-        "https://cdn4.telesco.pe/file/FCMCVwEhzDymUsF0USxZ_ft8dWpJQbrrwjtTkbf4plrR9GbYEl5F0TkRbiR7ewRXYsUX0vnwq4vCN-uZjqQn8wkgFTefZnMDbzPqOxaiwE24C59ZkVDnE3QgqhMGEikRKgq3dgZYWNRXZ9uWRSgvffgsTcg4r0XsXJEXuHuIR0k9xsUmI7yb-sySywLPuuxMUPHfUd5O52OBFfUj95Wu7XjuzSMUOT6FNkvLCL6KgE7Q6mYdP9XygE35JzadEfQEE9s6vCP9vYGu-z-9xFVZyBDYCvuvy3-PZqIyqWIeeBOc1Swv7UH3u_A1gGNGyF9LWRheYkjPV-3XpHQCtqMagQ.jpg",
-        "https://cdn4.telesco.pe/file/T3bhtgNxrYiOW_e6jWl_Se32cY8xY-mbrXoxj9lv2o9tbaBY8y7T1kz9zI6o9NnKMzY2ds87QltD80Xs8uTrI7nMdXNgxYNJsEezcu-6hriQXZfVsNrNeuQNXx5BEK3NlHmU1qw8pRyco-6yKl5uRE8-d-k55BAmJRRQk-WlsOlZgOy8lLmGSUeuUDFxzfhERXVg20sCw490ev5idIHlvtMc8J3C0_wdy5zevAi7kg_2F2o1sF9WqzHnJVkCbp8gyrDXU-6Hi_xk5079KqAFO77DOlwvLNsDaCMfi_T97DnaL-0tWX7PFlGLF1ek7kD8wcp37L_Ny5MpcOveXKKyHw.jpg"
+        "https://cdn4.telesco.pe/file/uMIdfLuodwpWmgrUDRT4u1d8jZXOgqDPgcooAa-laz018wsximG8_9GNO9swm-DQCj3nCrITGWZoed3_6g-2mb4CJn5os-ZMBJSVA5diaLb_PUXLpct4dPHAKEcvHIwWzhaWXA428cCqcjCMsrf79NVL8ARyzgouDkhn6cQIqPVXMP-ZSSYyc3jQi0VYTPtQqLqzeVUKC0M0FxYn33SnT2Leu4_piIxHu7rJ0LnFpHQynVZfeTERv_6-X69yJ_h9Gx0IxLiWJ164Dj0UAM8dsX9zUxGzGp7viMsP3s8hwfDr709l7s4Ig-kYdIrMgD0FwWwj2ja6o_PLELn_3npa5A.jpg",
+        "https://cdn4.telesco.pe/file/AnDPr3UaFIJa5YQw7uIEBFkZvZlb8jRNE2yfuBvsdWplyksOhGn9SkRbEBmhNW4EPhhNxQUZmIy7RKaPbwZ3sLUzQ5GaY0DX07yilv6Z3eVcaNYYQ5uLhV3ZzIJT18UwhQ3u1UWT60ZcvTtXhA1uIPgghan91fxm0uxq5eit9P5In90-eULgEe32WVU9g3onFEnts9G_Zkej2NAv2bbtHS1OP1NzBcXjtvHb5ZU_BCJ8fWqpB9EnayJO9YWCDI4HIjI_qwi_ZD3HZiPylWmXXUQw-YKDcbWBYzafkVUrovbWMsukc4Zvmhu3FHsEYSHcE67SJRA0xmKoUv5Gmn_FGQ.jpg",
+        "https://cdn4.telesco.pe/file/aON0ZTkDEXD_pvdfbfHOS1-aAyLVIYh2SP_uowx4BezlqdgTc80HYjmkFiTV2LCbxMQlZYIUsvWLIkN6Kg1ggekqS5h1beHUHR-HbJulDhSziZn1IS3FCF-VGM1TBfR1TS0Cn69bOxvxSb2g1YwjoBBkwYS7QX4b1PPdd9MD_K_pToB3LKaL3PDui0IXN5_bzobehtmVwncIWz146Q2Yosy8zRKFK5UaNjRhvkwY5xeUbmlBkWF80lqEIyu2uV9N-I-tNhZooJYDl227V7mrEy5JxcctFp9ckRjQtzU6HpAeB0pCDUJqWzTxywoTbQ-3W39u9raQR2SHvO78fhTbJQ.jpg",
+        "https://cdn4.telesco.pe/file/JC7QJQDMGDFaDYS9OUBwHu6zF_4O7eA3J5sgp9bb254DfMuPYaXMfexjSmFhifVtywzC27DEM3p3yEbbrA5nhK1Rpik0rktyJsBiFxTscGmeWXnCTEeQTzmztI0Zc6w77AEaq2F4P7jeR-90kZm83577FeWnvOnMf0W9QxxkiCR0evEJ6jAKm3TrO-Y5aguN8CJAuXfVW4YYz5EBlL-mQ1uJUSVZydgAPzYLK7kA509qoIRYUl6GEgcv02xvTErW8m68lFbym_3S2CPWGBlGzYtj9_87zrohoeV62pVLO6-HyvT7gykBXa2q_KbTN9XAhWgf6zrZ3da7ienqct2Xog.jpg",
+        "https://cdn4.telesco.pe/file/XRVYPbZX6GwAfXQ8XDEnHtYn4sJ89LUxyCNh7iU-pE3A3bo4Sx3GYF7tx6QN_3Bi05JWiTuuKyC7f2_J5UpkyaWeub7usFBiqqEgFzEdnAI12I7IkkSPMFN0168x7TnjQGUVmKkEoPC6HeAgQHuUU_-Qy2mwNBuZq4oJKQIR3LdEQph8FFUv7wZKyM2KBpykvjX8S6hwZ50j-qSNCLqlWzpCcekE0ALvu6rvbgcm6uaOgr_1TfwxyMgot_VEyPn2wv1zBbDQ62AABEGju-2ypzUhkPiSGdvrafYonqfO9VwJ-qiyuEdwb3wVA0C75Eg6cPDrY1NoOxY4PFBwYu7Z7A.jpg",
+        "https://cdn4.telesco.pe/file/LxCEjKR4ywSPSyI9nVlVyQU8KI5S-34wIenGugPfzDewihsYg7X-iPrCGlXBSilxvqluiPg96mD_ZVtkEejUiEHf9rQtxeXi6ppguLwUvZJcjHDvBmniln8xe1_PWPcedYUFhThx7_xdcUVPxA3srxPnhFgQJ_bQB67VJBgcvQiy0gDSDyIvntNkI0NXGq9CuoH-SqPb-zTYCena6MSTQCzOi-We4Vl_pWnSqfXK9eNoZDcBo8PXtVi40K_AAVR6h676TDsh5UEi7OhPghDIP6ZavMDASeAEYystNdga8tXxZOQwFJbg2--gNPLx153X_kcyLF3ys5ROayWavGjHdQ.jpg"
       ],
       "subtitle": "Billionaire Boys Club (BBC) — это известный американский бренд уличной одежды (стритвир), который в 2003 году создали музыкант Фаррелл Уильямс и дизайнер Ниго (основатель A Bathing Ape). Также это название реальной молодежной финансовой пирамиды 1980-х годов в США, но в современной культуре термин чаще всего означает именно модную марку.",
       "quote": "100% хлопок, single stitch",
@@ -1530,7 +1556,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27665",
       "sourceDateTime": "2026-08-15T11:33:16.000Z",
       "sourceText": "Футболки Billionaire Boys Club\nBillionaire Boys Club (BBC) — это известный американский бренд уличной одежды (стритвир), который в 2003 году создали музыкант Фаррелл Уильямс и дизайнер Ниго (основатель A Bathing Ape). Также это название реальной молодежной финансовой пирамиды 1980-х годов в США, но в современной культуре термин чаще всего означает именно модную марку.\n1.\n100% хлопок\n- Размер: L\n- Цена: 3700₽\n2.\n100% хлопок, single stitch\n- Размер: S\n- Цена: ПРОДАНО",
-      "syncedAt": "2026-08-22T14:07:29.182Z",
+      "syncedAt": "2026-08-23T11:01:06.407Z",
       "createdAt": "2026-08-15T11:33:16.000Z"
     },
     {
@@ -1541,8 +1567,8 @@
       "price": 3500,
       "oldPrice": null,
       "images": [
-        "https://cdn4.telesco.pe/file/F6VVp8kA6JJeGMjkaCzvg_e1OC1bkoOgXUntKCIBzXEOylD-_7qzeLgAH5BxpTfUQ5nxY42VVz27sb2s74rXNT6B0Lx7-v2WKvhLypLFCJKfSCjLFyV38q3yH3uKzkg9_u9rp2TX3TYXYVDqMTEBsGlCcEcrUtAouIsevxk9CwzvCnRaElaAKhn3Ky7Yjrs6bFVcZz5SAmS6fmu7stxa3XLansD-gl1cziMHtSyVaij0fY7pefzaiItu8Yxpg9_mLrE-3duzMeeucmS5V6y-yCsK_ZrA8qZvdxxOVaFC81Ez8DFJ_6ZzvKk7SquTD75bGKS1m93sNl60wTO70DXQGg.jpg",
-        "https://cdn4.telesco.pe/file/oIvrjr5GBBTiolQE0i4QRYFD6MHBf2PO86ABw1sw9I7ldOH40V2JdffC6pi0SepNUs3IIzdTBA92lUIVU7vlOuVWHEXfNT-WHMjnkFu9B1dGf3KJkG3ranx3c9AV6jKSusWuhmcIzQB0UBBhsSFV1kkgT3DY5ZpOaG28DkHpkfN4-fp5SIxWHKGhO3FnJPnc8OJlFjeRXMLtYpTsWrY7ZrJ5os4tqXD8bPRA_0f6T6VtEMi0_rgbi5j-T3hDNUtrJiCCIOE2NwcDnZAohSY1Vl7xPEeqxH1B7GKrkHgRd7bnT35h8N8O-J9nMp4k3yfsGOURj7qwtD6jeZvMXbBZ6w.jpg"
+        "https://cdn4.telesco.pe/file/gBFVnqjo14ATHi20sNOCN3BlqIKIAWATWMipYzJRdSNsF-0mKEtqeTpnaUNrAvrzR-2RE-PSjIJBc0cSt4YrIbhLVhe_qK21IInG-aNAHg9hYma8lc3fInirWhDFjmVntylXWOo-59JRXHGs0j5QanD0imh0c0CPc3cO3qDF_x27uT3rq71U7Qf3lCxwodXk3vsWP_9prwjh_CbGfCFi-PGuceOoHqEHTnxb2Pmd_SJqCvtetHUuJxR2vdb6LKdiuEC7D5ovBDWPajb5rDnRWeSUEqEc1kBXVm7D_OlPgOwkQpiu6CMZsrTDEpcqSod6whIZU1AezPshCFdZ3tgnmA.jpg",
+        "https://cdn4.telesco.pe/file/aaSFk7S3K4n9UBPTpCt9ugGbOsMksfkMUqLB7S961xW-rUOl8X0DKdurP9IahIr0-PFWP-Mi4KgBqY7LfdELg6LJoN_XRXl0Iee2BevRawcQSHqP4uj32di3Esi32hA4xWTEqSjC5lSch2wvualYsYVrCsnLDR0fA1rTyg2zXT5ats2GUu_pAUsMH7Q9odQ7-Ri65IQjvTCxVDUYN9sTMUlw01xrHBxsMFhKx4AOTI6rE7fhgg3EMmtdS-KHJJ4zv3K9MCM7S4WuZdKO9BohSsDJ6Nd_1izZfMSTpTJ20re53mkiOU5Q3HSdpPq-X2LQecX1IhrJ6BhaXqv5tz5_hg.jpg"
       ],
       "subtitle": "100% хлопок",
       "quote": "",
@@ -1555,7 +1581,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27663",
       "sourceDateTime": "2026-08-15T11:00:50.000Z",
       "sourceText": "Винтажное поло Lacoste\n100% хлопок\n- Размер: XL\n- Цена: 3500₽",
-      "syncedAt": "2026-08-22T17:59:25.678Z",
+      "syncedAt": "2026-08-23T11:01:06.407Z",
       "createdAt": "2026-08-15T11:00:50.000Z"
     },
     {
@@ -1691,7 +1717,7 @@
       "oldPrice": null,
       "images": [
         "https://cdn4.telesco.pe/file/M61iXU1wQ939yaQOfBiSSLo_2VW7Y6apXWmWRsQpseZZfPjZpT1zhHAHX7dT9Q_BLUIFgApKZonS2v10cva1d1dnMuwNBQOO70eJolUMc64Or8NnXlTh6jeiEN7QAh0XAZF11pG7WwZIX0n2NVteCLOe0QwsAxHht4lWSontWYU-1Chbyfm2OAzpay6mZMOm-x0KUUmAjk-MScAnSDxQ1ZewrWKDdKO1uIRo3Do4L2hdv1KGGFPjUAHAi35hbqoAvZ0eTM7Zg3Dy7E_QMFQwP0xVRjGqXJ2bz62IC_8_Flod3vxXZC9J2N-1f1C4IUIMBTSEzHoX_izCVL64LOO5CQ.jpg",
-        "https://cdn4.telesco.pe/file/NEM6YZM6ydOn4_XIVo4gC3K8x-6nVHa-XHG1qFVw2chDDq1cnAOEzhl_E3eBKPfpMR-3dzRCWRGj4jerALMuA4N4EdOe6N2Mny-14NBQBbzG13hsYRHpqd4nqu6q1z0cpHxS1sK80cF1GBKEiLxyDHunRGFldjndaXttEobzsRJhcvDxnvVyfkpVn_bUSvJFGVuxNaTQRHkZwgMThQUiGv6ae6_bt_POdGGn7PDEJfm8-vmCT3tGAJ3M_m2TiK1lP8NaDKDamvWk3gIl2v5rT0CcvIqr4WYhtgufnxZqYCBScYxYMIErSkNbVZzxW9sj8ndDh97UgvuO3NEsymhILg.jpg",
+        "https://cdn4.telesco.pe/file/kdvllujNNO30fj42f78LjwyI-YFvjp9NguzCncricsUjRW5OmPimtQqTY8tEiDHfic5oiyBakMimhC3jH9nsPxn8BYKdGS2Ysb_WdHyq7_uqRHqdPMcFbsrvTOYHn2vtNYnLp-8DLdBeTQPK7l7gU3NqFOIt8YI1QizDfQY5b8ziTTkckLADXzhiYgacDuSFm5Q6XHkdVYQXJHROkEcXAhhffdJCTa8kETwG_w9bUffThPIRPhDVKtRbk1VXielzUadaSVWMYi6CzQBOQ5aNRrR0MFRrIYmuYFcB8Iwv4AHWeOX82jbHGR74bjVMbtoiXYC_6cpmPaNdZdveZIwJDQ.jpg",
         "https://cdn4.telesco.pe/file/h1KV7FdOF21eq6PWtflTEo7sGaEbQfFzeY4AWiz_hnr00y7LPmoU3N28MBd5GR0emuhw1xvG3w_yiAoe60HJx1hu_lZt8qNIlTob8cjnv3_HO3h4VnqgtYRzgzQ7dsYBI-zmxBlksPXPOFVjJDklvvgA-8SmL59CY4gDhCxQuyqZvHLF9mD-WRT7U94rZJ3ruM9YesaAI1rnjnhHkFSBTT1ZFWZSn3RXMyZbBV0sfjGWj1n_vQK3LcRpNoHxGPvp2b6uwWGqeUbiir0_1bvEoc4TzALaYDaXsBKu_s-CddcHaKUoyWhQF4-NYQT94TYTSYgFgmPO4UrTKUmo5i6dNA.jpg",
         "https://cdn4.telesco.pe/file/LNHULiQGdI0Xhwj2zNEwQlEcVNgQlBSjZfNRb1MVmMViQNxKH1CfWSqAVAWHqQcEuREHWJVk7vNPnnXRLiHibwDJRYGygBOuLVQbR0BUKrcyAlhj9cPKTFeltmMsXQViNSGD50jhNuNfy9XR5Q7sFQeYMjuHibywHGe3qBuAYJ2ffMn-wZTNVD3Pz8b5XlXB5eMX9DoqiELBxoTphNMmsHwX9WvY7aCvXch-yEu7-D7cdeB73luMwGmd4MwMkwxP_LOTByneiyYka4XqWpXyTfkYrsDJevCAGOHRqs2wRA7QpqXNbk_cNg-nJfFDNnpoq3Sjz0nm3IA3rzbqO19YAg.jpg"
       ],
@@ -1706,7 +1732,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27631",
       "sourceDateTime": "2026-08-14T11:32:57.000Z",
       "sourceText": "Винтажные джинсы Versace\nMade in Italy 🇮🇹 , 100% хлопок, фурнитура LAMPO\n- Размер: W32\n- Цена: 6000₽",
-      "syncedAt": "2026-08-23T10:33:34.175Z",
+      "syncedAt": "2026-08-23T11:01:06.408Z",
       "createdAt": "2026-08-14T11:32:57.000Z"
     },
     {
@@ -1722,7 +1748,7 @@
       ],
       "subtitle": "Made in Italy 🇮🇹 , 98% хлопок, 2% лайкра, фурнитура YKK",
       "quote": "",
-      "postViews": 646,
+      "postViews": 647,
       "postTime": "09:22",
       "status": "available",
       "sourceType": "telegram",
@@ -1731,7 +1757,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27627",
       "sourceDateTime": "2026-08-14T09:22:01.000Z",
       "sourceText": "Винтажные брюки Hugo Boss\nMade in Italy 🇮🇹 , 98% хлопок, 2% лайкра, фурнитура YKK\n- Размер: 36/34\n- Цена: 4900₽",
-      "syncedAt": "2026-08-22T21:58:34.610Z",
+      "syncedAt": "2026-08-23T11:01:06.408Z",
       "createdAt": "2026-08-14T09:22:01.000Z"
     },
     {
@@ -1793,7 +1819,7 @@
       "price": 3500,
       "oldPrice": null,
       "images": [
-        "https://cdn4.telesco.pe/file/DdhPLUUn_2w5YM2MRN8tnM9OmIJPVcoPgpvIBZVbqFSPyH9raNEypd2EufLqiALc6rO6CPAbqSTYyvqrM1HrU_Oem1WghaLTdAhM2GmZuhVRCEbjPQNAjGxGIw7ufJmisKBUcpAmPRFGedAQq6PSYksPrAck1rBdWOx875ouiDEB3wlkDpwpAzp3ZXTstiQkhparLWxYYspiJMwnq4SgIzJRI39mnh7SrGTTYxtcxHka9mTuE3JrQr4FWdwAkc4PPw3RZWQ0GGL5POiPZLs5PAh4LpoZGV5vrV4BPYxx9jhrGgsWcDOoWAvlDG0nbfLGmxaAbHEM-Y72t39cDDdeQg.jpg",
+        "https://cdn4.telesco.pe/file/XATA-e6AjsLO9AUFr5HSmijWzevI87VxM2Al0EMmMsmtYyc4z92CIQv-QtTSRUN6gaEHqomzRznAoCMHlj_UtsiV4_wD3f3am6RYQzwZx1VAnqsWX-6kRCaz6CJh8ADtWahFr0dMWOFeQQzWP18aeFLpIyQ_Ov6QQtRn679QM18jxuKmCtYQppiU9I2ktaroNsJztdyS7-QGWAo16-wWP3w-GSWqVitKypXmYaeQcqjRmzs6HutUdVWu4b9cYKB0vNpjx1ooXdqKVLR6HxrIuss4mTFg7yWYoxb8u1ppsjFhZJBYosNnHTiT-BS7tg0CHEKZUkXOYC456QLg4wi_5g.jpg",
         "https://cdn4.telesco.pe/file/JkVSxkAB0PP75wNGzBx33yzObJxnmG6IRzXIR5lpOI7bWU_TTPuSMBzFsrQrTBsUwyOB0k2vwdAaaNHAtIR5UwkhhGVU9tSAxIlxyhHQsJqTvvcU8jRUHdvrwBllr7GG6hDLfOgEcgDszH2-gKR9QKfmsKIZK40MlxyrgCNmx5x-4SqeonRaUtrwD_ncW6_FHkuKSp2Jy_48zqVKXPJrwTsjKgA5S3MXICBGXtqPPrxA3heomxlb1VqpwpdQLWp_cmrLDHWGd9ydmhJ7RNLLxFoPufIlVerdF1wkol4eQTb2cqXBnN1x9r7gPU-CtIXWi50qzYBTsPEr5FKxAQWFOA.jpg"
       ],
       "subtitle": "100% хлопок",
@@ -1807,7 +1833,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27606",
       "sourceDateTime": "2026-08-13T11:04:07.000Z",
       "sourceText": "Поло Fred Perry 🇷🇺\n100% хлопок\n- Размер: XL\n- Цена: 3500₽",
-      "syncedAt": "2026-08-23T08:44:59.839Z",
+      "syncedAt": "2026-08-23T11:01:06.408Z",
       "createdAt": "2026-08-13T11:04:07.000Z"
     },
     {
@@ -1942,8 +1968,8 @@
       "price": 3300,
       "oldPrice": null,
       "images": [
-        "https://cdn4.telesco.pe/file/KGKFWplcPedvnUgS4vChrtC8HDF0OS_XwFjKbz3EAn19THVLxprID40Vd0rtoepcL3UIOeUmqRqhcqKwAmHktfAaT9NSZ1dZYLc2hkaPdUgLc3wVCRgOj-joscx8gUZu-lWPtywRE3hsLzxzulyaBadYZNEgT_mfpmxB5V3wg9DHd91-TpQwoC8dj59Zg9N1G6YvP0K8zKS0YYmB0i-0k8LJp22M3GSwjmtisOL8Jls-_1CTydJkJX0NyJMn1HEVusfb2tpeXlEHauBVQ__zy13soouijjQ88nNh5qWJzornwImZarFaWGGtWZEAwvmzqPALMZqqEinqbOD-1W6uVA.jpg",
-        "https://cdn4.telesco.pe/file/EKiOEJttOa4fYa39aHQ1tCU7WBGcbY9EfonzCyh6AMH2E2WSsBr0boAI57-Rw_Ze9I8t8BlLloVgFYLP6q_UqO1XiYQwHjTTJXqM00Bc41HqJ1LRqzJpBk3q1OJgVxJQUE9aLWwrw86w-TAdgyOscGgcKkBJSIwGZllrLg_xwK6xnFPCMAzxnyo5H4XuBejr6rdi9HSDKOOFqaZFlHWuWzLft07WbaitpQiX0c8je6Ncc2r1Z4766cRjVuvU-jInzkfyi7RolE4f3RRC7QeD7BhApl-005HnV_7abNOzeDJiGNBBRYPnSdTmYbZUe4CcOUEyTN-yL7EOBYhxf-nFyw.jpg"
+        "https://cdn4.telesco.pe/file/kdUpyMpfMMefJQI3ym90I_2qeq12AgLRojG4abJIjBzRZVCq8JXNvFNc1T4AUOUd5EpGHF3VH_B10oJ1oMOKkCPPzEM1mb4e-qchNf4LdInZ39QG0_etQpkplxWWfSwp-_gUQ73XxOXACWxRNjL9UI-117dP9CgUKQEWuBbLit015UK5b-xO-dEcYhL5-fW8Ht2L0sQgtPYYqnIlgLfLC7sKJPMgypS4AeUJfI9Jx07MLGjWKSfBYIYlv2W0s6LfMONqF_LXOEGtfwUVBdwZ3I61Axf3H7G1ocYj-27xuO_pYPfEDaYqjpN3JXmAc5vD_iMXMXIPl8eqLW7CJt3PzQ.jpg",
+        "https://cdn4.telesco.pe/file/WqcnQS3rf48vYkkZU57E49MPRTJdIpSz2v8bw5nNbwqr6zYwdsEXQaaTfLWbXWRX7YJrcyW2VGRdrVSl3Jz_zQaOHnARabMUJo-tgcTZeTaWwR4u-Jz7jrgz90JmXNztItYBHZvTCbXWbjvFyHUI_fpFAwscI2wKdODuYKM7cAtupu_dZBpNNGs64_Ol5rgbI2jOVqN7bA3HwysnyXCeb9MkVnx9yltVrzV2oJxDX5pXIVYDd5aCFJ8txPAGHu_yfpCjsZ48fb9Zekzmbd5JcP67gOlDYKodqRqIDJqsEpI49FmMrJbTAd0oQf_nniiXSqmNtnuOaOdsZMUQsV7ooQ.jpg"
       ],
       "subtitle": "100% хлопок",
       "quote": "",
@@ -1956,7 +1982,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27592",
       "sourceDateTime": "2026-08-12T11:31:59.000Z",
       "sourceText": "Поло Ralph Lauren\n100% хлопок\n- Размер: M\n- Цена: 3300₽",
-      "syncedAt": "2026-08-23T10:33:34.178Z",
+      "syncedAt": "2026-08-23T11:01:06.409Z",
       "createdAt": "2026-08-12T11:31:59.000Z"
     },
     {
@@ -1967,7 +1993,7 @@
       "price": 1000,
       "oldPrice": null,
       "images": [
-        "https://cdn4.telesco.pe/file/URnzIJMrvpzjWVPZg8BG1UU4RscgEBbZEagJb1cFGBRfrOF-PASF-eThpQ90q3mNB5OP88QjEoqtVfuTaFv-ISFrbIV8CFABDCSJcuTBWL_pLX8CNDHBJfZme2GPc_AGZFxbEb5Udgp2ZYGqth_aQ2W_efC7EGpbGBSGdF7OhrShSAm-Li-IGO1KD7WubfjmkKQi3zfZhldrIAb6SQ9b51ge-747982nsYME7Fl1lsPJky7jGlP2UL0QoYEkjSLpGbx31MTa_xgmazklW-9DDFw8dkoDFONUuFacNREsk1fZlPHdhes8RiMcIDIrf9hEc80g1RezpzbD9VCb30rlKw.jpg"
+        "https://cdn4.telesco.pe/file/p9VERbF86bo61DKhn-igf3buvRUj9Z3JW7g1Yd7unoDhSaIlJw3tXndgmj6uajZXjnADMNeJCVj3fWH8dLNJGM9hHfHXixftnP7aWyTxitD7KKlu3vp3mbhOHvIAHBBK5xr6RdEbQdtMS-CbWTTI4ZiXtFiDYr_6A7TwXjljvlgWclHgvqNM-ZbztaHEuPnVXDokvZlyeBHJcmK6dawrA-G6UBy4PXTZpS5rqYhr9fzW26nfauCva2-pBeeXQYffeqimpCkCPlRse0A2EQlebsMxsu3IVLfOlCuj3LXv88j926WiUsaxiGqMt1hzhu2TDIh5ePb-xYWhmnTtq4-JLg.jpg"
       ],
       "subtitle": "100% хлопок",
       "quote": "",
@@ -1980,7 +2006,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27591",
       "sourceDateTime": "2026-08-12T11:04:34.000Z",
       "sourceText": "Лонгслив Columbia\n100% хлопок\n- Размер: XL\n- Цена: 1000₽",
-      "syncedAt": "2026-08-23T10:33:34.178Z",
+      "syncedAt": "2026-08-23T11:01:06.409Z",
       "createdAt": "2026-08-12T11:04:34.000Z"
     },
     {
@@ -2047,7 +2073,7 @@
       ],
       "subtitle": "100% хлопок, slim fit",
       "quote": "",
-      "postViews": 691,
+      "postViews": 692,
       "postTime": "12:03",
       "status": "available",
       "sourceType": "telegram",
@@ -2056,7 +2082,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27569",
       "sourceDateTime": "2026-08-11T12:03:45.000Z",
       "sourceText": "Поло Ralph Lauren\n100% хлопок, slim fit\n- Размер: M\n- Цена: 3700₽",
-      "syncedAt": "2026-08-22T14:07:29.186Z",
+      "syncedAt": "2026-08-23T11:01:06.410Z",
       "createdAt": "2026-08-11T12:03:45.000Z"
     },
     {
@@ -2072,7 +2098,7 @@
       ],
       "subtitle": "Made in Portugal 🇵🇹 , 100% хлопок",
       "quote": "",
-      "postViews": 677,
+      "postViews": 678,
       "postTime": "11:00",
       "status": "available",
       "sourceType": "telegram",
@@ -2081,7 +2107,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27567",
       "sourceDateTime": "2026-08-11T11:00:48.000Z",
       "sourceText": "Поло Ma.Strum\nMade in Portugal 🇵🇹 , 100% хлопок\n- Размер: XXL\n- Цена: 4000₽",
-      "syncedAt": "2026-08-22T21:58:34.612Z",
+      "syncedAt": "2026-08-23T11:01:06.410Z",
       "createdAt": "2026-08-11T11:00:48.000Z"
     },
     {
@@ -2203,7 +2229,7 @@
       ],
       "subtitle": "100% хлопок",
       "quote": "",
-      "postViews": 715,
+      "postViews": 716,
       "postTime": "11:02",
       "status": "available",
       "sourceType": "telegram",
@@ -2212,7 +2238,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27547",
       "sourceDateTime": "2026-08-10T11:02:11.000Z",
       "sourceText": "Футболка Fred Perry\n100% хлопок\n- Размер: S\n- Цена: 3300₽",
-      "syncedAt": "2026-08-22T14:07:29.186Z",
+      "syncedAt": "2026-08-23T11:01:06.411Z",
       "createdAt": "2026-08-10T11:02:11.000Z"
     },
     {
@@ -2357,7 +2383,7 @@
       ],
       "subtitle": "65% полиэстер, 35% хлопок, фурнитура YKK, original fit",
       "quote": "",
-      "postViews": 746,
+      "postViews": 747,
       "postTime": "15:04",
       "status": "available",
       "sourceType": "telegram",
@@ -2366,7 +2392,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27516",
       "sourceDateTime": "2026-08-08T15:04:10.000Z",
       "sourceText": "Брюки Dickies 874\n65% полиэстер, 35% хлопок, фурнитура YKK, original fit\n- Размер: 30/32\n- Цена: 5500₽",
-      "syncedAt": "2026-08-22T20:29:55.978Z",
+      "syncedAt": "2026-08-23T11:01:06.412Z",
       "createdAt": "2026-08-08T15:04:10.000Z"
     },
     {
@@ -2437,7 +2463,7 @@
       ],
       "subtitle": "Верх выполнен из водонепроницаемого нубука премиального качества, команда LA Lakers",
       "quote": "",
-      "postViews": 722,
+      "postViews": 723,
       "postTime": "10:04",
       "status": "available",
       "sourceType": "telegram",
@@ -2446,7 +2472,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27490",
       "sourceDateTime": "2026-08-08T10:04:46.000Z",
       "sourceText": "Ботинки Timberland x NBA\nВерх выполнен из водонепроницаемого нубука премиального качества, команда LA Lakers\n- Размер: 40 EUR\n- Цена: 15000₽",
-      "syncedAt": "2026-08-22T20:29:55.978Z",
+      "syncedAt": "2026-08-23T11:01:06.412Z",
       "createdAt": "2026-08-08T10:04:46.000Z"
     },
     {
@@ -2513,7 +2539,7 @@
       ],
       "subtitle": "100% хлопок",
       "quote": "",
-      "postViews": 711,
+      "postViews": 712,
       "postTime": "12:00",
       "status": "available",
       "sourceType": "telegram",
@@ -2522,7 +2548,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27475",
       "sourceDateTime": "2026-08-07T12:00:38.000Z",
       "sourceText": "Футболка Tommy Hilfiger\n100% хлопок\n- Размер: 3XL\n- Цена: 2500₽",
-      "syncedAt": "2026-08-22T20:29:55.979Z",
+      "syncedAt": "2026-08-23T11:01:06.414Z",
       "createdAt": "2026-08-07T12:00:38.000Z"
     },
     {
@@ -3924,7 +3950,7 @@
       ],
       "subtitle": "85% полиэстер, 15% хлопок, фурнитура YKK",
       "quote": "",
-      "postViews": 801,
+      "postViews": 802,
       "postTime": "12:02",
       "status": "available",
       "sourceType": "telegram",
@@ -3933,7 +3959,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27162",
       "sourceDateTime": "2026-07-24T12:02:44.000Z",
       "sourceText": "Олимпийка Fred Perry\n85% полиэстер, 15% хлопок, фурнитура YKK\n- Размер: L\n- Цена: 5500₽",
-      "syncedAt": "2026-08-22T21:58:34.625Z",
+      "syncedAt": "2026-08-23T11:01:06.424Z",
       "createdAt": "2026-07-24T12:02:44.000Z"
     },
     {
@@ -4336,7 +4362,7 @@
       ],
       "subtitle": "Boxy fit",
       "quote": "",
-      "postViews": 785,
+      "postViews": 786,
       "postTime": "14:34",
       "status": "available",
       "sourceType": "telegram",
@@ -4345,7 +4371,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27058",
       "sourceDateTime": "2026-07-19T14:34:44.000Z",
       "sourceText": "Винтажный свитшот Russell Athletic\nBoxy fit\n- Размер: L\n- Цена: 3500₽",
-      "syncedAt": "2026-08-22T21:58:34.628Z",
+      "syncedAt": "2026-08-23T11:01:06.426Z",
       "createdAt": "2026-07-19T14:34:44.000Z"
     },
     {
@@ -4362,7 +4388,7 @@
       ],
       "subtitle": "100% полиэстер",
       "quote": "Боб Марли — легендарный ямайский музыкант, певец, гитарист и композитор. Он родился 6 февраля 1945 года и скончался 11 мая 1981 года. Он является самым известным в мире исполнителем в стиле регги.",
-      "postViews": 787,
+      "postViews": 788,
       "postTime": "13:03",
       "status": "available",
       "sourceType": "telegram",
@@ -4371,7 +4397,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27053",
       "sourceDateTime": "2026-07-19T13:03:03.000Z",
       "sourceText": "Рубашка Bob Marley\n100% полиэстер\nБоб Марли — легендарный ямайский музыкант, певец, гитарист и композитор. Он родился 6 февраля 1945 года и скончался 11 мая 1981 года. Он является самым известным в мире исполнителем в стиле регги.\n- Размер: L\n- Цена: 5000₽",
-      "syncedAt": "2026-08-22T20:29:55.991Z",
+      "syncedAt": "2026-08-23T11:01:06.426Z",
       "createdAt": "2026-07-19T13:03:03.000Z"
     },
     {
@@ -4442,7 +4468,7 @@
       ],
       "subtitle": "Made in Italy 🇮🇹 , 92% хлопок, 8% эластан",
       "quote": "",
-      "postViews": 774,
+      "postViews": 776,
       "postTime": "15:04",
       "status": "available",
       "sourceType": "telegram",
@@ -4451,7 +4477,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27039",
       "sourceDateTime": "2026-07-18T15:04:05.000Z",
       "sourceText": "Винтажное поло с длинным рукавом Fred Perry\nMade in Italy 🇮🇹 , 92% хлопок, 8% эластан\n- Размер: L-XL\n- Цена: 4200₽",
-      "syncedAt": "2026-08-22T21:58:34.629Z",
+      "syncedAt": "2026-08-23T11:01:06.426Z",
       "createdAt": "2026-07-18T15:04:05.000Z"
     },
     {
@@ -4467,7 +4493,7 @@
       ],
       "subtitle": "100% хлопок",
       "quote": "",
-      "postViews": 730,
+      "postViews": 731,
       "postTime": "14:35",
       "status": "available",
       "sourceType": "telegram",
@@ -4476,7 +4502,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/27037",
       "sourceDateTime": "2026-07-18T14:35:08.000Z",
       "sourceText": "Худи Carhartt WIP\n100% хлопок\n- Размер: XL\n- Цена: 4800₽",
-      "syncedAt": "2026-08-23T08:44:59.857Z",
+      "syncedAt": "2026-08-23T11:01:06.426Z",
       "createdAt": "2026-07-18T14:35:08.000Z"
     },
     {
@@ -4878,7 +4904,7 @@
       ],
       "subtitle": "100% хлопок, blake fit",
       "quote": "",
-      "postViews": 797,
+      "postViews": 798,
       "postTime": "11:01",
       "status": "available",
       "sourceType": "telegram",
@@ -4887,7 +4913,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/26923",
       "sourceDateTime": "2026-07-14T11:01:50.000Z",
       "sourceText": "Винтажаня рубашка Ralph Lauren\n100% хлопок, blake fit\n- Размер: L-XL\n- Цена: 5000₽",
-      "syncedAt": "2026-08-22T20:29:55.994Z",
+      "syncedAt": "2026-08-23T11:01:06.430Z",
       "createdAt": "2026-07-14T11:01:50.000Z"
     },
     {
@@ -4927,7 +4953,7 @@
       ],
       "subtitle": "100% хлопок, regular fit",
       "quote": "",
-      "postViews": 738,
+      "postViews": 739,
       "postTime": "12:04",
       "status": "available",
       "sourceType": "telegram",
@@ -4936,7 +4962,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/26909",
       "sourceDateTime": "2026-07-13T12:04:36.000Z",
       "sourceText": "Рубашка Lacoste\n100% хлопок, regular fit\n- Размер: L\n- Цена: 4300₽",
-      "syncedAt": "2026-08-22T20:29:55.994Z",
+      "syncedAt": "2026-08-23T11:01:06.430Z",
       "createdAt": "2026-07-13T12:04:36.000Z"
     },
     {
@@ -4952,7 +4978,7 @@
       ],
       "subtitle": "100% хлопок, regular fit",
       "quote": "",
-      "postViews": 760,
+      "postViews": 761,
       "postTime": "11:03",
       "status": "available",
       "sourceType": "telegram",
@@ -4961,7 +4987,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/26905",
       "sourceDateTime": "2026-07-13T11:03:58.000Z",
       "sourceText": "Поло с длинным рукавом Stone Island\n100% хлопок, regular fit\n- Размер: L\n- Цена: 7900₽",
-      "syncedAt": "2026-08-22T21:58:34.632Z",
+      "syncedAt": "2026-08-23T11:01:06.430Z",
       "createdAt": "2026-07-13T11:03:58.000Z"
     },
     {
@@ -6790,7 +6816,7 @@
       ],
       "subtitle": "Made in France 🇫🇷 , 100% шерсть",
       "quote": "",
-      "postViews": 776,
+      "postViews": 777,
       "postTime": "11:03",
       "status": "available",
       "sourceType": "telegram",
@@ -6799,7 +6825,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/26371",
       "sourceDateTime": "2026-06-19T11:03:50.000Z",
       "sourceText": "Винтажный бомбер Chemise Lacoste\nMade in France 🇫🇷 , 100% шерсть\n- Размер: XL\n- Цена: 12900₽",
-      "syncedAt": "2026-08-22T14:29:32.495Z",
+      "syncedAt": "2026-08-23T11:01:06.444Z",
       "createdAt": "2026-06-19T11:03:50.000Z"
     },
     {
@@ -7070,7 +7096,7 @@
       ],
       "subtitle": "100% полиэстер, фурнитура YKK",
       "quote": "",
-      "postViews": 867,
+      "postViews": 868,
       "postTime": "12:05",
       "status": "available",
       "sourceType": "telegram",
@@ -7079,7 +7105,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/26304",
       "sourceDateTime": "2026-06-16T12:05:48.000Z",
       "sourceText": "Шерпа Adidas\n100% полиэстер, фурнитура YKK\n- Размер: M-XL\n- Цена: 6600₽",
-      "syncedAt": "2026-08-22T21:58:34.647Z",
+      "syncedAt": "2026-08-23T11:01:06.446Z",
       "createdAt": "2026-06-16T12:05:48.000Z"
     },
     {
@@ -7095,7 +7121,7 @@
       ],
       "subtitle": "Фиксируется на липучку",
       "quote": "MSD Ignition — известная американская компания, которая специализируется на производстве высокопроизводительных систем зажигания и электронных компонентов для автомобилей",
-      "postViews": 883,
+      "postViews": 884,
       "postTime": "10:00",
       "status": "available",
       "sourceType": "telegram",
@@ -7104,7 +7130,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/26298",
       "sourceDateTime": "2026-06-16T10:00:59.000Z",
       "sourceText": "Кепка Racing\nФиксируется на липучку\nMSD Ignition — известная американская компания, которая специализируется на производстве высокопроизводительных систем зажигания и электронных компонентов для автомобилей\n- Размер: one size\n- Цена: 2200₽",
-      "syncedAt": "2026-08-22T21:58:34.647Z",
+      "syncedAt": "2026-08-23T11:01:06.446Z",
       "createdAt": "2026-06-16T10:00:59.000Z"
     },
     {
@@ -7346,7 +7372,7 @@
       ],
       "subtitle": "100% хлопок, команда New York Yankees",
       "quote": "",
-      "postViews": 824,
+      "postViews": 825,
       "postTime": "11:01",
       "status": "available",
       "sourceType": "telegram",
@@ -7355,7 +7381,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/26223",
       "sourceDateTime": "2026-06-12T11:01:36.000Z",
       "sourceText": "Кепка New Era x MLB\n100% хлопок, команда New York Yankees\n- Размер: one size\n- Цена: 2700₽",
-      "syncedAt": "2026-08-23T08:44:59.877Z",
+      "syncedAt": "2026-08-23T11:01:06.448Z",
       "createdAt": "2026-06-12T11:01:36.000Z"
     },
     {
@@ -7398,7 +7424,7 @@
       ],
       "subtitle": "100% хлопок",
       "quote": "",
-      "postViews": 803,
+      "postViews": 804,
       "postTime": "14:04",
       "status": "available",
       "sourceType": "telegram",
@@ -7407,7 +7433,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/26210",
       "sourceDateTime": "2026-06-11T14:04:31.000Z",
       "sourceText": "Винтажная футболка Nike\n100% хлопок\n- Размер: М\n- Цена: 2400₽",
-      "syncedAt": "2026-08-23T08:44:59.877Z",
+      "syncedAt": "2026-08-23T11:01:06.448Z",
       "createdAt": "2026-06-11T14:04:31.000Z"
     },
     {
@@ -7473,7 +7499,7 @@
       ],
       "subtitle": "Made in Italy 🇮🇹 , хлопок",
       "quote": "",
-      "postViews": 827,
+      "postViews": 828,
       "postTime": "14:01",
       "status": "available",
       "sourceType": "telegram",
@@ -7482,7 +7508,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/26194",
       "sourceDateTime": "2026-06-10T14:01:22.000Z",
       "sourceText": "Рубашка Dolce & Gabbana\nMade in Italy 🇮🇹 , хлопок\n- Размер: М\n- Цена: 6000₽",
-      "syncedAt": "2026-08-23T07:43:14.471Z",
+      "syncedAt": "2026-08-23T11:01:06.448Z",
       "createdAt": "2026-06-10T14:01:22.000Z"
     },
     {
@@ -7523,7 +7549,7 @@
       ],
       "subtitle": "100% хлопок",
       "quote": "",
-      "postViews": 925,
+      "postViews": 926,
       "postTime": "15:03",
       "status": "available",
       "sourceType": "telegram",
@@ -7532,7 +7558,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/26183",
       "sourceDateTime": "2026-06-09T15:03:06.000Z",
       "sourceText": "Футболка The Notorious B.I.G\n100% хлопок\n- Размер: М\n- Цена: 2000₽",
-      "syncedAt": "2026-08-23T07:43:14.472Z",
+      "syncedAt": "2026-08-23T11:01:06.448Z",
       "createdAt": "2026-06-09T15:03:06.000Z"
     },
     {
@@ -7677,7 +7703,7 @@
       ],
       "subtitle": "92% хлопок, 8% эластан, regular fit",
       "quote": "",
-      "postViews": 828,
+      "postViews": 829,
       "postTime": "12:02",
       "status": "available",
       "sourceType": "telegram",
@@ -7686,7 +7712,7 @@
       "sourceUrl": "https://t.me/cycle_showroom/26096",
       "sourceDateTime": "2026-06-05T12:02:20.000Z",
       "sourceText": "Поло Hugo Boss\n92% хлопок, 8% эластан, regular fit\n- Размер: M\n- Цена: 3300₽",
-      "syncedAt": "2026-08-23T07:43:14.473Z",
+      "syncedAt": "2026-08-23T11:01:06.451Z",
       "createdAt": "2026-06-05T12:02:20.000Z"
     },
     {
