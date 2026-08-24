@@ -1,16 +1,16 @@
 {
   "source": {
     "orgId": "62631138735",
-    "orgUrl": "https://yandex.com/maps/org/tsikl/62631138735/",
-    "reviewsUrl": "https://yandex.com/maps/org/tsikl/62631138735/reviews/",
-    "galleryUrl": "https://yandex.com/maps/org/tsikl/62631138735/gallery/",
+    "orgUrl": "https://yandex.kz/maps/org/tsikl/62631138735/",
+    "reviewsUrl": "https://yandex.kz/maps/org/tsikl/62631138735/reviews/",
+    "galleryUrl": "https://yandex.kz/maps/org/tsikl/62631138735/gallery/",
     "reviewPagesFetched": 2
   },
   "summary": {
-    "title": "Cycle",
+    "title": "Цикл",
     "ratingValue": 4.900000095367432,
-    "ratingCount": 116,
-    "reviewCount": 62,
+    "ratingCount": 117,
+    "reviewCount": 63,
     "photosCount": 51
   },
   "photos": [
@@ -26,8 +26,8 @@
     "https://avatars.mds.yandex.net/get-altay/13286098/2a0000018fbfa97c142e9d1a4127a6285add/orig",
     "https://avatars.mds.yandex.net/get-altay/9717139/2a00000188f3a9ebadf568fcc5ab35b587f5/orig",
     "https://avatars.mds.yandex.net/get-altay/6195924/2a0000018fbf9dae1866c923041c8e41f651/orig",
-    "https://avatars.mds.yandex.net/get-altay/13668123/2a00000195d818a05f31788d9c79ea742d54/orig",
     "https://avatars.mds.yandex.net/get-altay/1344805/2a000001853fc3b518e2cd46a121d95d663e/orig",
+    "https://avatars.mds.yandex.net/get-altay/13668123/2a00000195d818a05f31788d9c79ea742d54/orig",
     "https://avatars.mds.yandex.net/get-altay/7730113/2a0000018fbfa96a74989e100d0ec2c13823/orig",
     "https://avatars.mds.yandex.net/get-altay/7730113/2a0000018fbfa976c4358a0825ef4acafcbd/orig",
     "https://avatars.mds.yandex.net/get-altay/13477341/2a0000018fbfa97b33acb4a7a0ad95d59b4f/orig",
@@ -38,26 +38,6 @@
     "https://avatars.mds.yandex.net/get-altay/10488540/2a0000018bc8d9ddb306288dfef23bfc8ad8/orig"
   ],
   "reviews": [
-    {
-      "id": "pflUXbBTcwrAWdCXFleBMzO9e0x_UmZ",
-      "name": "Лилия Масловиева",
-      "text": "Нравиться нам Ваш магазин, много интересных, брендовых и качественных, конечно, вещей, приезжаем с другого города, специально к Вам, сын нашёл Ваш магазин, однозначно рекомендуем семьёй Цикл, персонал всегда вежливый, подскажут, порекомендуют!!!",
-      "rating": 5,
-      "dateIso": "2026-02-13T06:28:49.376Z",
-      "dateLabel": "13 февраля 2026 г.",
-      "avatarUrl": null,
-      "photos": []
-    },
-    {
-      "id": "hsdRVdMFb9AJ9yZP5Db2SQ4HTPZL_D",
-      "name": "Максим Литвинов",
-      "text": "Отличный магазин, хожу сюда очень давно, еще с момента когда он был в здании рядом со стадионом труд. Всегда доволен качеством вещей и ценами, всем рекомендую. Так же выиграл в розыгрыше свитер stone island за 2 тыщи, что конечно не могу не отметить. Всем советую, оч крутая атмосфера, ассортимент и приятные цены",
-      "rating": 5,
-      "dateIso": "2025-03-19T18:18:21.539Z",
-      "dateLabel": "19 марта 2025 г.",
-      "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/6214067/rdoOl20qp1wNJv4mjlufx8O3p3U-1/orig",
-      "photos": []
-    },
     {
       "id": "1xh1HbEgFfkMg6uRXyOe9NEZ1tgDW1428",
       "name": "Дмитрий Тарарыков",
@@ -71,13 +51,23 @@
       ]
     },
     {
-      "id": "tk-cDOcGvPDwbd3JtbwQyXwxXnIUV7Oj",
-      "name": "жора",
-      "text": "красивое место с большим выбором классной одежды, консультанты внимательны и помогают при выборе вещей",
+      "id": "hsdRVdMFb9AJ9yZP5Db2SQ4HTPZL_D",
+      "name": "Максим Литвинов",
+      "text": "Отличный магазин, хожу сюда очень давно, еще с момента когда он был в здании рядом со стадионом труд. Всегда доволен качеством вещей и ценами, всем рекомендую. Так же выиграл в розыгрыше свитер stone island за 2 тыщи, что конечно не могу не отметить. Всем советую, оч крутая атмосфера, ассортимент и приятные цены",
       "rating": 5,
-      "dateIso": "2026-05-11T10:54:21.132Z",
-      "dateLabel": "11 мая 2026 г.",
-      "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/37154/0u-4/orig",
+      "dateIso": "2025-03-19T18:18:21.539Z",
+      "dateLabel": "19 марта 2025 г.",
+      "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/6214067/rdoOl20qp1wNJv4mjlufx8O3p3U-1/orig",
+      "photos": []
+    },
+    {
+      "id": "pflUXbBTcwrAWdCXFleBMzO9e0x_UmZ",
+      "name": "Лилия Масловиева",
+      "text": "Нравиться нам Ваш магазин, много интересных, брендовых и качественных, конечно, вещей, приезжаем с другого города, специально к Вам, сын нашёл Ваш магазин, однозначно рекомендуем семьёй Цикл, персонал всегда вежливый, подскажут, порекомендуют!!!",
+      "rating": 5,
+      "dateIso": "2026-02-13T06:28:49.376Z",
+      "dateLabel": "13 февраля 2026 г.",
+      "avatarUrl": null,
       "photos": []
     },
     {
@@ -101,13 +91,13 @@
       "photos": []
     },
     {
-      "id": "zvNFkVbolK0F5w-XYOKsf5QPFdpHOLtZ",
-      "name": "Максим Петрович",
-      "text": "Стильный выставочный зал, огромный выбор абсолютно разных вещей, много прикольных и редких шмоток, цены на любой кошелек, все шмотки ориг, вернусь ещё не раз❤️",
+      "id": "tk-cDOcGvPDwbd3JtbwQyXwxXnIUV7Oj",
+      "name": "жора",
+      "text": "красивое место с большим выбором классной одежды, консультанты внимательны и помогают при выборе вещей",
       "rating": 5,
-      "dateIso": "2024-08-08T13:56:49.169Z",
-      "dateLabel": "8 августа 2024 г.",
-      "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/68143/0y-7/orig",
+      "dateIso": "2026-05-11T10:54:21.132Z",
+      "dateLabel": "11 мая 2026 г.",
+      "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/37154/0u-4/orig",
       "photos": []
     },
     {
@@ -148,6 +138,26 @@
       "dateIso": "2025-04-05T13:26:27.480Z",
       "dateLabel": "5 апреля 2025 г.",
       "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/31804/0s-3/orig",
+      "photos": []
+    },
+    {
+      "id": "zvNFkVbolK0F5w-XYOKsf5QPFdpHOLtZ",
+      "name": "Максим Петрович",
+      "text": "Стильный выставочный зал, огромный выбор абсолютно разных вещей, много прикольных и редких шмоток, цены на любой кошелек, все шмотки ориг, вернусь ещё не раз❤️",
+      "rating": 5,
+      "dateIso": "2024-08-08T13:56:49.169Z",
+      "dateLabel": "8 августа 2024 г.",
+      "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/68143/0y-7/orig",
+      "photos": []
+    },
+    {
+      "id": "YhJ0kRzyyP7hpBEQKQgmmsUMHLZ6cB",
+      "name": "Карен Патваканян",
+      "text": "Вцелом интересное пространство. Но мне кажется ценник на вещи завышен +- по позициям до 6.000 всреднем завышение на 1.000\nНо а так, очегь даже интересно",
+      "rating": 4,
+      "dateIso": "2026-08-08T10:39:44.635Z",
+      "dateLabel": "8 августа 2026 г.",
+      "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/60687/oatPvxzi60hTjJumhZhshqirt94-1/orig",
       "photos": []
     },
     {
@@ -223,6 +233,16 @@
       "photos": []
     },
     {
+      "id": "X_Bk3l5mQamiJCs1KQf0tSBA_IqA2wx",
+      "name": "Вениамин Романов",
+      "text": "Не дали покататься на мотоцикле, но шмот чёткий да ещё и по хорошим ценам",
+      "rating": 5,
+      "dateIso": "2025-06-06T16:29:09.074Z",
+      "dateLabel": "6 июня 2025 г.",
+      "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/31804/0c-9/orig",
+      "photos": []
+    },
+    {
       "id": "2binywm9t3JzKoIk-Zrr0X22LCiJS9V",
       "name": "Даниил К.",
       "text": "Прекрасный магазин, крутые люди, огромный выбор, рекомендую",
@@ -253,13 +273,13 @@
       "photos": []
     },
     {
-      "id": "QjpProwJSZow3vuYpV_PVHO9LK8ZcMxbQ",
-      "name": "Юрий Жуков",
-      "text": "Хороший магазин, выбрал джинсы лее отличные!",
+      "id": "KCy8D1vmsFuAknEFq-3KjvmpEq_cwY",
+      "name": "Руслан Понкратов",
+      "text": "Этот магазин для меня ценная находка. Для тех, кто любит стильные вещи по приятным ценам. Знатоки стиля оценят",
       "rating": 5,
-      "dateIso": "2026-03-16T05:59:32.410Z",
-      "dateLabel": "16 марта 2026 г.",
-      "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/37154/0t-2/orig",
+      "dateIso": "2025-07-26T10:26:36.331Z",
+      "dateLabel": "26 июля 2025 г.",
+      "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/57243/TzfhOZpnO3TSHxm0ZdEKa6Wjd0-1/orig",
       "photos": []
     },
     {
@@ -283,13 +303,13 @@
       "photos": []
     },
     {
-      "id": "X_Bk3l5mQamiJCs1KQf0tSBA_IqA2wx",
-      "name": "Вениамин Романов",
-      "text": "Не дали покататься на мотоцикле, но шмот чёткий да ещё и по хорошим ценам",
+      "id": "QjpProwJSZow3vuYpV_PVHO9LK8ZcMxbQ",
+      "name": "Юрий Жуков",
+      "text": "Хороший магазин, выбрал джинсы лее отличные!",
       "rating": 5,
-      "dateIso": "2025-06-06T16:29:09.074Z",
-      "dateLabel": "6 июня 2025 г.",
-      "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/31804/0c-9/orig",
+      "dateIso": "2026-03-16T05:59:32.410Z",
+      "dateLabel": "16 марта 2026 г.",
+      "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/37154/0t-2/orig",
       "photos": []
     },
     {
@@ -310,16 +330,6 @@
       "dateIso": "2022-04-28T18:38:33.778Z",
       "dateLabel": "28 апреля 2022 г.",
       "avatarUrl": null,
-      "photos": []
-    },
-    {
-      "id": "KCy8D1vmsFuAknEFq-3KjvmpEq_cwY",
-      "name": "Руслан Понкратов",
-      "text": "Этот магазин для меня ценная находка. Для тех, кто любит стильные вещи по приятным ценам. Знатоки стиля оценят",
-      "rating": 5,
-      "dateIso": "2025-07-26T10:26:36.331Z",
-      "dateLabel": "26 июля 2025 г.",
-      "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/57243/TzfhOZpnO3TSHxm0ZdEKa6Wjd0-1/orig",
       "photos": []
     },
     {
@@ -360,6 +370,16 @@
       "dateIso": "2022-06-19T17:38:49.399Z",
       "dateLabel": "19 июня 2022 г.",
       "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/38663/0s-9/orig",
+      "photos": []
+    },
+    {
+      "id": "Wrj1bLg5l8hZuK0_dR451LVU81XmYw",
+      "name": "максим К.",
+      "text": "Приятный довольно магазин с демократичными ценами",
+      "rating": 5,
+      "dateIso": "2026-05-28T18:50:13.382Z",
+      "dateLabel": "28 мая 2026 г.",
+      "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/26057/0l-2/orig",
       "photos": []
     },
     {
@@ -425,16 +445,6 @@
       ]
     },
     {
-      "id": "Wrj1bLg5l8hZuK0_dR451LVU81XmYw",
-      "name": "максим К.",
-      "text": "Приятный довольно магазин с демократичными ценами",
-      "rating": 5,
-      "dateIso": "2026-05-28T18:50:13.382Z",
-      "dateLabel": "28 мая 2026 г.",
-      "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/26057/0l-2/orig",
-      "photos": []
-    },
-    {
       "id": "xF99BW0YeOd0U7Gict7NZ4A55cPUUFvt",
       "name": "Данил Трубников",
       "text": "Классное место с винтажными вещами",
@@ -465,16 +475,6 @@
       "photos": []
     },
     {
-      "id": "MYzNsGskebqqsUDoOudHCKuz2jY8KB4f3",
-      "name": "Юрий Глушков",
-      "text": "Классный стильный магазин",
-      "rating": 5,
-      "dateIso": "2026-01-31T11:46:14.327Z",
-      "dateLabel": "31 января 2026 г.",
-      "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/58107/dFO1Whhr6UGmxODXQCU6qnGUI-1/orig",
-      "photos": []
-    },
-    {
       "id": "w46a653bFxM3XWUNPhor1dllk8RYzbJ",
       "name": "Тимофей З.",
       "text": "Кайфовое место с классными вещами и круты отзывчивым персоналом!",
@@ -482,6 +482,16 @@
       "dateIso": "2022-02-11T07:01:08.106Z",
       "dateLabel": "11 февраля 2022 г.",
       "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/56823/0g-7/orig",
+      "photos": []
+    },
+    {
+      "id": "MYzNsGskebqqsUDoOudHCKuz2jY8KB4f3",
+      "name": "Юрий Глушков",
+      "text": "Классный стильный магазин",
+      "rating": 5,
+      "dateIso": "2026-01-31T11:46:14.327Z",
+      "dateLabel": "31 января 2026 г.",
+      "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/58107/dFO1Whhr6UGmxODXQCU6qnGUI-1/orig",
       "photos": []
     },
     {
@@ -547,6 +557,16 @@
       "photos": []
     },
     {
+      "id": "Gi9Tw3vQBbs9mrYUhovpEicM3eS6jXOyQ",
+      "name": "Антон Кухтаев",
+      "text": "классный магазин, хорошие цены",
+      "rating": 5,
+      "dateIso": "2025-09-28T13:56:48.392Z",
+      "dateLabel": "28 сентября 2025 г.",
+      "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/68143/0g-8/orig",
+      "photos": []
+    },
+    {
       "id": "2n84tuyv1qME3cq8BvSHi7AH6BkI5H",
       "name": "Мария М.",
       "text": "Хороший магазин с достойным ассортиментом🤝",
@@ -574,16 +594,6 @@
       "dateIso": "2023-02-24T16:33:00.367Z",
       "dateLabel": "24 февраля 2023 г.",
       "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/47747/fiHPvU7R6It8IKLOhjEWpulbmE-1/orig",
-      "photos": []
-    },
-    {
-      "id": "Gi9Tw3vQBbs9mrYUhovpEicM3eS6jXOyQ",
-      "name": "Антон Кухтаев",
-      "text": "классный магазин, хорошие цены",
-      "rating": 5,
-      "dateIso": "2025-09-28T13:56:48.392Z",
-      "dateLabel": "28 сентября 2025 г.",
-      "avatarUrl": "https://avatars.mds.yandex.net/get-yapic/68143/0g-8/orig",
       "photos": []
     },
     {
@@ -667,5 +677,5 @@
       "photos": []
     }
   ],
-  "updatedAt": "2026-08-04T11:18:38.635Z"
+  "updatedAt": "2026-08-24T12:04:24.524Z"
 }
